@@ -1,32 +1,117 @@
 <template>
   <div id="app">
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
-    <router-view />
+    <div class="bg1"></div>
+    <div class="bg2"></div>
+    <router-view></router-view>
   </div>
 </template>
 
-<style lang="scss">
+<script>
+export default {
+  name: 'App'
+};
+</script>
+
+<style lang="scss" scoped>
 #app {
+  width: 100%;
+  height: 100vh;
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
+  background-color: rgba(0, 0, 0, 0.3);
 }
-
-#nav {
-  padding: 30px;
-
-  a {
-    font-weight: bold;
-    color: #2c3e50;
-
-    &.router-link-exact-active {
-      color: #42b983;
-    }
+.bg1 {
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  margin: 0;
+  background-image: url('./assets/fgo-bg2.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 0px 0px;
+  background-attachment: fixed;
+  animation: changeBG1 linear infinite 10s;
+  z-index: -1;
+}
+.bg2 {
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  margin: 0;
+  background-image: url('./assets/arisu-bg.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 0px 0px;
+  background-attachment: fixed;
+  animation: changeBG2 linear infinite 10s;
+  z-index: -2;
+}
+@keyframes changeBG1 {
+  0% {
+    transform: scale(1.03);
+    background-image: url('./assets/fgo-bg2.png');
+  }
+  20% {
+    background-image: url('./assets/fgo-bg2.png');
+    opacity: 1;
+  }
+  25% {
+    transform: scale(1.1);
+    background-image: url('./assets/fgo-bg2.png');
+    opacity: 0;
+  }
+  45% {
+    transform: scale(1);
+    background-image: url('./assets/fgo-bg.png');
+    opacity: 0;
+  }
+  50% {
+    background-image: url('./assets/fgo-bg.png');
+    opacity: 1;
+  }
+  70% {
+    background-image: url('./assets/fgo-bg.png');
+    opacity: 1;
+  }
+  75% {
+    transform: scale(1.1);
+    background-image: url('./assets/fgo-bg.png');
+    opacity: 0;
+  }
+  95% {
+    transform: scale(1);
+    background-image: url('./assets/fgo-bg2.png');
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1.03);
+    background-image: url('./assets/fgo-bg2.png');
+    opacity: 1;
+  }
+}
+@keyframes changeBG2 {
+  0% {
+    transform: scale(1);
+    background-image: url('./assets/arisu-bg.png');
+  }
+  20% {
+    transform: scale(1);
+    background-image: url('./assets/arisu-bg.png');
+  }
+  50% {
+    transform: scale(1.1);
+    background-image: url('./assets/arisu-bg.png');
+  }
+  70% {
+    transform: scale(1);
+    background-image: url('./assets/jk-bg.png');
+  }
+  100% {
+    transform: scale(1.1);
+    background-image: url('./assets/jk-bg.png');
   }
 }
 </style>
