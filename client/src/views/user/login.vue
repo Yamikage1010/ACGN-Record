@@ -1,28 +1,18 @@
 <template>
   <div class="acgn-record">
-    <label>用户名：</label><input type="text" v-model="user.name" />
-    <label>密码：</label><input type="text" v-model="user.password" />
+    <label>用户名：</label><input type="text" v-model="user.name" /> <label>密码：</label
+    ><input type="text" v-model="user.password" />
     <button @click="userLogin">登录</button>
     <br />
     <div v-if="loginRes">登录成功！欢迎{{ loginRes }}</div>
     <button class="add-move-window" @click="addMoveWindow">添加移动窗</button>
-    <move-window
-      v-dialogDrag
-      v-for="index in moveWindowCount"
-      :key="index"
-      :zIndex="index"
-      @click="setZIndex"
-    >
+    <move-window v-dialogDrag v-for="index in moveWindowCount" :key="index" :zIndex="index" @click="setZIndex">
+      <a href="https://bangumi.tv/subject_search/clannad?cat=all" target="_blank">
+        跳转至bangumi搜索
+      </a>
     </move-window>
 
-    <aplayer
-      autoplay
-      float
-      :mini="mini"
-      @mouseover.native="playerShow"
-      @mouseleave.native="playerHide"
-      :music="{}"
-    >
+    <aplayer autoplay float :mini="mini" @mouseover.native="playerShow" @mouseleave.native="playerHide" :music="{}">
     </aplayer>
   </div>
 </template>
