@@ -1,9 +1,8 @@
 var express = require('express');
 const { init, exec, sql, transaction } = require('../config/mysqlConfig')
 var bodyParser = require('body-parser');
-var md5 = require('md5-node');
-
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
+var md5 = require('md5-node');
 var router = express.Router();
 
 //登录接口
