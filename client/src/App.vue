@@ -1,5 +1,6 @@
 <template>
-  <div id="app">
+  <div id="app" @dblclick="moveMenu">
+    <move-menu v-moveMenu v-if="hasMenu" @closeMenu="closeMenu"></move-menu>
     <div class="bg1"></div>
     <div class="bg2"></div>
     <router-view></router-view>
@@ -7,8 +8,30 @@
 </template>
 
 <script>
+import moveMenu from './components/moveMenu';
 export default {
-  name: 'App'
+  name: 'App',
+  components: {
+    moveMenu
+  },
+  data() {
+    return {
+      hasMenu: false
+    };
+  },
+  methods: {
+    moveMenu(event) {
+      let event1 = event.target;
+      let event2 = event.currentTarget;
+      if (event1 === event2) {
+        console.log(111111);
+        this.hasMenu = !this.hasMenu;
+      }
+    },
+    closeMenu() {
+      this.hasMenu = false;
+    }
+  }
 };
 </script>
 
