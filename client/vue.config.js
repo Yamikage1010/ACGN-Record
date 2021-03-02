@@ -2,13 +2,13 @@
 
 module.exports = {
   //  基本路径
-  publicPath: "./",
+  publicPath: '/',
   //  构建时的输出目录
-  outputDir: "dist",
+  outputDir: 'dist',
   //  放置静态资源的目录
-  assetsDir: "static",
+  assetsDir: 'static',
   //  html 的输出路径
-  indexPath: "index.html",
+  indexPath: 'index.html',
   //文件名哈希
   filenameHashing: true,
   //用于多页配置，默认是 undefined
@@ -17,18 +17,20 @@ module.exports = {
   //  是否使用带有浏览器内编译器的完整构建版本
   runtimeCompiler: false,
   //  babel-loader 默认会跳过 node_modules 依赖。
-  transpileDependencies: [ /* string or regex */],
+  transpileDependencies: [
+    /* string or regex */
+  ],
   //  是否为生产环境构建生成 source map？
   productionSourceMap: true,
-  //  设置生成的 HTML 中 <link rel="stylesheet"> 和 <script> 标签的 crossorigin 属性。
-  crossorigin: "",
-  //  在生成的 HTML 中的 <link rel="stylesheet"> 和 <script> 标签上启用 Subresource Integrity (SRI)。
-  integrity: false,
+  // //  设置生成的 HTML 中 <link rel="stylesheet"> 和 <script> 标签的 crossorigin 属性。
+  // crossorigin: '',
+  // //  在生成的 HTML 中的 <link rel="stylesheet"> 和 <script> 标签上启用 Subresource Integrity (SRI)。
+  // integrity: false,
   //  调整内部的 webpack 配置
   configureWebpack: {
     externals: 'hls.js'
   }, //(Object | Function)
-  chainWebpack: () => { },
+  chainWebpack: () => {},
   // 配置 webpack-dev-server 行为。
   //     devServer: {
   //         open: process.platform === 'darwin',
@@ -73,4 +75,4 @@ module.exports = {
   pluginOptions: {
     // ...
   }
-}
+};

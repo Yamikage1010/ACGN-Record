@@ -12,7 +12,17 @@
       </a>
     </move-window>
 
-    <aplayer autoplay float :mini="mini" @mouseover.native="playerShow" @mouseleave.native="playerHide" :music="{}">
+    <aplayer
+      autoplay
+      float
+      :mini="mini"
+      @mouseover.native="playerShow"
+      @mouseleave.native="playerHide"
+      :music="{
+        title: 'Preparation',
+        artist: 'Hans Zimmer/Richard Harvey'
+      }"
+    >
     </aplayer>
   </div>
 </template>
