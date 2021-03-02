@@ -12,13 +12,6 @@ Vue.directive('moveMenu', {
     console.log(binding);
     console.log(vnode);
     console.log(oldVnode);
-    // 弹框可拉伸最小宽高
-    const minWidth = 400;
-    const minHeight = 300;
-    // 初始非全屏
-    let isFullScreen = false;
-    // 当前顶部高度
-    let nowMarginTop = 0;
     // 获取弹框头部（这部分可双击全屏）
     const dialogHeaderEl = el.querySelector('.move-menu-header');
     // 弹窗
@@ -66,12 +59,8 @@ Vue.directive('moveMenu', {
       };
     };
     dialogHeaderEl.onmousedown = moveDown;
-    // 当前宽高
-    let nowWidth = 0;
-    let nowHight = 0;
-    let nowTop = 0;
-    let nowLeft = 0;
     dragDom.onmousemove = function(e) {
+      e;
       // let moveE = e
       // if (
       //   e.clientX > dragDom.offsetLeft + dragDom.clientWidth - 10 &&
@@ -95,11 +84,9 @@ Vue.directive('moveMenu', {
         const clientX = e.clientX;
         const clientY = e.clientY;
         const elW = dragDom.clientWidth;
-        const elH = dragDom.clientHeight;
         const EloffsetLeft = dragDom.offsetLeft;
         const EloffsetTop = dragDom.offsetTop;
         dragDom.style.userSelect = 'none';
-        const ELscrollTop = el.scrollTop;
         // 判断点击的位置是不是为头部
         if (
           clientX > EloffsetLeft &&

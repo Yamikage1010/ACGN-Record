@@ -25,7 +25,7 @@ module.exports = ((req, res, next) => {
     .where({ token: token })
     .select())
     .then(result => {
-      if (results[0]) {
+      if (result[0]) {
         next()
       } else {
         return res.status(401).json({

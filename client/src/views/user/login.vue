@@ -19,6 +19,7 @@
 
 <script>
 import { login } from '@/api/user';
+import store from 'store';
 import moveWindow from '@/components/moveWindow.vue';
 import Aplayer from 'vue-aplayer';
 export default {
@@ -43,6 +44,7 @@ export default {
       }).then(res => {
         if (res.code == 200) {
           this.loginRes = res.data.name;
+          store.set('Token', res.data.token);
         } else {
           alert(res.msg);
         }

@@ -16,7 +16,7 @@ init({
   host: 'localhost',
   user: 'root',
   password:'root',
-  database: 'acgn_record_test',
+  database: 'acgn_record',
   port: 3306,
 })
 

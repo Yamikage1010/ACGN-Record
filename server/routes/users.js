@@ -19,6 +19,11 @@ router.post('/acgnrecord/login', urlencodedParser, (req, res) => {
       if (result.length > 0) {
         // 生成token
         const token = md5(result[0].id+result[0].name+new Date().getTime())
+        exec(sql
+          .table('user')
+          .where(user)
+          .data({token:token})
+          .update())
         res.send({
           status: "success",
           code: 200,
