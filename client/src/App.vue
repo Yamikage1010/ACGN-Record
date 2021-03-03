@@ -3,6 +3,7 @@
     <move-menu v-moveMenu v-if="hasMenu" @closeMenu="closeMenu">
       <div class="db-menu" @click="closeSakura">{{ sakuraShow ? '关闭樱花' : '开启樱花' }}</div>
       <div class="db-menu" @click="changeBG">切换主题</div>
+      <div class="db-menu" @click="changeMode">{{ nowMode == 'readerIndex' ? '浏览模式' : '管理模式' }}</div>
     </move-menu>
     <template v-if="changeBackground">
       <div class="bg1"></div>
@@ -25,7 +26,8 @@ export default {
     return {
       hasMenu: false,
       sakuraShow: true,
-      changeBackground: true
+      changeBackground: true,
+      nowMode: 'readerIndex'
     };
   },
   methods: {
@@ -45,6 +47,19 @@ export default {
     },
     changeBG() {
       this.changeBackground = !this.changeBackground;
+    },
+    changeMode() {
+      if (this.nowMode == 'readerIndex') {
+        this.nowMode == 'creatorIndex';
+        this.$router.push({
+          name: 'creatorIndex'
+        });
+      } else {
+        this.nowMode == 'readerIndex';
+        this.$router.push({
+          name: 'readerIndex'
+        });
+      }
     }
   }
 };
