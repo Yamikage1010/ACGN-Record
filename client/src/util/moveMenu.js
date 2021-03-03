@@ -28,7 +28,6 @@ Vue.directive('moveMenu', {
     const moveDown = e => {
       zIndex++;
       dragDom.style.zIndex = 999;
-      console.log(zIndex);
       // 鼠标按下，计算当前元素距离可视区的距离
       const disX = e.clientX - dialogHeaderEl.offsetLeft;
       const disY = e.clientY - dialogHeaderEl.offsetTop;

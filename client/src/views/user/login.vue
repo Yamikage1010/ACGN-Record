@@ -87,8 +87,8 @@ export default {
 .add-move-window {
   width: 200px;
   height: 100px;
-  color: aliceblue;
-  background-color: rgba(0, 0, 0, 0.5);
+  color: $fontColor;
+  background-color: $bgColor;
   border: 0px;
   border-radius: 4px;
 }
@@ -102,7 +102,7 @@ export default {
       background-color: rgba(0, 0, 0, 0.5);
       transition: 1s ease;
       &:hover {
-        background: rgba(0, 0, 0, 0.8) !important;
+        background: $bgColor !important;
       }
     }
     .aplayer-info {

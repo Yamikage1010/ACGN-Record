@@ -1,30 +1,42 @@
-import Vue from 'vue'
-import VueRouter from 'vue-router'
+import Vue from 'vue';
+import VueRouter from 'vue-router';
 
-Vue.use(VueRouter)
+Vue.use(VueRouter);
 
 export const constantRoutes = [
   {
-      path: '/login',
-      name: 'login',
-      component: () =>
-          import('../views/user/login.vue')
+    path: '/',
+    name: 'readerIndex',
+    component: () => import('@/views/reader/readerIndex.vue')
   },
   {
-      path: '/register',
-      name: 'register',
-      component: () =>
-          import('../views/user/register.vue')
+    path: '/readerIndex',
+    component: () => import('@/views/reader/readerIndex.vue')
   },
-]
-export const asyncRoutes = []
+  {
+    path: '/creatorIndex',
+    name: 'creatorIndex',
+    component: () => import('@/views/creator/creatorIndex.vue')
+  },
+  {
+    path: '/login',
+    name: 'login',
+    component: () => import('@/views/user/login.vue')
+  },
+  {
+    path: '/register',
+    name: 'register',
+    component: () => import('@/views/user/register.vue')
+  }
+];
+export const asyncRoutes = [];
 
 const router = new VueRouter({
   mode: 'hash',
   routes: asyncRoutes.concat(constantRoutes)
-})
+});
 const routerPush = VueRouter.prototype.push;
 VueRouter.prototype.push = function push(location) {
-  return routerPush.call(this, location).catch((error) => error);
+  return routerPush.call(this, location).catch(error => error);
 };
-export default router
+export default router;

@@ -33,7 +33,6 @@ export default {
       let event1 = event.target;
       let event2 = event.currentTarget;
       if (event1 === event2) {
-        console.log(111111);
         this.hasMenu = !this.hasMenu;
       }
     },
@@ -59,8 +58,8 @@ export default {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
-  color: #2c3e50;
-  background-color: rgba(0, 0, 0, 0.3);
+  color: $fontColor;
+  background-color: $mask;
 }
 .db-menu {
   color: #bfbfbf;
@@ -68,8 +67,8 @@ export default {
   margin: 5px;
 }
 .db-menu:hover {
-  color: rgb(44, 44, 44);
-  background-color: rgb(211, 211, 211);
+  color: $hoverFontColor;
+  background-color: $hoverBgColor;
   cursor: pointer;
 }
 .bg {

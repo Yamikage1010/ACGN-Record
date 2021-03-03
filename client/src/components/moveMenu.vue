@@ -54,13 +54,13 @@ export default {
   top: 0;
   left: 0;
   position: fixed;
-  background-color: #000000b6;
+  background-color: $bgColor;
   border-radius: 3px;
   .move-menu-header,
   .move-menu-footer {
     width: 100%;
     position: absolute;
-    background-color: rgba(255, 255, 255, 0.7);
+    background-color: $fontColor;
   }
   .move-menu-header {
     display: flex;

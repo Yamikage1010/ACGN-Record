@@ -1,5 +1,5 @@
 //樱花下落
-import { getSakura } from '../api/systemResource';
+import { getSakura } from '@/api/systemResource';
 
 var stop, staticx;
 var img = new Image();

@@ -1,5 +1,8 @@
 // Vue.config.js 配置选项
-
+const path = require('path');
+function resolve(dir) {
+  return path.join(__dirname, dir);
+}
 module.exports = {
   //  基本路径
   publicPath: '/',
@@ -30,7 +33,14 @@ module.exports = {
   configureWebpack: {
     externals: 'hls.js'
   }, //(Object | Function)
-  chainWebpack: () => {},
+  chainWebpack: config => {
+    config.resolve.alias
+      .set('@', resolve('src'))
+      .set('@assets', resolve('src/assets'))
+      .set('@components', resolve('src/components'))
+      .set('@base', resolve('baseConfig'))
+      .set('@public', resolve('public'));
+  },
   // 配置 webpack-dev-server 行为。
   //     devServer: {
   //         open: process.platform === 'darwin',
@@ -52,14 +62,11 @@ module.exports = {
     // sourceMap: false,
     // // 为预处理器的 loader 传递自定义选项。比如传递给
     // // Css-loader 时，使用 `{ Css: { ... } }`。
-    // loaderOptions: {
-    //   css: {
-    //     // 这里的选项会传递给 css-loader
-    //   },
-    //   postcss: {
-    //     // 这里的选项会传递给 postcss-loader
-    //   }
-    // },
+    loaderOptions: {
+      sass: {
+        prependData: `@import "@/main.scss";`
+      }
+    }
     // // 为所有的 CSS 及其预处理文件开启 CSS Modules。
     // // 这个选项不会影响 `*.vue` 文件。
     // modules: false
