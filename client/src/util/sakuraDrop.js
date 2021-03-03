@@ -229,7 +229,7 @@ function startSakura() {
 //   startSakura();
 // };
 
-function stopp() {
+export function stopSakura() {
   if (staticx) {
     var child = document.getElementById('canvas_sakura');
     child.parentNode.removeChild(child);

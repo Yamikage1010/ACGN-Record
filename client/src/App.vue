@@ -1,14 +1,21 @@
 <template>
   <div id="app" @dblclick="moveMenu">
-    <move-menu v-moveMenu v-if="hasMenu" @closeMenu="closeMenu"></move-menu>
-    <div class="bg1"></div>
-    <div class="bg2"></div>
+    <move-menu v-moveMenu v-if="hasMenu" @closeMenu="closeMenu">
+      <div class="db-menu" @click="closeSakura">{{ sakuraShow ? '关闭樱花' : '开启樱花' }}</div>
+      <div class="db-menu" @click="changeBG">切换主题</div>
+    </move-menu>
+    <template v-if="changeBackground">
+      <div class="bg1"></div>
+      <div class="bg2"></div>
+    </template>
+    <div v-else class="bg"></div>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
 import moveMenu from './components/moveMenu';
+import { stopSakura } from './util/sakuraDrop';
 export default {
   name: 'App',
   components: {
@@ -16,7 +23,9 @@ export default {
   },
   data() {
     return {
-      hasMenu: false
+      hasMenu: false,
+      sakuraShow: true,
+      changeBackground: true
     };
   },
   methods: {
@@ -30,6 +39,13 @@ export default {
     },
     closeMenu() {
       this.hasMenu = false;
+    },
+    closeSakura() {
+      this.sakuraShow = !this.sakuraShow;
+      stopSakura();
+    },
+    changeBG() {
+      this.changeBackground = !this.changeBackground;
     }
   }
 };
@@ -45,6 +61,28 @@ export default {
   text-align: center;
   color: #2c3e50;
   background-color: rgba(0, 0, 0, 0.3);
+}
+.db-menu {
+  color: #bfbfbf;
+  padding: 5px;
+  margin: 5px;
+}
+.db-menu:hover {
+  color: rgb(44, 44, 44);
+  background-color: rgb(211, 211, 211);
+  cursor: pointer;
+}
+.bg {
+  width: 100%;
+  height: 100vh;
+  position: fixed;
+  margin: 0;
+  background-image: url('./assets/fgo-bg2.png');
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: 0px 0px;
+  background-attachment: fixed;
+  z-index: -1;
 }
 .bg1 {
   width: 100%;
