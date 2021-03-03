@@ -50,12 +50,12 @@ export default {
     },
     changeMode() {
       if (this.nowMode == 'readerIndex') {
-        this.nowMode == 'creatorIndex';
+        this.nowMode = 'creatorIndex';
         this.$router.push({
           name: 'creatorIndex'
         });
       } else {
-        this.nowMode == 'readerIndex';
+        this.nowMode = 'readerIndex';
         this.$router.push({
           name: 'readerIndex'
         });
