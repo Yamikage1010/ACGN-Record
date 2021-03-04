@@ -1,8 +1,13 @@
 <template>
   <div
     ref="moveMenu"
-    class="move-menu"
-    :style="{ height: windowHeight + 'px', width: windowWidth + 'px' }"
+    class="move-menu animate__animated animate__bounceIn"
+    :style="{
+      height: windowHeight + 'px',
+      width: windowWidth + 'px',
+      top: top + 'px',
+      left: left + 'px'
+    }"
     @click="click"
   >
     <div class="move-menu-header" :style="{ height: windowHFHeight + 'px' }">
@@ -21,6 +26,12 @@ export default {
   props: {
     zIndex: {
       type: Number,
+      default: 0
+    },
+    top: {
+      default: 0
+    },
+    left: {
       default: 0
     }
   },
@@ -51,8 +62,6 @@ export default {
 
 <style lang="scss" scoped>
 .move-menu {
-  top: 0;
-  left: 0;
   position: fixed;
   background-color: $bgColor;
   border-radius: 3px;

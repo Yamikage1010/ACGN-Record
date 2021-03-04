@@ -7,6 +7,7 @@ import './util/moveMenu';
 import router from './router';
 import './main.scss';
 import './util/componentsImport';
+import 'animate.css';
 Vue.config.productionTip = false;
 
 new Vue({

@@ -1,6 +1,6 @@
 <template>
-  <div id="app" @dblclick="moveMenu">
-    <move-menu v-moveMenu v-if="hasMenu" @closeMenu="closeMenu">
+  <div id="app" @contextmenu.prevent="rightClick">
+    <move-menu v-moveMenu v-if="hasMenu" @closeMenu="closeMenu" :top="mouseTop" :left="mouseLeft">
       <div class="db-menu" @click="closeSakura">{{ sakuraShow ? '关闭樱花' : '开启樱花' }}</div>
       <div class="db-menu" @click="changeBG">切换主题</div>
       <div class="db-menu" @click="changeMode">{{ nowMode == 'readerIndex' ? '浏览模式' : '管理模式' }}</div>
@@ -27,14 +27,18 @@ export default {
       hasMenu: false,
       sakuraShow: true,
       changeBackground: true,
-      nowMode: 'readerIndex'
+      nowMode: 'readerIndex',
+      mouseTop: 0,
+      mouseLeft: 0
     };
   },
   methods: {
-    moveMenu(event) {
+    rightClick(event) {
       let event1 = event.target;
       let event2 = event.currentTarget;
       if (event1 === event2) {
+        this.mouseTop = event.clientY;
+        this.mouseLeft = event.clientX;
         this.hasMenu = !this.hasMenu;
       }
     },
@@ -50,12 +54,12 @@ export default {
     },
     changeMode() {
       if (this.nowMode == 'readerIndex') {
-        this.nowMode == 'creatorIndex';
+        this.nowMode = 'creatorIndex';
         this.$router.push({
           name: 'creatorIndex'
         });
       } else {
-        this.nowMode == 'readerIndex';
+        this.nowMode = 'readerIndex';
         this.$router.push({
           name: 'readerIndex'
         });
