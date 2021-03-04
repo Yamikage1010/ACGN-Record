@@ -1,11 +1,14 @@
 <template>
   <div
     ref="moveWindow"
-    class="move-window"
+    class="move-window animate__animated animate__flipInY"
     :style="{ height: windowHeight + 'px', width: windowWidth + 'px' }"
     @click="click"
   >
-    <div class="move-window-header" :style="{ height: windowHFHeight + 'px' }"></div>
+    <div class="move-window-header" :style="{ height: windowHFHeight + 'px' }">
+      <div>{{ title }}</div>
+      <a @click="closeWindow" style="cursor:pointer">关闭</a>
+    </div>
     <div class="move-window-main" :style="{ top: windowHFHeight + 'px' }">
       <slot></slot>
     </div>
@@ -19,6 +22,9 @@ export default {
     zIndex: {
       type: Number,
       default: 0
+    },
+    title: {
+      default: ''
     }
   },
   mounted() {
@@ -38,6 +44,9 @@ export default {
   methods: {
     click(e) {
       this.$emit('click', e);
+    },
+    closeWindow(e) {
+      this.$emit('closeWindow', e);
     }
   }
 };
@@ -55,6 +64,11 @@ export default {
     width: 100%;
     position: absolute;
     background-color: $fontColor;
+  }
+  .move-window-header {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
   }
   .move-window-main {
     width: 100%;

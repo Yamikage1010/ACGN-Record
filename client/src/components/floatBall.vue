@@ -101,12 +101,12 @@ export default {
     },
     clickBall() {
       const floatBall = this.$refs[this.ref];
-      // floatBall.classList.remove('float-ball-' + this.ballKey);
-      // floatBall.classList.add('animate__flipOutY');
-      floatBall.children.forEach(item => {
-        console.log(item);
-      });
-      console.dir(floatBall.children);
+      floatBall.classList.remove('float-ball-' + this.ballKey);
+      floatBall.classList.add('animate__flipOutY');
+      this.$emit('clickBall');
+      // let floatBallChild = Array.apply({}, floatBall.children);
+      // let floatBallTitle = floatBallChild.find(item => item.classList.toString().includes('float-ball-title'));
+      // floatBallTitle.style.marginTop = '-50px';
     }
   }
 };
@@ -117,7 +117,7 @@ export default {
   position: fixed;
   width: 300px;
   height: 300px;
-  transition: 0.5s ease;
+  transition: 0.3s ease;
   border-radius: 150px;
   background-color: $bgColor;
   color: $fontColor;
@@ -127,8 +127,10 @@ export default {
   cursor: pointer;
   .float-ball-title {
     font-size: 70px;
+    transition: 0.3s ease;
   }
   .float-ball-subTitle {
+    transition: 0.3s ease;
     font-size: 25px;
   }
 }

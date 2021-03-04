@@ -8,8 +8,21 @@
       :subTitle="item.subTitle"
       :top="item.top"
       :left="item.left"
+      @clickBall="clickBall(item)"
     ></float-ball>
-
+    <move-window
+      v-dialogDrag
+      v-for="(item, index) in windowData"
+      :key="index"
+      :zIndex="index"
+      @click="setZIndex"
+      @closeWindow="closeWindow(item)"
+      :title="item.title"
+    >
+      <a href="https://bangumi.tv/subject_search/clannad?cat=all" target="_blank">
+        跳转至bangumi搜索
+      </a>
+    </move-window>
     <!-- <float-ball :title="'Anime'" :subTitle="'动画'" :top="100" :left="300"> </float-ball>
     <float-ball :title="'Comic'" :subTitle="'漫画'" :top="100" :left="1200"> </float-ball>
     <float-ball :title="'Game'" :subTitle="'游戏'" :top="600" :left="300"> </float-ball>
@@ -19,9 +32,11 @@
 
 <script>
 import floatBall from '@/components/floatBall';
+import moveWindow from '@/components/moveWindow.vue';
 export default {
   components: {
-    floatBall
+    floatBall,
+    moveWindow
   },
   data() {
     return {
@@ -54,8 +69,39 @@ export default {
           top: 600,
           left: 1200
         }
-      ]
+      ],
+      maxZIndex: 0, //置顶窗口zIndex值
+      moveWindowCount: 0, //窗口数量
+      windowData: []
     };
+  },
+  methods: {
+    clickBall(item) {
+      console.log(item);
+      this.windowData.push({
+        title: item.title,
+        subTitle: item.subTitle,
+        key: item.ballKey,
+        top: item.top,
+        left: item.left
+      });
+      this.moveWindowCount++;
+    },
+    closeWindow(item) {
+      this.windowData.splice(
+        this.windowData.findIndex(item2 => item2.key == item.ballKey),
+        1
+      );
+    },
+    //点击窗口置顶
+    setZIndex(e) {
+      if (e.srcElement.parentElement.className.toString().includes('move-window')) {
+        console.log(e.srcElement.parentElement.style.zIndex);
+        e.srcElement.parentElement.style.zIndex = ++this.maxZIndex;
+      } else {
+        e.srcElement.style.zIndex = ++this.maxZIndex;
+      }
+    }
   }
 };
 </script>
