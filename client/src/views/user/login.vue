@@ -66,7 +66,7 @@ export default {
     },
     //点击窗口置顶
     setZIndex(e) {
-      if (e.srcElement.parentElement.className === 'move-window') {
+      if (e.srcElement.parentElement.className.toString().includes('move-window')) {
         e.srcElement.parentElement.style.zIndex = ++this.maxZIndex;
       } else {
         e.srcElement.style.zIndex = ++this.maxZIndex;
