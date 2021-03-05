@@ -1,9 +1,10 @@
 <template>
   <div id="app" @contextmenu.prevent="rightClick">
-    <move-menu v-moveMenu v-if="hasMenu" @closeMenu="closeMenu" :top="mouseTop" :left="mouseLeft">
+    <move-menu v-moveMenu v-if="hasMenu" :top="mouseTop" :left="mouseLeft" :title="'系统菜单'">
+      <div class="db-menu" @click="changeMode">{{ nowMode == 'readerIndex' ? '管理模式' : '浏览模式' }}</div>
       <div class="db-menu" @click="closeSakura">{{ sakuraShow ? '关闭樱花' : '开启樱花' }}</div>
       <div class="db-menu" @click="changeBG">切换主题</div>
-      <div class="db-menu" @click="changeMode">{{ nowMode == 'readerIndex' ? '浏览模式' : '管理模式' }}</div>
+      <div class="db-menu" @click="configWindow">系统设置</div>
     </move-menu>
     <template v-if="changeBackground">
       <div class="bg1"></div>
@@ -11,16 +12,19 @@
     </template>
     <div v-else class="bg"></div>
     <router-view></router-view>
+    <move-window v-dialogDrag :key="'config'" :zIndex="999" v-if="configShow"> </move-window>
   </div>
 </template>
 
 <script>
 import moveMenu from './components/moveMenu';
+import moveWindow from '@/components/moveWindow.vue';
 import { stopSakura } from './util/sakuraDrop';
 export default {
   name: 'App',
   components: {
-    moveMenu
+    moveMenu,
+    moveWindow
   },
   data() {
     return {
@@ -29,8 +33,16 @@ export default {
       changeBackground: true,
       nowMode: 'readerIndex',
       mouseTop: 0,
-      mouseLeft: 0
+      mouseLeft: 0,
+      configShow: false
     };
+  },
+  mounted() {
+    if (!this.$route.name) {
+      this.nowMode = 'readerIndex';
+    } else {
+      this.nowMode = this.$route.name;
+    }
   },
   methods: {
     rightClick(event) {
@@ -42,9 +54,6 @@ export default {
         this.hasMenu = !this.hasMenu;
       }
     },
-    closeMenu() {
-      this.hasMenu = false;
-    },
     closeSakura() {
       this.sakuraShow = !this.sakuraShow;
       stopSakura();
@@ -52,8 +61,12 @@ export default {
     changeBG() {
       this.changeBackground = !this.changeBackground;
     },
+    configWindow() {
+      this.configShow = !this.configShow;
+    },
     changeMode() {
-      if (this.nowMode == 'readerIndex') {
+      console.log(this.$route);
+      if (this.$route.name == 'readerIndex') {
         this.nowMode = 'creatorIndex';
         this.$router.push({
           name: 'creatorIndex'
@@ -82,6 +95,7 @@ export default {
 }
 .db-menu {
   color: #bfbfbf;
+  font-size: 20px;
   padding: 5px;
   margin: 5px;
 }

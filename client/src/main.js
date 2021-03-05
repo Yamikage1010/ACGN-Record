@@ -1,6 +1,6 @@
 import Vue from 'vue';
 import App from './App.vue';
-
+import './util/onLoadSystemResource';
 import './util/sakuraDrop';
 import './util/moveWindow';
 import './util/moveMenu';

@@ -1,15 +1,22 @@
 <template>
   <div
-    ref="moveWindow"
-    class="move-window animate__animated animate__flipInY"
-    :style="{ height: windowHeight + 'px', width: windowWidth + 'px' }"
+    :ref="'moveWindow' + title"
+    v-if="windowShow"
+    class="move-window animate__animated"
+    :class="{ 'window-animate-flip': animateType === 'flip', animate__bounceIn: animateType === 'bounceIn' }"
+    :style="{
+      height: windowHeight + 'px',
+      width: windowWidth + 'px',
+      top: top + 'px',
+      left: left + 'px'
+    }"
     @click="click"
   >
-    <div class="move-window-header" :style="{ height: windowHFHeight + 'px' }">
+    <div class="move-window-header" :style="{ height: 40 + 'px' }">
       <div>{{ title }}</div>
       <a @click="closeWindow" style="cursor:pointer">关闭</a>
     </div>
-    <div class="move-window-main" :style="{ top: windowHFHeight + 'px' }">
+    <div class="move-window-main" :style="{ top: 40 + 'px' }">
       <slot></slot>
     </div>
     <!-- <div class="move-window-footer" :style="{height:windowHFHeight+'px'}"></div> -->
@@ -25,10 +32,25 @@ export default {
     },
     title: {
       default: ''
+    },
+    top: {
+      default: 300
+    },
+    left: {
+      default: 300
+    },
+    windowHeight: {
+      default: 600
+    },
+    windowWidth: {
+      default: 500
+    },
+    animateType: {
+      default: 'bounceIn'
     }
   },
   mounted() {
-    this.$refs.moveWindow.style.zIndex = this.zIndex;
+    this.$refs['moveWindow' + this.title].style.zIndex = this.zIndex;
   },
   computed: {
     windowHFHeight() {
@@ -37,16 +59,22 @@ export default {
   },
   data() {
     return {
-      windowHeight: 600,
-      windowWidth: 500
+      windowShow: true
     };
   },
   methods: {
     click(e) {
       this.$emit('click', e);
     },
-    closeWindow(e) {
-      this.$emit('closeWindow', e);
+    closeWindow() {
+      this.$refs['moveWindow' + this.title].classList.remove('window-animate-flip');
+      if (this.animateType == 'bounceIn') {
+        this.$refs['moveWindow' + this.title].classList.add('animate__bounceOut');
+      } else {
+        this.$refs['moveWindow' + this.title].classList.add('animate__flipOutY');
+      }
+      // this.windowShow = false;
+      this.$emit('closeWindow');
     }
   }
 };
@@ -76,6 +104,46 @@ export default {
   }
   .move-window-footer {
     bottom: 0;
+  }
+}
+.window-animate-flip {
+  -webkit-backface-visibility: visible !important;
+  backface-visibility: visible !important;
+  -webkit-animation-name: windowFlip;
+  animation-name: windowFlip;
+  animation-delay: 0.5s;
+  -webkit-animation-delay: 0.5s;
+}
+@keyframes windowFlip {
+  from {
+    -webkit-transform: perspective(400px) rotate3d(0, 1, 0, -90deg);
+    transform: perspective(400px) rotate3d(0, 1, 0, -90deg);
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
+    opacity: 0;
+  }
+
+  40% {
+    -webkit-transform: perspective(400px) rotate3d(0, 1, 0, 20deg);
+    transform: perspective(400px) rotate3d(0, 1, 0, 20deg);
+    -webkit-animation-timing-function: ease-in;
+    animation-timing-function: ease-in;
+  }
+
+  60% {
+    -webkit-transform: perspective(400px) rotate3d(0, 1, 0, -10deg);
+    transform: perspective(400px) rotate3d(0, 1, 0, -10deg);
+    opacity: 1;
+  }
+
+  80% {
+    -webkit-transform: perspective(400px) rotate3d(0, 1, 0, 5deg);
+    transform: perspective(400px) rotate3d(0, 1, 0, 5deg);
+  }
+
+  to {
+    -webkit-transform: perspective(400px);
+    transform: perspective(400px);
   }
 }
 </style>

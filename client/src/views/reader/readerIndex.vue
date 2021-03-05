@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="readerIndex">
     <float-ball
       v-for="item in ballData"
       :key="item.ballKey"
@@ -15,18 +15,18 @@
       v-for="(item, index) in windowData"
       :key="index"
       :zIndex="index"
-      @click="setZIndex"
-      @closeWindow="closeWindow(item)"
       :title="item.title"
+      :top="item.top"
+      :left="item.left"
+      :windowHeight="300"
+      :windowWidth="300"
+      :animateType="'flip'"
+      @click="setZIndex"
     >
       <a href="https://bangumi.tv/subject_search/clannad?cat=all" target="_blank">
         跳转至bangumi搜索
       </a>
     </move-window>
-    <!-- <float-ball :title="'Anime'" :subTitle="'动画'" :top="100" :left="300"> </float-ball>
-    <float-ball :title="'Comic'" :subTitle="'漫画'" :top="100" :left="1200"> </float-ball>
-    <float-ball :title="'Game'" :subTitle="'游戏'" :top="600" :left="300"> </float-ball>
-    <float-ball :title="'Novel'" :subTitle="'小说'" :top="600" :left="1200"> </float-ball> -->
   </div>
 </template>
 
@@ -77,7 +77,6 @@ export default {
   },
   methods: {
     clickBall(item) {
-      console.log(item);
       this.windowData.push({
         title: item.title,
         subTitle: item.subTitle,
@@ -87,12 +86,11 @@ export default {
       });
       this.moveWindowCount++;
     },
-    closeWindow(item) {
-      this.windowData.splice(
-        this.windowData.findIndex(item2 => item2.key == item.ballKey),
-        1
-      );
-    },
+    // closeWindow(windowItemKey) {
+    //   console.log(this.windowData.findIndex(item => item.key == windowItemKey));
+    //   this.windowData.splice(this.windowData.findIndex(item => item.key == windowItemKey) - 1, 1);
+    //   this.windowData = this.windowData.filter(item => item.key);
+    // },
     //点击窗口置顶
     setZIndex(e) {
       if (e.srcElement.parentElement.className.toString().includes('move-window')) {

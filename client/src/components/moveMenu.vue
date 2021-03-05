@@ -10,9 +10,10 @@
     }"
     @click="click"
   >
+    <img :src="imgSrc" />
     <div class="move-menu-header" :style="{ height: windowHFHeight + 'px' }">
-      <div>config</div>
-      <a @click="closeMenu" style="cursor:pointer">关闭</a>
+      <div>{{ title }}</div>
+      <!-- <a @click="closeMenu" style="cursor:pointer">关闭</a> -->
     </div>
     <div class="move-menu-main" :style="{ top: windowHFHeight + 'px' }">
       <slot></slot>
@@ -33,6 +34,12 @@ export default {
     },
     left: {
       default: 0
+    },
+    title: {
+      default: 'title'
+    },
+    imgSrc: {
+      default: 'http://localhost:9810/acgnrecord/image/noa.jpg'
     }
   },
   mounted() {
@@ -45,8 +52,8 @@ export default {
   },
   data() {
     return {
-      windowHeight: 300,
-      windowWidth: 150
+      windowHeight: 400,
+      windowWidth: 200
     };
   },
   methods: {
@@ -65,6 +72,12 @@ export default {
   position: fixed;
   background-color: $bgColor;
   border-radius: 3px;
+  img {
+    opacity: 0.5;
+    width: 200px;
+    position: absolute;
+    transform: translate(-50%, 0);
+  }
   .move-menu-header,
   .move-menu-footer {
     width: 100%;
@@ -73,8 +86,10 @@ export default {
   }
   .move-menu-header {
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
     align-items: center;
+    font-size: 20px;
+    color: $hoverFontColor;
   }
   .move-menu-main {
     width: 100%;

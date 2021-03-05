@@ -5,7 +5,7 @@
     :style="{ top: top + 'px', left: left + 'px', width: width + 'px', height: height + 'px' }"
     @click="clickBall"
   >
-    <img src="" />
+    <img src="@/assets/noania.png" />
     <div class="float-ball-title">{{ title }}</div>
     <div class="float-ball-subTitle">{{ subTitle }}</div>
   </div>
@@ -132,6 +132,12 @@ export default {
   .float-ball-subTitle {
     transition: 0.3s ease;
     font-size: 25px;
+  }
+  img {
+    opacity: 0.5;
+    width: 300px;
+    position: absolute;
+    border-radius: 150px;
   }
 }
 .float-ball:hover {
