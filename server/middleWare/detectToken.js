@@ -22,7 +22,7 @@ module.exports = ((req, res, next) => {
     default:
   }
   exec(sql.table('user')
-    .field('id,name')
+    .field('uid,name')
     .where({ token: token })
     .select())
     .then(result => {

@@ -5,6 +5,7 @@
       <div class="db-menu" @click="closeSakura">{{ sakuraShow ? '关闭樱花' : '开启樱花' }}</div>
       <div class="db-menu" @click="changeBG">切换主题</div>
       <div class="db-menu" @click="configWindow">系统设置</div>
+      <div class="db-menu">退出登录</div>
     </move-menu>
     <template v-if="changeBackground">
       <div class="bg1"></div>

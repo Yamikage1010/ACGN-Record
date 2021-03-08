@@ -12,7 +12,7 @@ router.post('/acgnrecord/login', urlencodedParser, (req, res) => {
     password: req.body.password
   }
   exec(sql.table('user')
-    .field('id,name')
+    .field('uid,name')
     .where(user)
     .select())
     .then(result => {

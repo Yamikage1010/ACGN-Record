@@ -5,7 +5,6 @@ const { init, exec, sql, transaction } = require('../config/mysqlConfig')
 var bodyParser = require('body-parser');
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 var router = express.Router();
-var imageInfo = require('imageinfo')
 var sakura,noa
 try{
   sakura = fs.readFileSync('./public/img/sakura.txt', 'utf8')
@@ -22,6 +21,7 @@ router.post('/acgnrecord/getSakura', urlencodedParser, (req, res) => {
   });
 })
 router.get('/acgnrecord/image/*', function (req, res) {
-  res.sendFile( 'C://Users/Administrator/Documents/ACGNrecord/systemDefaultResource/image/'+path.basename(req.url) );
+    res.sendFile( 'C://Users/Administrator/Documents/ACGNrecord/systemDefaultResource/image/'+path.basename(req.url) );
+    // res.sendFile( '/public/images/'+path.basename(req.url) );
 })
 module.exports = router
