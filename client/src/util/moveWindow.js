@@ -9,9 +9,9 @@
 import Vue from 'vue';
 Vue.directive('dialogDrag', {
   bind(el, binding, vnode, oldVnode) {
-    console.log(binding);
-    console.log(vnode);
-    console.log(oldVnode);
+    // console.log(binding);
+    // console.log(vnode);
+    // console.log(oldVnode);
     // 弹框可拉伸最小宽高
     const minWidth = 400;
     const minHeight = 300;
@@ -31,10 +31,7 @@ Vue.directive('dialogDrag', {
     dialogHeaderEl.style.cursor = 'move';
     // 获取原有属性 ie dom元素.currentStyle 火狐谷歌 window.getComputedStyle(dom元素, null);
     const sty = dragDom.currentStyle || window.getComputedStyle(dragDom, null);
-    let zIndex = 0;
     const moveDown = e => {
-      zIndex++;
-      console.log(zIndex);
       // 鼠标按下，计算当前元素距离可视区的距离
       const disX = e.clientX - dialogHeaderEl.offsetLeft;
       const disY = e.clientY - dialogHeaderEl.offsetTop;
@@ -59,7 +56,6 @@ Vue.directive('dialogDrag', {
         // binding.value({x:e.pageX,y:e.pageY})
       };
       document.onmouseup = function() {
-        dragDom.style.zIndex = 1;
         document.onmousemove = null;
         document.onmouseup = null;
       };

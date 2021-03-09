@@ -10,10 +10,12 @@
       <a href="https://bangumi.tv/subject_search/clannad?cat=all" target="_blank">
         跳转至bangumi搜索
       </a>
+      
+    <!-- <audio ref="audioPlay" autoplay controls src="http://localhost:9810/acgnrecord/music/%E7%B1%B3%E5%80%89%E5%8D%83%E5%B0%8B%20-%20%E3%81%93%E3%81%93%E3%81%AB%E3%81%82%E3%82%8B%E7%A9%BA.mp3">您的浏览器不支持 audio 标签。</audio> -->
     </move-window>
 
     <aplayer
-      :autoplay="autoplay"
+    id="aplayer"
       float
       :mutex="false"
       :mini="mini"
@@ -46,17 +48,22 @@ export default {
       mini: true,
       musicList:[{
         title: 'ここにある空',
-        artist: '米倉千尋',
-        // src:require('@/assets/米倉千尋 - ここにある空.mp3') 
-        src:'http://localhost:9810/acgnrecord/music/%E7%B1%B3%E5%80%89%E5%8D%83%E5%B0%8B%20-%20%E3%81%93%E3%81%93%E3%81%AB%E3%81%82%E3%82%8B%E7%A9%BA.mp3'
+        artist: '米倉千尋', 
+        src:'http://localhost:9810/acgnrecord/music/米倉千尋 - ここにある空.mp3'
+      },{
+        title: 'ふたり',
+        artist: '米倉千尋', 
+        src:'http://localhost:9810/acgnrecord/music/米倉千尋 - ふたり.mp3'
       }],
     };
   },
   mounted () {
     console.log(11111);
-    this.$nextTick(()=>{
-      this.autoplay = true
-    });
+    setTimeout(()=>{
+      let aplayerChildren = document.getElementById('aplayer').children
+      let audio = Array.apply({},aplayerChildren).find(item => item.tagName == 'AUDIO')
+      audio.play()
+    },2000);
   },
   methods: {
     userLogin() {

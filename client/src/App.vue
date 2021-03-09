@@ -1,6 +1,6 @@
 <template>
   <div id="app" @contextmenu.prevent="rightClick">
-    <move-menu v-moveMenu v-if="hasMenu" :top="mouseTop" :left="mouseLeft" :title="'系统菜单'">
+    <move-menu v-moveMenu v-if="hasMenu" :zIndex="998" :top="mouseTop" :left="mouseLeft" :title="'系统菜单'">
       <div class="db-menu" @click="changeMode">{{ nowMode == 'readerIndex' ? '管理模式' : '浏览模式' }}</div>
       <div class="db-menu" @click="closeSakura">{{ sakuraShow ? '关闭樱花' : '开启樱花' }}</div>
       <div class="db-menu" @click="changeBG">{{ changeBackground ? '单图背景' : '幻灯片背景' }}</div>

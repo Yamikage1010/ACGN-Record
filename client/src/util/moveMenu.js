@@ -9,9 +9,9 @@
 import Vue from 'vue';
 Vue.directive('moveMenu', {
   bind(el, binding, vnode, oldVnode) {
-    console.log(binding);
-    console.log(vnode);
-    console.log(oldVnode);
+    // console.log(binding);
+    // console.log(vnode);
+    // console.log(oldVnode);
     // 获取弹框头部（这部分可双击全屏）
     const dialogHeaderEl = el.querySelector('.move-menu-header');
     // 弹窗
@@ -24,10 +24,7 @@ Vue.directive('moveMenu', {
     dialogHeaderEl.style.cursor = 'move';
     // 获取原有属性 ie dom元素.currentStyle 火狐谷歌 window.getComputedStyle(dom元素, null);
     const sty = dragDom.currentStyle || window.getComputedStyle(dragDom, null);
-    let zIndex = 0;
     const moveDown = e => {
-      zIndex++;
-      dragDom.style.zIndex = 999;
       // 鼠标按下，计算当前元素距离可视区的距离
       const disX = e.clientX - dialogHeaderEl.offsetLeft;
       const disY = e.clientY - dialogHeaderEl.offsetTop;
@@ -52,7 +49,6 @@ Vue.directive('moveMenu', {
         // binding.value({x:e.pageX,y:e.pageY})
       };
       document.onmouseup = function() {
-        dragDom.style.zIndex = 1;
         document.onmousemove = null;
         document.onmouseup = null;
       };
