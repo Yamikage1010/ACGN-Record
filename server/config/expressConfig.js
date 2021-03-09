@@ -13,7 +13,7 @@ app.use(cookieParser());
 //新增下面三行代码 注意 app.user 的顺序不能乱
 var history = require('connect-history-api-fallback');
 app.use(history());
-app.use(express.static(path.join(__dirname, 'dist')));
+// app.use(express.static(path.join(__dirname, 'dist')));
 //配置跨域
 app.all('*', function(req, res, next) {
   res.header("Access-Control-Allow-Origin", "*");
