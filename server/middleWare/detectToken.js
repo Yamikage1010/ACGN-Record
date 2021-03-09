@@ -3,7 +3,7 @@ module.exports = ((req, res, next) => {
   // 获取当前访问的api地址
   const url = req.originalUrl
   // 不需要进行验证的api
-  var urlArr = ['/favicon.ico','/static','/public','/acgnrecord/login', '/acgnrecord/register','/acgnrecord/getSakura','/acgnrecord/image']
+  var urlArr = ['/favicon.ico','/static','/public','/acgnrecord/login', '/acgnrecord/register','/acgnrecord/getSakura','/acgnrecord/image','/acgnrecord/music']
   // 验证当前的api是否存在不需要验证的api的列表里面
   console.log(url);
   var is_next = urlArr.find(item => url === '/'|| url.indexOf(item)>-1)

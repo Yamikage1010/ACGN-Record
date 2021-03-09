@@ -13,15 +13,14 @@
     </move-window>
 
     <aplayer
-      autoplay
+      :autoplay="autoplay"
       float
+      :mutex="false"
       :mini="mini"
       @mouseover.native="playerShow"
       @mouseleave.native="playerHide"
-      :music="{
-        title: 'Preparation',
-        artist: 'Hans Zimmer/Richard Harvey'
-      }"
+      :music="musicList[0]"
+      :list="musicList"
     >
     </aplayer>
   </div>
@@ -43,8 +42,21 @@ export default {
       loginRes: null,
       moveWindowCount: 1, //窗口数量
       maxZIndex: 0, //置顶窗口zIndex值
-      mini: true
+      autoplay:false,
+      mini: true,
+      musicList:[{
+        title: 'ここにある空',
+        artist: '米倉千尋',
+        // src:require('@/assets/米倉千尋 - ここにある空.mp3') 
+        src:'http://localhost:9810/acgnrecord/music/%E7%B1%B3%E5%80%89%E5%8D%83%E5%B0%8B%20-%20%E3%81%93%E3%81%93%E3%81%AB%E3%81%82%E3%82%8B%E7%A9%BA.mp3'
+      }],
     };
+  },
+  mounted () {
+    console.log(11111);
+    this.$nextTick(()=>{
+      this.autoplay = true
+    });
   },
   methods: {
     userLogin() {
@@ -79,7 +91,6 @@ export default {
       this.mini = true;
     }
   },
-  mounted() {}
 };
 </script>
 
