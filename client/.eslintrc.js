@@ -1,14 +1,17 @@
 module.exports = {
-  root: true,
   env: {
-    node: true
+    browser: true
   },
-  extends: ["plugin:vue/essential", "eslint:recommended", "@vue/prettier"],
+  extends: ['eslint:recommended', 'plugin:vue/essential'],
   parserOptions: {
-    parser: "babel-eslint"
+    ecmaVersion: 8
   },
+  plugins: ['vue'],
   rules: {
-    "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
-    "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off"
+    indent: ['error', 2, { SwitchCase: 1 }],
+    'linebreak-style': ['error', 'windows'],
+    quotes: ['error', 'single'],
+    semi: ['error', 'never'],
+    'no-unused-vars': 'off'
   }
-};
+}

@@ -23,16 +23,14 @@
       :animateType="'flip'"
       @click="setZIndex"
     >
-      <a href="https://bangumi.tv/subject_search/clannad?cat=all" target="_blank">
-        跳转至bangumi搜索
-      </a>
+      <a href="https://bangumi.tv/subject_search/clannad?cat=all" target="_blank"> 跳转至bangumi搜索 </a>
     </move-window>
   </div>
 </template>
 
 <script>
-import floatBall from '@/components/floatBall';
-import moveWindow from '@/components/moveWindow.vue';
+import floatBall from '@/components/floatBall'
+import moveWindow from '@/components/moveWindow.vue'
 export default {
   components: {
     floatBall,
@@ -73,7 +71,7 @@ export default {
       maxZIndex: 0, //置顶窗口zIndex值
       moveWindowCount: 0, //窗口数量
       windowData: []
-    };
+    }
   },
   methods: {
     clickBall(item) {
@@ -83,8 +81,8 @@ export default {
         key: item.ballKey,
         top: item.top,
         left: item.left
-      });
-      this.moveWindowCount++;
+      })
+      this.moveWindowCount++
     },
     // closeWindow(windowItemKey) {
     //   console.log(this.windowData.findIndex(item => item.key == windowItemKey));
@@ -94,14 +92,14 @@ export default {
     //点击窗口置顶
     setZIndex(e) {
       if (e.srcElement.parentElement.className.toString().includes('move-window')) {
-        console.log(e.srcElement.parentElement.style.zIndex);
-        e.srcElement.parentElement.style.zIndex = ++this.maxZIndex;
+        console.log(e.srcElement.parentElement.style.zIndex)
+        e.srcElement.parentElement.style.zIndex = ++this.maxZIndex
       } else {
-        e.srcElement.style.zIndex = ++this.maxZIndex;
+        e.srcElement.style.zIndex = ++this.maxZIndex
       }
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped></style>

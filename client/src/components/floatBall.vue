@@ -37,28 +37,28 @@ export default {
     }
   },
   created() {
-    this.ref = 'floatBall' + this.ballKey;
-    this.createStlye();
+    this.ref = 'floatBall' + this.ballKey
+    this.createStlye()
   },
   mounted() {
-    this.floatBallFloat();
+    this.floatBallFloat()
   },
   data() {
     return {
       ref: null,
       floatBallCssAnime: null
-    };
+    }
   },
   methods: {
     //浮动球浮动
     floatBallFloat() {
-      const ballKey = this.ballKey;
-      const originalTop = Number(this.top);
-      const originalLeft = Number(this.left);
-      let top = Number(this.top);
-      let left = Number(this.left);
-      const floatBall = this.$refs[this.ref];
-      floatBall.classList.add('float-ball-' + ballKey);
+      const ballKey = this.ballKey
+      const originalTop = Number(this.top)
+      const originalLeft = Number(this.left)
+      let top = Number(this.top)
+      let left = Number(this.left)
+      const floatBall = this.$refs[this.ref]
+      floatBall.classList.add('float-ball-' + ballKey)
       const floatKetframes = `@keyframes ballFloat${ballKey}{
         20% {
           top: ${Math.random() > 0.5 ? (top = top + Math.random() * 30) : (top = top - Math.random() * 30)}px;
@@ -82,34 +82,34 @@ export default {
         }}
         .float-ball-${ballKey}{
           animation: ballFloat${ballKey} linear infinite 10s;
-        }`;
+        }`
       if (this.floatBallCssAnime) {
-        this.floatBallCssAnime.appendChild(document.createTextNode(floatKetframes));
+        this.floatBallCssAnime.appendChild(document.createTextNode(floatKetframes))
       } else {
-        this.floatBallCssAnime = document.getElementById('floatBallCssAnime');
-        this.floatBallCssAnime.appendChild(document.createTextNode(floatKetframes));
+        this.floatBallCssAnime = document.getElementById('floatBallCssAnime')
+        this.floatBallCssAnime.appendChild(document.createTextNode(floatKetframes))
       }
     },
     createStlye() {
       // 将style样式存放到head标签
-      this.floatBallCssAnime = document.getElementById('floatBallCssAnime');
+      this.floatBallCssAnime = document.getElementById('floatBallCssAnime')
       if (!this.floatBallCssAnime) {
-        const style = document.createElement('style');
-        style.id = 'floatBallCssAnime';
-        document.getElementsByTagName('head')[0].appendChild(style);
+        const style = document.createElement('style')
+        style.id = 'floatBallCssAnime'
+        document.getElementsByTagName('head')[0].appendChild(style)
       }
     },
     clickBall() {
-      const floatBall = this.$refs[this.ref];
-      floatBall.classList.remove('float-ball-' + this.ballKey);
-      floatBall.classList.add('animate__flipOutY');
-      this.$emit('clickBall');
+      const floatBall = this.$refs[this.ref]
+      floatBall.classList.remove('float-ball-' + this.ballKey)
+      floatBall.classList.add('animate__flipOutY')
+      this.$emit('clickBall')
       // let floatBallChild = Array.apply({}, floatBall.children);
       // let floatBallTitle = floatBallChild.find(item => item.classList.toString().includes('float-ball-title'));
       // floatBallTitle.style.marginTop = '-50px';
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

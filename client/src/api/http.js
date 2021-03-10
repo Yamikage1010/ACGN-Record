@@ -1,21 +1,21 @@
-import axios from 'axios';
-import qs from 'qs';
-import store from 'store';
+import axios from 'axios'
+import qs from 'qs'
+import store from 'store'
 // post请求头的设置
-axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
-axios.defaults.baseURL = 'http://localhost:9810';
-axios.defaults.timeout = 30000; //设置超时时间
+axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'
+axios.defaults.baseURL = 'http://localhost:9810'
+axios.defaults.timeout = 30000 //设置超时时间
 // 请求拦截器
 axios.interceptors.request.use(
   config => {
-    const Token = store.get('Token');
-    Token && (config.headers.token = Token);
-    return config;
+    const Token = store.get('Token')
+    Token && (config.headers.token = Token)
+    return config
   },
   error => {
-    return Promise.error(error);
+    return Promise.error(error)
   }
-);
+)
 // 请求拦截器
 // axios.interceptors.request.use(
 //   config => {
@@ -53,12 +53,12 @@ export function get(url, params) {
         params
       })
       .then(res => {
-        resolve(res.data);
+        resolve(res.data)
       })
       .catch(err => {
-        reject(err);
-      });
-  });
+        reject(err)
+      })
+  })
 }
 
 // post请求
@@ -67,10 +67,10 @@ export function post(url, params) {
     axios
       .post(url, qs.stringify(params))
       .then(res => {
-        resolve(res.data);
+        resolve(res.data)
       })
       .catch(err => {
-        reject(err);
-      });
-  });
+        reject(err)
+      })
+  })
 }

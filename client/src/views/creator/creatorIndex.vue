@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import floatBall from '@/components/floatBall';
+import floatBall from '@/components/floatBall'
 export default {
   components: {
     floatBall
@@ -38,9 +38,9 @@ export default {
           left: 1200
         }
       ]
-    };
+    }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped></style>

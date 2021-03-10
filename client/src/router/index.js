@@ -1,7 +1,7 @@
-import Vue from 'vue';
-import VueRouter from 'vue-router';
+import Vue from 'vue'
+import VueRouter from 'vue-router'
 
-Vue.use(VueRouter);
+Vue.use(VueRouter)
 
 export const constantRoutes = [
   {
@@ -28,15 +28,15 @@ export const constantRoutes = [
     name: 'register',
     component: () => import('@/views/user/register.vue')
   }
-];
-export const asyncRoutes = [];
+]
+export const asyncRoutes = []
 
 const router = new VueRouter({
   mode: 'hash',
   routes: asyncRoutes.concat(constantRoutes)
-});
-const routerPush = VueRouter.prototype.push;
+})
+const routerPush = VueRouter.prototype.push
 VueRouter.prototype.push = function push(location) {
-  return routerPush.call(this, location).catch(error => error);
-};
-export default router;
+  return routerPush.call(this, location).catch(error => error)
+}
+export default router

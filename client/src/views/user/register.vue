@@ -27,8 +27,8 @@
 </template>
 
 <script>
-import store from 'store';
-import { register } from '@/api/user';
+import store from 'store'
+import { register } from '@/api/user'
 export default {
   data() {
     return {
@@ -41,36 +41,36 @@ export default {
       dialogVisible: false,
       disabled: false,
       requesHeaders: {}
-    };
+    }
   },
   mounted() {
-    this.requesHeaders.token = store.get('Token');
+    this.requesHeaders.token = store.get('Token')
   },
   methods: {
     userRegister() {
       register({
         name: this.user.name,
         password: this.user.password
-      }).then(res => {
+      }).then((res) => {
         if (res.code == 200) {
-          this.loginRes = res.data;
+          this.loginRes = res.data
         } else {
-          alert(res.msg);
+          alert(res.msg)
         }
-      });
+      })
     },
     handleRemove(file) {
-      console.log(file);
+      console.log(file)
     },
     handlePictureCardPreview(file) {
-      this.dialogImageUrl = file.url;
-      this.dialogVisible = true;
+      this.dialogImageUrl = file.url
+      this.dialogVisible = true
     },
     handleDownload(file) {
-      console.log(file);
+      console.log(file)
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

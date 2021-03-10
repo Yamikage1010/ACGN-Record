@@ -6,56 +6,56 @@
  *  如果是form表单，不要将提交等按钮放置el-form-item，以免在上下拉伸时被隐藏
  */
 // v-dialogDrag: 弹窗拖拽+水平方向伸缩
-import Vue from 'vue';
+import Vue from 'vue'
 Vue.directive('moveMenu', {
   bind(el, binding, vnode, oldVnode) {
     // console.log(binding);
     // console.log(vnode);
     // console.log(oldVnode);
     // 获取弹框头部（这部分可双击全屏）
-    const dialogHeaderEl = el.querySelector('.move-menu-header');
+    const dialogHeaderEl = el.querySelector('.move-menu-header')
     // 弹窗
-    const dragDom = el;
+    const dragDom = el
     // 给弹窗加上overflow auto；不然缩小时框内的标签可能超出dialog；
-    dragDom.style.overflow = 'auto';
+    dragDom.style.overflow = 'auto'
     // 清除选择头部文字效果
     // dialogHeaderEl.onselectstart = new Function("return false");
     // 头部加上可拖动cursor
-    dialogHeaderEl.style.cursor = 'move';
+    dialogHeaderEl.style.cursor = 'move'
     // 获取原有属性 ie dom元素.currentStyle 火狐谷歌 window.getComputedStyle(dom元素, null);
-    const sty = dragDom.currentStyle || window.getComputedStyle(dragDom, null);
+    const sty = dragDom.currentStyle || window.getComputedStyle(dragDom, null)
     const moveDown = e => {
       // 鼠标按下，计算当前元素距离可视区的距离
-      const disX = e.clientX - dialogHeaderEl.offsetLeft;
-      const disY = e.clientY - dialogHeaderEl.offsetTop;
+      const disX = e.clientX - dialogHeaderEl.offsetLeft
+      const disY = e.clientY - dialogHeaderEl.offsetTop
       // 获取到的值带px 正则匹配替换
-      let styL, styT;
+      let styL, styT
       // 注意在ie中 第一次获取到的值为组件自带50% 移动之后赋值为px
       if (sty.left.includes('%')) {
-        styL = +document.body.clientWidth * (+sty.left.replace(/%/g, '') / 100);
-        styT = +document.body.clientHeight * (+sty.top.replace(/%/g, '') / 100);
+        styL = +document.body.clientWidth * (+sty.left.replace(/%/g, '') / 100)
+        styT = +document.body.clientHeight * (+sty.top.replace(/%/g, '') / 100)
       } else {
-        styL = +sty.left.replace(/\px/g, '');
-        styT = +sty.top.replace(/\px/g, '');
+        styL = +sty.left.replace(/\px/g, '')
+        styT = +sty.top.replace(/\px/g, '')
       }
       document.onmousemove = function(e) {
         // 通过事件委托，计算移动的距离
-        const l = e.clientX - disX;
-        const t = e.clientY - disY;
+        const l = e.clientX - disX
+        const t = e.clientY - disY
         // 移动当前元素
-        dragDom.style.left = `${l + styL}px`;
-        dragDom.style.top = `${t + styT}px`;
+        dragDom.style.left = `${l + styL}px`
+        dragDom.style.top = `${t + styT}px`
         // 将此时的位置传出去
         // binding.value({x:e.pageX,y:e.pageY})
-      };
+      }
       document.onmouseup = function() {
-        document.onmousemove = null;
-        document.onmouseup = null;
-      };
-    };
-    dialogHeaderEl.onmousedown = moveDown;
+        document.onmousemove = null
+        document.onmouseup = null
+      }
+    }
+    dialogHeaderEl.onmousedown = moveDown
     dragDom.onmousemove = function(e) {
-      e;
+      e
       // let moveE = e
       // if (
       //   e.clientX > dragDom.offsetLeft + dragDom.clientWidth - 10 &&
@@ -76,12 +76,12 @@ Vue.directive('moveMenu', {
       //   dragDom.onmousedown = null;
       // }
       dragDom.onmousedown = e => {
-        const clientX = e.clientX;
-        const clientY = e.clientY;
-        const elW = dragDom.clientWidth;
-        const EloffsetLeft = dragDom.offsetLeft;
-        const EloffsetTop = dragDom.offsetTop;
-        dragDom.style.userSelect = 'none';
+        const clientX = e.clientX
+        const clientY = e.clientY
+        const elW = dragDom.clientWidth
+        const EloffsetLeft = dragDom.offsetLeft
+        const EloffsetTop = dragDom.offsetTop
+        dragDom.style.userSelect = 'none'
         // 判断点击的位置是不是为头部
         if (
           clientX > EloffsetLeft &&
@@ -91,7 +91,7 @@ Vue.directive('moveMenu', {
         ) {
           // 如果是头部在此就不做任何动作，以上有绑定dialogHeaderEl.onmousedown = moveDown;
         }
-      };
-    };
+      }
+    }
   }
-});
+})

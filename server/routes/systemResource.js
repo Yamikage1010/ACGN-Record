@@ -1,10 +1,12 @@
 var fs = require('fs')
 var path = require('path')
-var express = require('express');
+var express = require('express')
 const { init, exec, sql, transaction } = require('../config/mysqlConfig')
-var bodyParser = require('body-parser');
-var urlencodedParser = bodyParser.urlencoded({ extended: false })
-var router = express.Router();
+var bodyParser = require('body-parser')
+var urlencodedParser = bodyParser.urlencoded({
+  extended: false
+})
+var router = express.Router()
 var sakura, noa
 try {
   sakura = fs.readFileSync('./public/img/sakura.txt', 'utf8')
@@ -14,20 +16,20 @@ try {
 //樱花花瓣接口
 router.post('/acgnrecord/getSakura', urlencodedParser, (req, res) => {
   res.send({
-    status: "success",
+    status: 'success',
     code: 200,
     msg: '',
-    data: sakura,
-  });
+    data: sakura
+  })
 })
 router.get('/acgnrecord/image/*', function (req, res) {
-  res.sendFile('C://Users/Administrator/Documents/ACGNrecord/systemDefaultResource/image/' + path.basename(req.url));
+  res.sendFile('C://Users/Administrator/Documents/ACGNrecord/systemDefaultResource/image/' + path.basename(req.url))
   // res.sendFile( '/public/images/'+path.basename(req.url) );
 })
 // const option = {}
 router.get('/acgnrecord/music/*', function (req, res) {
   let musicName = decodeURIComponent(path.basename(req.url))
-  res.sendFile('C://Users/Administrator/Documents/ACGNrecord/systemDefaultResource/music/' + musicName);
+  res.sendFile('C://Users/Administrator/Documents/ACGNrecord/systemDefaultResource/music/' + musicName)
   // res.sendFile( '/public/images/'+path.basename(req.url) );
 })
 // router.get('/acgnrecord/music/*',(req,res)=>{

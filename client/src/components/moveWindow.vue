@@ -14,7 +14,7 @@
   >
     <div class="move-window-header" :style="{ height: 40 + 'px' }">
       <div>{{ title }}</div>
-      <a @click="closeWindow" style="cursor:pointer">关闭</a>
+      <a @click="closeWindow" style="cursor: pointer">关闭</a>
     </div>
     <div class="move-window-main" :style="{ top: 40 + 'px' }">
       <slot></slot>
@@ -50,34 +50,34 @@ export default {
     }
   },
   mounted() {
-    this.$refs['moveWindow' + this.title].style.zIndex = this.zIndex;
+    this.$refs['moveWindow' + this.title].style.zIndex = this.zIndex
   },
   computed: {
     windowHFHeight() {
-      return this.windowHeight / 15;
+      return this.windowHeight / 15
     }
   },
   data() {
     return {
       windowShow: true
-    };
+    }
   },
   methods: {
     click(e) {
-      this.$emit('click', e);
+      this.$emit('click', e)
     },
     closeWindow() {
-      this.$refs['moveWindow' + this.title].classList.remove('window-animate-flip');
+      this.$refs['moveWindow' + this.title].classList.remove('window-animate-flip')
       if (this.animateType == 'bounceIn') {
-        this.$refs['moveWindow' + this.title].classList.add('animate__bounceOut');
+        this.$refs['moveWindow' + this.title].classList.add('animate__bounceOut')
       } else {
-        this.$refs['moveWindow' + this.title].classList.add('animate__flipOutY');
+        this.$refs['moveWindow' + this.title].classList.add('animate__flipOutY')
       }
       // this.windowShow = false;
-      this.$emit('closeWindow');
+      this.$emit('closeWindow')
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

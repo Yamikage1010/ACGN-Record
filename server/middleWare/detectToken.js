@@ -1,12 +1,21 @@
 const { init, exec, sql, transaction } = require('../config/mysqlConfig')
-module.exports = ((req, res, next) => {
+module.exports = (req, res, next) => {
   // 获取当前访问的api地址
   const url = req.originalUrl
   // 不需要进行验证的api
-  var urlArr = ['/favicon.ico','/static','/public','/acgnrecord/login', '/acgnrecord/register','/acgnrecord/getSakura','/acgnrecord/image','/acgnrecord/music']
+  var urlArr = [
+    '/favicon.ico',
+    '/static',
+    '/public',
+    '/acgnrecord/login',
+    '/acgnrecord/register',
+    '/acgnrecord/getSakura',
+    '/acgnrecord/image',
+    '/acgnrecord/music'
+  ]
   // 验证当前的api是否存在不需要验证的api的列表里面
-  console.log(url);
-  var is_next = urlArr.find(item => url === '/'|| url.indexOf(item)>-1)
+  console.log(url)
+  var is_next = urlArr.find((item) => url === '/' || url.indexOf(item) > -1)
   if (is_next) {
     next()
     return false
@@ -21,11 +30,8 @@ module.exports = ((req, res, next) => {
       })
     default:
   }
-  exec(sql.table('user')
-    .field('uid,name')
-    .where({ token: token })
-    .select())
-    .then(result => {
+  exec(sql.table('user').field('uid,name').where({ token: token }).select())
+    .then((result) => {
       if (result[0]) {
         next()
       } else {
@@ -33,9 +39,9 @@ module.exports = ((req, res, next) => {
           msg: 'wdnmd先登录啊闸总'
         })
       }
-      console.log(result);
+      console.log(result)
     })
-    .catch(err => {
-      console.log(err);
+    .catch((err) => {
+      console.log(err)
     })
-})
+}

@@ -18,9 +18,9 @@
 </template>
 
 <script>
-import moveMenu from './components/moveMenu';
-import moveWindow from '@/components/moveWindow.vue';
-import { stopSakura } from './util/sakuraDrop';
+import moveMenu from './components/moveMenu'
+import moveWindow from '@/components/moveWindow.vue'
+import { stopSakura } from './util/sakuraDrop'
 export default {
   name: 'App',
   components: {
@@ -39,73 +39,73 @@ export default {
       backgroundCssAnime: null,
       apiSrc: 'http://localhost:9810/acgnrecord/image/',
       backgroundImages: ['fgo-bg2.png', 'fgo-bg.png', 'arisu-bg.png', 'jk-bg.png']
-    };
+    }
   },
   created() {
-    this.createBackgroundStlye();
+    this.createBackgroundStlye()
   },
   mounted() {
     if (!this.$route.name) {
-      this.nowMode = 'readerIndex';
+      this.nowMode = 'readerIndex'
     } else {
-      this.nowMode = this.$route.name;
+      this.nowMode = this.$route.name
     }
-    this.getBackgroundAnimetion();
-    this.getBackgroundImage();
+    this.getBackgroundAnimetion()
+    this.getBackgroundImage()
   },
   methods: {
     rightClick(event) {
-      let event1 = event.target;
-      let event2 = event.currentTarget;
+      let event1 = event.target
+      let event2 = event.currentTarget
       if (event1 === event2) {
-        this.mouseTop = event.clientY;
-        this.mouseLeft = event.clientX;
-        this.hasMenu = !this.hasMenu;
+        this.mouseTop = event.clientY
+        this.mouseLeft = event.clientX
+        this.hasMenu = !this.hasMenu
       }
     },
     closeSakura() {
-      this.sakuraShow = !this.sakuraShow;
-      stopSakura();
+      this.sakuraShow = !this.sakuraShow
+      stopSakura()
     },
     changeBG() {
-      this.changeBackground = !this.changeBackground;
-      this.getBackgroundImage();
+      this.changeBackground = !this.changeBackground
+      this.getBackgroundImage()
     },
     configWindow() {
-      this.configShow = !this.configShow;
+      this.configShow = !this.configShow
     },
     changeMode() {
-      console.log(this.$route);
+      console.log(this.$route)
       if (this.$route.name == 'readerIndex') {
-        this.nowMode = 'creatorIndex';
+        this.nowMode = 'creatorIndex'
         this.$router.push({
           name: 'creatorIndex'
-        });
+        })
       } else {
-        this.nowMode = 'readerIndex';
+        this.nowMode = 'readerIndex'
         this.$router.push({
           name: 'readerIndex'
-        });
+        })
       }
     },
     getBackgroundImage() {
       if (this.changeBackground) {
         this.$nextTick(() => {
-          let background1 = this.$refs.background1;
-          let background2 = this.$refs.background2;
-          background1.style.backgroundImage = "url('" + this.apiSrc + this.backgroundImages[0] + "')";
-          background2.style.backgroundImage = "url('" + this.apiSrc + this.backgroundImages[2] + "')";
-        });
+          let background1 = this.$refs.background1
+          let background2 = this.$refs.background2
+          background1.style.backgroundImage = "url('" + this.apiSrc + this.backgroundImages[0] + "')"
+          background2.style.backgroundImage = "url('" + this.apiSrc + this.backgroundImages[2] + "')"
+        })
       } else {
         this.$nextTick(() => {
-          let background = this.$refs.background;
-          background.style.backgroundImage = "url('" + this.apiSrc + this.backgroundImages[0] + "')";
-        });
+          let background = this.$refs.background
+          background.style.backgroundImage = "url('" + this.apiSrc + this.backgroundImages[0] + "')"
+        })
       }
     },
     getBackgroundAnimetion() {
-      let backgroundImages = this.backgroundImages;
-      const apiSrc = this.apiSrc;
+      let backgroundImages = this.backgroundImages
+      const apiSrc = this.apiSrc
       const backgroundKeyframes = `
         @keyframes changeBG1 {
           0% {
@@ -171,26 +171,26 @@ export default {
             transform: scale(1.1);
             background-image: url('${apiSrc}${backgroundImages[3]}');
           }
-        }`;
+        }`
       if (this.backgroundCssAnime) {
-        this.backgroundCssAnime.appendChild(document.createTextNode(backgroundKeyframes));
+        this.backgroundCssAnime.appendChild(document.createTextNode(backgroundKeyframes))
       } else {
-        this.backgroundCssAnime = document.getElementById('backgroundCssAnime');
-        this.backgroundCssAnime.appendChild(document.createTextNode(backgroundKeyframes));
+        this.backgroundCssAnime = document.getElementById('backgroundCssAnime')
+        this.backgroundCssAnime.appendChild(document.createTextNode(backgroundKeyframes))
       }
     },
 
     createBackgroundStlye() {
       // 将style样式存放到head标签
-      this.backgroundCssAnime = document.getElementById('backgroundCssAnime');
+      this.backgroundCssAnime = document.getElementById('backgroundCssAnime')
       if (!this.backgroundCssAnime) {
-        const style = document.createElement('style');
-        style.id = 'backgroundCssAnime';
-        document.getElementsByTagName('head')[0].appendChild(style);
+        const style = document.createElement('style')
+        style.id = 'backgroundCssAnime'
+        document.getElementsByTagName('head')[0].appendChild(style)
       }
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>

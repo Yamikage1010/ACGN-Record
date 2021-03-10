@@ -43,28 +43,28 @@ export default {
     }
   },
   mounted() {
-    this.$refs.moveMenu.style.zIndex = this.zIndex;
+    this.$refs.moveMenu.style.zIndex = this.zIndex
   },
   computed: {
     windowHFHeight() {
-      return this.windowHeight / 10;
+      return this.windowHeight / 10
     }
   },
   data() {
     return {
       windowHeight: 400,
       windowWidth: 200
-    };
+    }
   },
   methods: {
     click(e) {
-      this.$emit('click', e);
+      this.$emit('click', e)
     },
     closeMenu(e) {
-      this.$emit('closeMenu', e);
+      this.$emit('closeMenu', e)
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
