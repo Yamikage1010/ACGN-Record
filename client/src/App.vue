@@ -5,27 +5,43 @@
       <div class="db-menu" @click="closeSakura">{{ sakuraShow ? '关闭樱花' : '开启樱花' }}</div>
       <div class="db-menu" @click="changeBG">{{ changeBackground ? '单图背景' : '幻灯片背景' }}</div>
       <div class="db-menu" @click="configWindow">系统设置</div>
-      <div class="db-menu">退出登录</div>
+      <div class="db-menu" @click="logout">退出登录</div>
     </move-menu>
+    <move-window v-dialogDrag :key="'config'" :zIndex="999" v-if="configShow"> </move-window>
     <template v-if="changeBackground">
       <div class="bg1" ref="background1"></div>
       <div class="bg2" ref="background2"></div>
     </template>
     <div v-else class="bg" ref="background"></div>
-    <router-view></router-view>
-    <move-window v-dialogDrag :key="'config'" :zIndex="999" v-if="configShow"> </move-window>
+    <aplayer
+      id="aplayer"
+      float
+      :mutex="false"
+      :mini="mini"
+      @mouseover.native="playerShow"
+      @mouseleave.native="playerHide"
+      :music="musicList[0]"
+      :list="musicList"
+    >
+    </aplayer>
+    <transition name="router-anime">
+      <router-view style="position: fixed"></router-view>
+    </transition>
   </div>
 </template>
 
 <script>
+import store from 'store'
 import moveMenu from './components/moveMenu'
 import moveWindow from '@/components/moveWindow.vue'
+import Aplayer from 'vue-aplayer'
 import { stopSakura } from './util/sakuraDrop'
 export default {
   name: 'App',
   components: {
     moveMenu,
-    moveWindow
+    moveWindow,
+    Aplayer
   },
   data() {
     return {
@@ -38,7 +54,21 @@ export default {
       configShow: false,
       backgroundCssAnime: null,
       apiSrc: 'http://localhost:9810/acgnrecord/image/',
-      backgroundImages: ['fgo-bg2.png', 'fgo-bg.png', 'arisu-bg.png', 'jk-bg.png']
+      backgroundImages: ['fgo-bg2.png', 'fgo-bg.png', 'arisu-bg.png', 'jk-bg.png'],
+      autoplay: false,
+      mini: true,
+      musicList: [
+        {
+          title: 'ここにある空',
+          artist: '米倉千尋',
+          src: 'http://localhost:9810/acgnrecord/music/米倉千尋 - ここにある空.mp3'
+        },
+        {
+          title: 'ふたり',
+          artist: '米倉千尋',
+          src: 'http://localhost:9810/acgnrecord/music/米倉千尋 - ふたり.mp3'
+        }
+      ]
     }
   },
   created() {
@@ -52,6 +82,11 @@ export default {
     }
     this.getBackgroundAnimetion()
     this.getBackgroundImage()
+    setTimeout(() => {
+      let aplayerChildren = document.getElementById('aplayer').children
+      let audio = Array.apply({}, aplayerChildren).find((item) => item.tagName == 'AUDIO')
+      audio.play()
+    }, 2000)
   },
   methods: {
     rightClick(event) {
@@ -74,6 +109,12 @@ export default {
     configWindow() {
       this.configShow = !this.configShow
     },
+    logout() {
+      store.remove('Token')
+      this.$router.push({
+        name: 'login'
+      })
+    },
     changeMode() {
       console.log(this.$route)
       if (this.$route.name == 'readerIndex') {
@@ -93,13 +134,13 @@ export default {
         this.$nextTick(() => {
           let background1 = this.$refs.background1
           let background2 = this.$refs.background2
-          background1.style.backgroundImage = "url('" + this.apiSrc + this.backgroundImages[0] + "')"
-          background2.style.backgroundImage = "url('" + this.apiSrc + this.backgroundImages[2] + "')"
+          background1.style.backgroundImage = 'url("' + this.apiSrc + this.backgroundImages[0] + '")'
+          background2.style.backgroundImage = 'url("' + this.apiSrc + this.backgroundImages[2] + '")'
         })
       } else {
         this.$nextTick(() => {
           let background = this.$refs.background
-          background.style.backgroundImage = "url('" + this.apiSrc + this.backgroundImages[0] + "')"
+          background.style.backgroundImage = 'url("' + this.apiSrc + this.backgroundImages[0] + '")'
         })
       }
     },
@@ -179,7 +220,6 @@ export default {
         this.backgroundCssAnime.appendChild(document.createTextNode(backgroundKeyframes))
       }
     },
-
     createBackgroundStlye() {
       // 将style样式存放到head标签
       this.backgroundCssAnime = document.getElementById('backgroundCssAnime')
@@ -188,6 +228,12 @@ export default {
         style.id = 'backgroundCssAnime'
         document.getElementsByTagName('head')[0].appendChild(style)
       }
+    },
+    playerShow() {
+      this.mini = false
+    },
+    playerHide() {
+      this.mini = true
     }
   }
 }
@@ -252,6 +298,69 @@ export default {
   background-attachment: fixed;
   animation: changeBG2 linear infinite 10s;
   z-index: -2;
+}
+.router-anime-enter-active {
+  transition: all 0.2s ease-in;
+}
+.router-anime-leave-active {
+  transition: all 0.2s ease-in;
+}
+.router-anime-enter 
+/* .slide-fade-leave-active for below version 2.1.8 */ {
+  transform: scale(0.5);
+  opacity: 0;
+}
+.router-anime-leave-to {
+  transform: scale(2);
+  opacity: 0;
+}
+.aplayer {
+  position: fixed !important;
+  border-radius: 15px;
+  background-color: transparent;
+  ::v-deep {
+    .aplayer-pic {
+      background-image: none !important;
+      background-color: rgba(0, 0, 0, 0.5);
+      transition: 1s ease;
+      &:hover {
+        background: $bgColor !important;
+      }
+    }
+    .aplayer-info {
+      background-color: rgba(255, 255, 255, 0.7);
+      width: 300px;
+      animation: musicInfoIN 0.5s ease-in-out;
+      .aplayer-controller {
+        animation: musicInfoController 0.5s ease-in-out;
+      }
+    }
+  }
+}
+@keyframes musicInfoIN {
+  0% {
+    width: 0;
+    height: 0;
+  }
+  20% {
+    width: 66px;
+    height: 66px;
+  }
+  100% {
+    width: 300px;
+    height: 66px;
+  }
+}
+@keyframes musicInfoController {
+  0% {
+    opacity: 0;
+  }
+  40% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
 }
 // @keyframes changeBG1 {
 //   0% {
