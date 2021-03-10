@@ -25,7 +25,7 @@ module.exports = (req, res, next) => {
   // 基本检测，token和id都不允许为空
   switch (true) {
     case token === '':
-      return res.status(401).json({
+      return res.status(402).json({
         msg: 'wdnmd token 呢'
       })
     default:
@@ -33,6 +33,7 @@ module.exports = (req, res, next) => {
   exec(sql.table('user').field('uid,name').where({ token: token }).select())
     .then((result) => {
       if (result[0]) {
+        req.uid = result[0].uid
         next()
       } else {
         return res.status(401).json({

@@ -26,6 +26,7 @@ router.post('/acgnrecord/picUpload', multipartMiddleware, function (req, res, ne
           code: 200,
           msg: '上传成功',
           data: {
+            uid: req.uid,
             file: file
           }
         })
