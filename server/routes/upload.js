@@ -14,7 +14,7 @@ router.post('/acgnrecord/picUpload', multipartMiddleware, function (req, res, ne
   var extname = file.name
   fs.rename(
     file.path,
-    'C://Users/Administrator/Documents/ACGNrecord/userUpData/image/' + 'upload_' + extname,
+    'C://Users/Administrator/Documents/ACGNrecord/userUpData/image/' + 'upload_uid' + req.uid + '_' + extname,
     function (err) {
       if (err) {
         res.status(500).json({

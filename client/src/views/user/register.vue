@@ -4,9 +4,11 @@
     ><input type="text" v-model="user.password" />
     <button @click="userRegister">注册</button>
     <br />
-    <div v-if="loginRes">注册成功！欢迎{{ loginRes }}</div>
+    <!-- <div v-if="loginRes">注册成功！欢迎{{ loginRes }}</div> -->
     <el-upload
       action="http://localhost:9810/acgnrecord/picUpload"
+      multiple
+      drag
       :headers="requesHeaders"
       list-type="picture-card"
       :auto-upload="true"
@@ -53,8 +55,9 @@ export default {
       }).then((res) => {
         if (res.code == 200) {
           this.loginRes = res.data
+          this.$message.success(res.msg)
         } else {
-          alert(res.msg)
+          this.$message.warning(res.msg)
         }
       })
     },

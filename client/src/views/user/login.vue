@@ -12,7 +12,7 @@
     <!-- <button @click="userLogin">登录</button> -->
     <acgn-button @click="userLogin" :fontSize="20">登录</acgn-button>
     <br />
-    <div v-if="loginRes">登录成功！欢迎{{ loginRes }}</div>
+    <!-- <div v-if="loginRes">登录成功！欢迎{{ loginRes }}</div> -->
   </div>
 </template>
 
@@ -39,12 +39,13 @@ export default {
       }).then((res) => {
         if (res.code == 200) {
           this.loginRes = res.data.name
+          this.$message.success(res.msg)
           this.$store.set('Token', res.data.token)
           this.$router.push({
             name: 'readerIndex'
           })
         } else {
-          alert(res.msg)
+          this.$message.warning(res.msg)
         }
       })
     },

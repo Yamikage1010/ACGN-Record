@@ -1,8 +1,8 @@
 var express = require('express')
 const { init, exec, sql, transaction } = require('../config/mysqlConfig')
+const { login, register } = require('../functionPackage/database/user')
 var bodyParser = require('body-parser')
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
-var md5 = require('md5-node')
 var router = express.Router()
 
 //登录接口
@@ -11,34 +11,26 @@ router.post('/acgnrecord/login', urlencodedParser, (req, res) => {
     name: req.body.name,
     password: req.body.password
   }
-  exec(sql.table('user').field('uid,name').where(user).select())
-    .then((result) => {
-      if (result.length > 0) {
-        // 生成token
-        const token = md5(result[0].id + result[0].name + new Date().getTime())
-        exec(sql.table('user').where(user).data({ token: token }).update())
-        res.send({
-          status: 'success',
-          code: 200,
-          msg: '登录成功',
-          data: {
-            name: result[0].name,
-            token: token
-          }
-        })
-      } else {
-        res.send({
-          status: 'success',
-          code: 400,
-          msg: '用户名或密码错误',
-          data: result
-        })
-      }
-      console.log(result)
-    })
-    .catch((err) => {
-      console.log(err)
-    })
+  login(user).then((result) => {
+    if (result.length > 0) {
+      res.send({
+        status: 'success',
+        code: 200,
+        msg: '登录成功',
+        data: {
+          name: result[0].name,
+          token: result[0].token
+        }
+      })
+    } else {
+      res.send({
+        status: 'waring',
+        code: 400,
+        msg: '用户名或密码错误',
+        data: result
+      })
+    }
+  })
 })
 //注册接口
 router.post('/acgnrecord/register', urlencodedParser, (req, res) => {
@@ -46,20 +38,20 @@ router.post('/acgnrecord/register', urlencodedParser, (req, res) => {
     name: req.body.name,
     password: req.body.password
   }
-  exec(sql.table('user').data(user).insert())
+  register(user)
     .then((result) => {
       console.log(result)
       res.send({
         status: 'success',
         code: 200,
         msg: '注册成功',
-        data: result
+        data: user
       })
     })
     .catch((err) => {
       console.log(err)
       res.send({
-        status: 'success',
+        status: 'waring',
         code: 400,
         msg: '注册失败',
         data: err
