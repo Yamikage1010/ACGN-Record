@@ -1,11 +1,27 @@
 <template>
-  <div>
-    <label>用户名：</label><input type="text" v-model="user.name" /> <label>密码：</label
-    ><input type="text" v-model="user.password" />
-    <button @click="userRegister">注册</button>
+  <div class="acgn-register">
+    <div class="acgn-logo">ACGN Record</div>
+    <div>
+      <label>用户名：</label>
+      <input type="text" v-model="user.name" />
+    </div>
+    <div>
+      <label>密<span style="opacity: 0">—</span>码：</label>
+      <input type="text" v-model="user.password" />
+    </div>
+    <div>
+      <label>邮<span style="opacity: 0">—</span>箱：</label>
+      <input type="text" v-model="user.email" />
+    </div>
+    <div>
+      <label>验证码：</label>
+      <input type="text" v-model="user.code" />
+      <acgn-button @click="getCode" :fontSize="15" style="display: inline">获取验证码</acgn-button>
+    </div>
+    <acgn-button @click="userRegister" :fontSize="20">注册</acgn-button>
     <br />
     <!-- <div v-if="loginRes">注册成功！欢迎{{ loginRes }}</div> -->
-    <el-upload
+    <!-- <el-upload
       action="http://localhost:9810/acgnrecord/picUpload"
       multiple
       drag
@@ -24,18 +40,20 @@
     </el-upload>
     <el-dialog :visible.sync="dialogVisible">
       <img width="100%" :src="dialogImageUrl" alt="" />
-    </el-dialog>
+    </el-dialog> -->
   </div>
 </template>
 
 <script>
-import { register } from '@/api/user'
+import { register, sendEmail } from '@/api/user'
 export default {
   data() {
     return {
       user: {
         name: '',
-        password: ''
+        password: '',
+        email: '',
+        code: ''
       },
       loginRes: null,
       dialogImageUrl: '',
@@ -49,12 +67,20 @@ export default {
   },
   methods: {
     userRegister() {
-      register({
-        name: this.user.name,
-        password: this.user.password
-      }).then((res) => {
+      register(this.user).then((res) => {
         if (res.code == 200) {
           this.loginRes = res.data
+          this.$message.success(res.msg)
+        } else {
+          this.$message.warning(res.msg)
+        }
+      })
+    },
+    getCode() {
+      sendEmail({
+        email: this.user.email
+      }).then((res) => {
+        if (res.code == 200) {
           this.$message.success(res.msg)
         } else {
           this.$message.warning(res.msg)
@@ -76,6 +102,24 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.acgn-register {
+  width: 500px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: $bgColor;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center;
+  font-size: 20px;
+  padding-top: 20px;
+  .acgn-logo {
+    font-size: 30px;
+    font-weight: 700;
+    color: $acgnThemeColor;
+  }
+}
 .avatar-uploader .el-upload {
   border: 1px dashed #d9d9d9;
   border-radius: 6px;

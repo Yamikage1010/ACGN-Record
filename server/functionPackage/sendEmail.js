@@ -18,8 +18,8 @@ function sendMail(mail, code, call) {
     from: '"ACGN Record" <281099349@qq.com>', // 发送方
     to: mail, //接收者邮箱，多个邮箱用逗号间隔
     subject: '欢迎使用ACGN Record', // 标题
-    text: 'Hello world?', // 文本内容
-    html: '<p>这里是"Express-demo"详情请点击:</p><a href="https://www.jianshu.com/u/5cdc0352bf01">点击跳转</a>' //页面内容
+    text: '', // 文本内容
+    html: '<p>注册验证码为' + code + '</p>' //页面内容
     // attachments: [{//发送文件
     //      filename: 'index.html', //文件名字
     //      path: './index.html' //文件路径
