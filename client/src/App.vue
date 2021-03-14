@@ -7,7 +7,15 @@
       <div class="db-menu" @click="configWindow">系统设置</div>
       <div class="db-menu" @click="logout">退出登录</div>
     </move-menu>
-    <move-window v-dialogDrag :key="'config'" :zIndex="999" v-if="configShow"> </move-window>
+    <move-window
+      v-dialogDrag
+      :windowKey="'config'"
+      :windowType="'config'"
+      :zIndex="999"
+      v-if="configShow"
+      @closeWindow="configWindow"
+    >
+    </move-window>
     <template v-if="changeBackground">
       <div class="bg1" ref="background1"></div>
       <div class="bg2" ref="background2"></div>
@@ -31,7 +39,6 @@
 </template>
 
 <script>
-import store from 'store'
 import moveMenu from './components/moveMenu'
 import moveWindow from '@/components/moveWindow.vue'
 import Aplayer from 'vue-aplayer'
@@ -110,7 +117,7 @@ export default {
       this.configShow = !this.configShow
     },
     logout() {
-      store.remove('Token')
+      this.$store.remove('Token')
       this.$router.push({
         name: 'login'
       })

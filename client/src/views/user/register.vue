@@ -27,7 +27,6 @@
 </template>
 
 <script>
-import store from 'store'
 import { register } from '@/api/user'
 export default {
   data() {
@@ -44,7 +43,7 @@ export default {
     }
   },
   mounted() {
-    this.requesHeaders.token = store.get('Token')
+    this.requesHeaders.token = this.$store.get('Token')
   },
   methods: {
     userRegister() {

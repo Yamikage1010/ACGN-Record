@@ -82,14 +82,13 @@ export default {
   .move-menu-footer {
     width: 100%;
     position: absolute;
-    background-color: $fontColor;
+    background-color: $sakuraIro2;
   }
   .move-menu-header {
     display: flex;
     justify-content: space-around;
     align-items: center;
     font-size: 20px;
-    color: $hoverFontColor;
   }
   .move-menu-main {
     width: 100%;

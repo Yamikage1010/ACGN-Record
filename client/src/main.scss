@@ -1,10 +1,55 @@
-body{
+body {
   margin: 0;
   padding: 0;
 }
+
 $mask:rgba(0, 0, 0, 0.3);
 $fontColor :rgba(255, 255, 255, 0.8);
-$bgColor:rgba(0,0,0,0.7);
+$bgColor:rgba(0, 0, 0, 0.7);
 
-$hoverFontColor:rgba(44, 44, 44,1);
-$hoverBgColor:rgba(211, 211, 211,1);
+$hoverFontColor:rgba(44, 44, 44, 1);
+$hoverBgColor:rgba(211, 211, 211, 1);
+
+$sakuraIro:#ff88cc;
+$sakuraIro2:#ffaaee;
+
+$remAo:#91bef0;
+$remAo2:#6eb1fd;
+
+
+input {
+  font-size: 20px;
+  padding: 3px;
+  color: $bgColor;
+  background-color: rgba(255, 255, 255, 0.7);
+  border: none;
+  margin: 30px 0 0 0;
+  transition: 0.2s ease-in-out;
+  border-radius: 5px;
+
+  &:focus {
+    border: none;
+    outline: none;
+    background-color: rgba(255, 255, 255, 1);
+    transform: scale(1.03);
+  }
+}
+
+
+.acgn-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  height: 70px;
+
+  ::v-deep {
+    .el-radio__input.is-checked+.el-radio__label {
+      color: $sakuraIro;
+    }
+
+    .el-radio__input.is-checked .el-radio__inner {
+      border-color: $sakuraIro;
+      background: $sakuraIro;
+    }
+  }
+}

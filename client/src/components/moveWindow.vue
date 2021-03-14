@@ -17,6 +17,9 @@
       <a @click="closeWindow" style="cursor: pointer">关闭</a>
     </div>
     <div class="move-window-main" :style="{ top: 40 + 'px' }">
+      <acgn-config v-if="windowType === 'config'"></acgn-config>
+      <acgn-list v-else-if="windowType === 'list'"></acgn-list>
+      <acgn-content v-else :windowType="windowType"></acgn-content>
       <slot></slot>
     </div>
     <!-- <div class="move-window-footer" :style="{height:windowHFHeight+'px'}"></div> -->
@@ -24,7 +27,15 @@
 </template>
 
 <script>
+import acgnContent from '@/components/acgnContent'
+import acgnList from '@/components/acgnList'
+import acgnConfig from '@/components/acgnConfig'
 export default {
+  components: {
+    acgnContent,
+    acgnList,
+    acgnConfig
+  },
   props: {
     zIndex: {
       type: Number,
@@ -32,6 +43,15 @@ export default {
     },
     title: {
       default: ''
+    },
+    windowKey: {
+      default: ''
+    },
+    windowType: {
+      default: 'list'
+    },
+    animateType: {
+      default: 'bounceIn'
     },
     top: {
       default: 300
@@ -44,9 +64,6 @@ export default {
     },
     windowWidth: {
       default: 500
-    },
-    animateType: {
-      default: 'bounceIn'
     }
   },
   mounted() {
@@ -91,7 +108,7 @@ export default {
   .move-window-footer {
     width: 100%;
     position: absolute;
-    background-color: $fontColor;
+    background-color: $sakuraIro2;
   }
   .move-window-header {
     display: flex;
