@@ -81,7 +81,7 @@ export default {
   .acgn-logo {
     font-size: 30px;
     font-weight: 700;
-    color: $sakuraIro;
+    color: $acgnThemeColor;
   }
 }
 </style>

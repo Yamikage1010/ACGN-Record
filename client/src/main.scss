@@ -10,12 +10,23 @@ $bgColor:rgba(0, 0, 0, 0.7);
 $hoverFontColor:rgba(44, 44, 44, 1);
 $hoverBgColor:rgba(211, 211, 211, 1);
 
-$sakuraIro:#ff88cc;
-$sakuraIro2:#ffaaee;
+$sakuraIro:#ffaaee;
+$sakuraIro2:#ff88cc;
 
 $remAo:#91bef0;
 $remAo2:#6eb1fd;
 
+:root {
+  --backgroundColor-theme: #ffaaee;
+  --backgroundColorHover-theme: #ff88cc;
+  --color-theme: #ff88cc;
+  --colorHover-theme: #ff88cc;
+}
+
+$acgnThemeBGColor:var(--backgroundColor-theme);
+$acgnThemeBGColorHover:var(--backgroundColorHover-theme);
+$acgnThemeColor:var(--color-theme);
+$acgnThemeColorHover:var(--colorHover-theme);
 
 input {
   font-size: 20px;
@@ -44,12 +55,12 @@ input {
 
   ::v-deep {
     .el-radio__input.is-checked+.el-radio__label {
-      color: $sakuraIro;
+      color: $acgnThemeColor;
     }
 
     .el-radio__input.is-checked .el-radio__inner {
-      border-color: $sakuraIro;
-      background: $sakuraIro;
+      border-color: $acgnThemeColor;
+      background: $acgnThemeColor;
     }
   }
 }

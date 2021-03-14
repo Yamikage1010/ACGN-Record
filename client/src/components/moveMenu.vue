@@ -82,7 +82,7 @@ export default {
   .move-menu-footer {
     width: 100%;
     position: absolute;
-    background-color: $sakuraIro2;
+    background-color: $acgnThemeColor;
   }
   .move-menu-header {
     display: flex;

@@ -103,12 +103,12 @@ export default {
   left: 0;
   position: fixed;
   background-color: $bgColor;
-  border-radius: 3px;
+  border-radius: 5px;
   .move-window-header,
   .move-window-footer {
     width: 100%;
     position: absolute;
-    background-color: $sakuraIro2;
+    background-color: $acgnThemeColor;
   }
   .move-window-header {
     display: flex;

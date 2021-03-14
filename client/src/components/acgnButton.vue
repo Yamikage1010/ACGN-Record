@@ -24,7 +24,7 @@ export default {
 
 <style lang="scss" scoped>
 .acgn-button {
-  background-color: $sakuraIro2;
+  background-color: $acgnThemeBGColor;
   outline: none;
   border: none;
   padding: 5px 10px 5px 10px;
@@ -33,7 +33,7 @@ export default {
   border-radius: 5px;
   transition: 0.2s ease-in-out;
   &:hover {
-    background-color: $sakuraIro;
+    background-color: $acgnThemeBGColorHover;
     transform: scale(1.03);
     cursor: pointer;
   }
