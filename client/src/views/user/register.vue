@@ -15,8 +15,8 @@
     </div>
     <div>
       <label>验证码：</label>
-      <input type="text" v-model="user.code" />
-      <acgn-button @click="getCode" :fontSize="15" style="display: inline">获取验证码</acgn-button>
+      <input type="text" v-model="user.code" style="width: 126px" />
+      <acgn-button @click="getCode" :fontSize="17" style="display: inline; margin-left: 20px">获取验证码</acgn-button>
     </div>
     <acgn-button @click="userRegister" :fontSize="20">注册</acgn-button>
     <br />
@@ -71,6 +71,9 @@ export default {
         if (res.code == 200) {
           this.loginRes = res.data
           this.$message.success(res.msg)
+          this.$router.push({
+            name: 'login'
+          })
         } else {
           this.$message.warning(res.msg)
         }

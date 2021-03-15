@@ -1,3 +1,4 @@
+const User = require('../object/user')
 var express = require('express')
 const { init, exec, sql, transaction } = require('../config/mysqlConfig')
 const { login, register } = require('../functionPackage/database/user')
@@ -7,6 +8,8 @@ var router = express.Router()
 
 const email = require('../functionPackage/sendEmail') //引入封装好的函数
 const check = {} //声明一个对象缓存邮箱和验证码，留着
+
+//发送邮件接口
 router.post('/acgnrecord/sendEmail', function (req, res, next) {
   const mail = req.body.email
   if (!mail) {
@@ -62,11 +65,8 @@ router.post('/acgnrecord/login', urlencodedParser, (req, res) => {
 //注册接口
 router.post('/acgnrecord/register', urlencodedParser, (req, res) => {
   console.log(check)
-  let user = {
-    name: req.body.name,
-    password: req.body.password
-  }
-  if (req.body.code == check[req.body.email]) {
+  let user = new User(req.body)
+  if (req.body.code == check[user.email]) {
     register(user)
       .then((result) => {
         console.log(result)

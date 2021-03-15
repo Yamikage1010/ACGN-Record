@@ -3,7 +3,7 @@
     <move-menu v-moveMenu v-if="hasMenu" :zIndex="998" :top="mouseTop" :left="mouseLeft" :title="'系统菜单'">
       <div class="db-menu" @click="changeMode">{{ nowMode == 'readerIndex' ? '管理模式' : '浏览模式' }}</div>
       <div class="db-menu" @click="closeSakura">{{ sakuraShow ? '关闭樱花' : '开启樱花' }}</div>
-      <div class="db-menu" @click="changeBG">{{ changeBackground ? '单图背景' : '幻灯片背景' }}</div>
+      <div class="db-menu" @click="changeBG">{{ slidesOrOnly ? '单图背景' : '幻灯片背景' }}</div>
       <div class="db-menu" @click="configWindow">系统设置</div>
       <div class="db-menu" @click="logout">退出登录</div>
     </move-menu>
@@ -16,7 +16,7 @@
       @closeWindow="configWindow"
     >
     </move-window>
-    <template v-if="changeBackground">
+    <template v-if="slidesOrOnly">
       <div class="bg1" ref="background1"></div>
       <div class="bg2" ref="background2"></div>
     </template>
@@ -54,7 +54,7 @@ export default {
     return {
       hasMenu: false,
       sakuraShow: true,
-      changeBackground: true, //true为轮播背景，false为单图背景
+      slidesOrOnly: true, //true为轮播背景，false为单图背景
       nowMode: 'readerIndex',
       mouseTop: 0,
       mouseLeft: 0,
@@ -110,7 +110,7 @@ export default {
       stopSakura()
     },
     changeBG() {
-      this.changeBackground = !this.changeBackground
+      this.slidesOrOnly = !this.slidesOrOnly
       this.getBackgroundImage()
     },
     configWindow() {
@@ -137,7 +137,7 @@ export default {
       }
     },
     getBackgroundImage() {
-      if (this.changeBackground) {
+      if (this.slidesOrOnly) {
         this.$nextTick(() => {
           let background1 = this.$refs.background1
           let background2 = this.$refs.background2

@@ -1,7 +1,7 @@
 // Vue.config.js 配置选项
-const path = require('path');
+const path = require('path')
 function resolve(dir) {
-  return path.join(__dirname, dir);
+  return path.join(__dirname, dir)
 }
 module.exports = {
   //  基本路径
@@ -39,7 +39,7 @@ module.exports = {
       .set('@assets', resolve('src/assets'))
       .set('@components', resolve('src/components'))
       .set('@base', resolve('baseConfig'))
-      .set('@public', resolve('public'));
+      .set('@public', resolve('public'))
   },
   // 配置 webpack-dev-server 行为。
   //     devServer: {
@@ -82,4 +82,4 @@ module.exports = {
   pluginOptions: {
     // ...
   }
-};
+}

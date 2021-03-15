@@ -16,7 +16,7 @@
     </div>
     <div class="acgn-form">
       <label>背景图片</label>
-      <el-radio-group v-model="changeBackground">
+      <el-radio-group v-model="slidesOrOnly">
         <el-radio :label="1001">默认幻灯片</el-radio>
         <el-radio :label="1000">默认单图</el-radio>
       </el-radio-group>
@@ -38,7 +38,7 @@ export default {
     return {
       sakuraShow: 1001,
       autoplay: 1001,
-      changeBackground: 1001,
+      slidesOrOnly: 1001,
       acgnTheme: 1001
     }
   },
