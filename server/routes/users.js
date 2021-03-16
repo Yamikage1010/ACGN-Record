@@ -41,26 +41,34 @@ router.post('/acgnrecord/login', urlencodedParser, (req, res) => {
     name: req.body.name,
     password: req.body.password
   }
-  login(user).then((result) => {
-    if (result.length > 0) {
+  login(user)
+    .then((result) => {
+      if (result.length > 0) {
+        console.log(result[0])
+        result[0].acgnConfig = JSON.parse(result[0].acgnConfig)
+        res.send({
+          status: 'success',
+          code: 200,
+          msg: '登录成功',
+          data: result[0]
+        })
+      } else {
+        res.send({
+          status: 'warning',
+          code: 400,
+          msg: '用户名或密码错误',
+          data: result
+        })
+      }
+    })
+    .catch((err) => {
       res.send({
-        status: 'success',
-        code: 200,
-        msg: '登录成功',
-        data: {
-          name: result[0].name,
-          token: result[0].token
-        }
+        status: 'error',
+        code: 404,
+        msg: '出bug啦',
+        data: err
       })
-    } else {
-      res.send({
-        status: 'warning',
-        code: 400,
-        msg: '用户名或密码错误',
-        data: result
-      })
-    }
-  })
+    })
 })
 //注册接口
 router.post('/acgnrecord/register', urlencodedParser, (req, res) => {

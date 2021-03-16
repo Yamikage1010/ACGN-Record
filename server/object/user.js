@@ -8,9 +8,9 @@ class User {
   }
   getInitConfig() {
     let config = {
-      sakuraShow: 1001,
-      autoplay: 1001,
-      slidesOrOnly: 1001,
+      sakuraShow: true,
+      autoplay: true,
+      slidesOrOnly: true,
       acgnTheme: 1001
     }
     return JSON.stringify(config)

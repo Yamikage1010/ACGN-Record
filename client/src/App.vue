@@ -3,7 +3,7 @@
     <move-menu v-moveMenu v-if="hasMenu" :zIndex="998" :top="mouseTop" :left="mouseLeft" :title="'系统菜单'">
       <div class="db-menu" @click="changeMode">{{ nowMode == 'readerIndex' ? '管理模式' : '浏览模式' }}</div>
       <div class="db-menu" @click="closeSakura">{{ sakuraShow ? '关闭樱花' : '开启樱花' }}</div>
-      <div class="db-menu" @click="changeBG">{{ slidesOrOnly ? '单图背景' : '幻灯片背景' }}</div>
+      <div class="db-menu" @click="changeBG">{{ acgnConfig.slidesOrOnly ? '单图背景' : '幻灯片背景' }}</div>
       <div class="db-menu" @click="configWindow">系统设置</div>
       <div class="db-menu" @click="logout">退出登录</div>
     </move-menu>
@@ -16,7 +16,7 @@
       @closeWindow="configWindow"
     >
     </move-window>
-    <template v-if="slidesOrOnly">
+    <template v-if="acgnConfig.slidesOrOnly">
       <div class="bg1" ref="background1"></div>
       <div class="bg2" ref="background2"></div>
     </template>
@@ -39,10 +39,12 @@
 </template>
 
 <script>
+import Bus from '@/common/bus'
+import { acgnConfig } from '@/common/acgnConfig'
 import moveMenu from './components/moveMenu'
 import moveWindow from '@/components/moveWindow.vue'
 import Aplayer from 'vue-aplayer'
-import { stopSakura } from './util/sakuraDrop'
+import { stopSakura, startSakura } from './util/sakuraDrop'
 export default {
   name: 'App',
   components: {
@@ -52,17 +54,18 @@ export default {
   },
   data() {
     return {
+      acgnConfig,
       hasMenu: false,
       sakuraShow: true,
-      slidesOrOnly: true, //true为轮播背景，false为单图背景
+      // slidesOrOnly: acgnConfig.slidesOrOnly, //true为轮播背景，false为单图背景
+      autoplay: false,
       nowMode: 'readerIndex',
       mouseTop: 0,
       mouseLeft: 0,
       configShow: false,
       backgroundCssAnime: null,
-      apiSrc: 'http://localhost:9810/acgnrecord/image/',
+      apiSrc: 'http://localhost:9810/acgnrecord/defaultImage/',
       backgroundImages: ['fgo-bg2.png', 'fgo-bg.png', 'arisu-bg.png', 'jk-bg.png'],
-      autoplay: false,
       mini: true,
       musicList: [
         {
@@ -79,6 +82,15 @@ export default {
     }
   },
   created() {
+    Bus.$on('loadAcgnConfig', () => {
+      console.log(111111)
+      if (acgnConfig.backgroundImages) {
+        this.apiSrc = 'http://localhost:9810/acgnrecord/image/'
+        this.backgroundImages = acgnConfig.backgroundImages
+        this.getBackgroundAnimetion()
+        this.getBackgroundImage()
+      }
+    })
     this.createBackgroundStlye()
   },
   mounted() {
@@ -110,14 +122,15 @@ export default {
       stopSakura()
     },
     changeBG() {
-      this.slidesOrOnly = !this.slidesOrOnly
+      console.log(acgnConfig.slidesOrOnly)
+      acgnConfig.slidesOrOnly = !acgnConfig.slidesOrOnly
       this.getBackgroundImage()
     },
     configWindow() {
       this.configShow = !this.configShow
     },
     logout() {
-      this.$store.remove('Token')
+      this.$localStorage.remove('Token')
       this.$router.push({
         name: 'login'
       })
@@ -137,7 +150,7 @@ export default {
       }
     },
     getBackgroundImage() {
-      if (this.slidesOrOnly) {
+      if (acgnConfig.slidesOrOnly) {
         this.$nextTick(() => {
           let background1 = this.$refs.background1
           let background2 = this.$refs.background2

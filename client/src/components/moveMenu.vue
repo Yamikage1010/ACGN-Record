@@ -39,7 +39,7 @@ export default {
       default: 'title'
     },
     imgSrc: {
-      default: 'http://localhost:9810/acgnrecord/image/noa.jpg'
+      default: 'http://localhost:9810/acgnrecord/defaultImage/noa.jpg'
     }
   },
   mounted() {

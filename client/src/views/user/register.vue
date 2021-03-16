@@ -21,7 +21,7 @@
     <acgn-button @click="userRegister" :fontSize="20">注册</acgn-button>
     <br />
     <!-- <div v-if="loginRes">注册成功！欢迎{{ loginRes }}</div> -->
-    <!-- <el-upload
+    <el-upload
       action="http://localhost:9810/acgnrecord/picUpload"
       multiple
       drag
@@ -40,7 +40,7 @@
     </el-upload>
     <el-dialog :visible.sync="dialogVisible">
       <img width="100%" :src="dialogImageUrl" alt="" />
-    </el-dialog> -->
+    </el-dialog>
   </div>
 </template>
 
@@ -63,7 +63,7 @@ export default {
     }
   },
   mounted() {
-    this.requesHeaders.token = this.$store.get('Token')
+    this.requesHeaders.token = this.$localStorage.get('Token')
   },
   methods: {
     userRegister() {

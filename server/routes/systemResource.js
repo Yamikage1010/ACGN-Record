@@ -23,11 +23,22 @@ router.post('/acgnrecord/getSakura', urlencodedParser, (req, res) => {
   })
 })
 router.get('/acgnrecord/image/*', function (req, res) {
-  res.sendFile('C://Users/Administrator/Documents/ACGNrecord/systemDefaultResource/image/' + path.basename(req.url))
+  let imageName = decodeURIComponent(path.basename(req.url))
+  res.sendFile('C://Users/Administrator/Documents/ACGNrecord/userUpData/image/upload_uid' + imageName)
+  // res.sendFile( '/public/images/'+path.basename(req.url) );
+})
+router.get('/acgnrecord/defaultImage/*', function (req, res) {
+  let imageName = decodeURIComponent(path.basename(req.url))
+  res.sendFile('C://Users/Administrator/Documents/ACGNrecord/systemDefaultResource/image/' + imageName)
   // res.sendFile( '/public/images/'+path.basename(req.url) );
 })
 // const option = {}
 router.get('/acgnrecord/music/*', function (req, res) {
+  let musicName = decodeURIComponent(path.basename(req.url))
+  res.sendFile('C://Users/Administrator/Documents/ACGNrecord/systemDefaultResource/music/' + musicName)
+  // res.sendFile( '/public/images/'+path.basename(req.url) );
+})
+router.get('/acgnrecord/defaultMusic/*', function (req, res) {
   let musicName = decodeURIComponent(path.basename(req.url))
   res.sendFile('C://Users/Administrator/Documents/ACGNrecord/systemDefaultResource/music/' + musicName)
   // res.sendFile( '/public/images/'+path.basename(req.url) );

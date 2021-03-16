@@ -17,10 +17,13 @@
 </template>
 
 <script>
+import Bus from '@/common/bus'
 import { login } from '@/api/user'
+import { acgnConfig } from '@/common/acgnConfig'
 export default {
   data() {
     return {
+      acgnConfig,
       user: {
         name: '',
         password: ''
@@ -40,7 +43,11 @@ export default {
         if (res.code == 200) {
           this.loginRes = res.data.name
           this.$message.success(res.msg)
-          this.$store.set('Token', res.data.token)
+          Object.assign(acgnConfig, res.data.acgnConfig)
+          this.$localStorage.set('Token', res.data.token)
+          this.$localStorage.set('acgnConfig', acgnConfig)
+          this.$localStorage.set('useData', res.data)
+          Bus.$emit('loadAcgnConfig')
           this.$router.push({
             name: 'readerIndex'
           })

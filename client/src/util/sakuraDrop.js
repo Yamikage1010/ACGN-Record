@@ -8,7 +8,6 @@ getSakura().then(res => {
   if (res.code == 200) {
     sakura = res.data
     img.src = sakura
-    startSakura()
   }
 })
 
@@ -152,7 +151,7 @@ function getRandom(option) {
   return ret
 }
 
-function startSakura() {
+export function startSakura() {
   requestAnimationFrame =
     window.requestAnimationFrame ||
     window.mozRequestAnimationFrame ||

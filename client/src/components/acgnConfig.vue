@@ -2,28 +2,28 @@
   <div class="acgnConfig">
     <div class="acgn-form">
       <label>樱花特效</label>
-      <el-radio-group v-model="sakuraShow">
-        <el-radio :label="1001">默认开启</el-radio>
-        <el-radio :label="1000">默认关闭</el-radio>
+      <el-radio-group v-model="acgnConfig.sakuraShow">
+        <el-radio :label="true">默认开启</el-radio>
+        <el-radio :label="false">默认关闭</el-radio>
       </el-radio-group>
     </div>
     <div class="acgn-form">
       <label>背景音乐</label>
-      <el-radio-group v-model="autoplay">
-        <el-radio :label="1001">默认播放</el-radio>
-        <el-radio :label="1000">默认关闭</el-radio>
+      <el-radio-group v-model="acgnConfig.autoplay">
+        <el-radio :label="true">默认播放</el-radio>
+        <el-radio :label="false">默认关闭</el-radio>
       </el-radio-group>
     </div>
     <div class="acgn-form">
       <label>背景图片</label>
-      <el-radio-group v-model="slidesOrOnly">
-        <el-radio :label="1001">默认幻灯片</el-radio>
-        <el-radio :label="1000">默认单图</el-radio>
+      <el-radio-group v-model="acgnConfig.slidesOrOnly">
+        <el-radio :label="true">默认幻灯片</el-radio>
+        <el-radio :label="false">默认单图</el-radio>
       </el-radio-group>
     </div>
     <div class="acgn-form">
       <label>主题颜色</label>
-      <el-radio-group v-model="acgnTheme" @change="changeTheme">
+      <el-radio-group v-model="acgnConfig.acgnTheme" @change="changeTheme">
         <el-radio :label="1001">樱花粉</el-radio>
         <el-radio :label="1000">蕾姆蓝</el-radio>
       </el-radio-group>
@@ -36,10 +36,17 @@
 export default {
   data() {
     return {
-      sakuraShow: 1001,
-      autoplay: 1001,
-      slidesOrOnly: 1001,
-      acgnTheme: 1001
+      acgnConfig: {
+        sakuraShow: true,
+        autoplay: true,
+        slidesOrOnly: true,
+        acgnTheme: 1001
+      }
+    }
+  },
+  mounted() {
+    if (this.$localStorage.get('acgnConfig')) {
+      this.acgnConfig = this.$localStorage.get('acgnConfig')
     }
   },
   methods: {
@@ -48,12 +55,12 @@ export default {
     },
     changeTheme() {
       let body = document.getElementsByTagName('body')[0]
-      if (this.acgnTheme === 1001) {
+      if (this.acgnConfig.acgnTheme === 1001) {
         body.style.setProperty('--backgroundColor-theme', '#ffaaee')
         body.style.setProperty('--color-theme', '#ff88cc')
         body.style.setProperty('--backgroundColorHover-theme', '#ff88cc')
         body.style.setProperty('--colorHover-theme', '#ff88cc')
-      } else if (this.acgnTheme === 1000) {
+      } else if (this.acgnConfig.acgnTheme === 1000) {
         body.style.setProperty('--backgroundColor-theme', '#91bef0')
         body.style.setProperty('--color-theme', '#6eb1fd')
         body.style.setProperty('--backgroundColorHover-theme', '#6eb1fd')
