@@ -1,7 +1,12 @@
 <template>
-  <div class="acgn-button" :style="{ width: width + 'px', fontSize: fontSize + 'px' }" @click="click">
+  <button
+    class="acgn-button"
+    :style="{ width: width + 'px', fontSize: fontSize + 'px', cursor: disabled ? 'wait' : 'pointer' }"
+    @click="click"
+    :disabled="disabled"
+  >
     <slot></slot>
-  </div>
+  </button>
 </template>
 
 <script>
@@ -12,6 +17,9 @@ export default {
     },
     fontSize: {
       default: 15
+    },
+    disabled: {
+      default: false
     }
   },
   methods: {

@@ -46,7 +46,7 @@ export default {
           Object.assign(acgnConfig, res.data.acgnConfig)
           this.$localStorage.set('Token', res.data.token)
           this.$localStorage.set('acgnConfig', acgnConfig)
-          this.$localStorage.set('useData', res.data)
+          this.$localStorage.set('userData', res.data)
           Bus.$emit('loadAcgnConfig')
           this.$router.push({
             name: 'readerIndex'

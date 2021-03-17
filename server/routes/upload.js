@@ -7,31 +7,38 @@ var urlencodedParser = bodyParser.urlencoded({ extended: false })
 var router = express.Router()
 var multipart = require('connect-multiparty')
 var multipartMiddleware = multipart({ maxFieldsSize: '10MB' })
-router.post('/acgnrecord/picUpload', multipartMiddleware, function (req, res, next) {
-  console.log(req)
+function fileRenameAndTurnUrl(req, res, dataHandle) {
   let file = req.files.file
+  var extname = req.uid + '_' + file.name
+  var fileName = 'upload_uid' + extname
   console.log(file)
-  var extname = file.name
-  fs.rename(
-    file.path,
-    'C://Users/Administrator/Documents/ACGNrecord/userUpData/image/' + 'upload_uid' + req.uid + '_' + extname,
-    function (err) {
-      if (err) {
-        res.status(500).json({
-          msg: err
-        })
-      } else {
-        res.send({
-          status: 'success',
-          code: 200,
-          msg: '上传成功',
-          data: {
-            uid: req.uid,
-            file: file
-          }
-        })
-      }
+  fs.rename(file.path, 'C://Users/Administrator/Documents/ACGNrecord/userUpData/image/' + fileName, (err) => {
+    if (err) {
+      res.send({
+        status: 'error',
+        code: 404,
+        msg: '上传失败，出bug啦',
+        data: err
+      })
+    } else {
+      res.send({
+        status: 'success',
+        code: 200,
+        msg: '上传成功',
+        data: {
+          uid: req.uid,
+          file: file
+        }
+      })
     }
-  )
+  })
+}
+router.post('/acgnrecord/picUpload', multipartMiddleware, function (req, res) {
+  // console.log(req)
+  fileRenameAndTurnUrl(req, res)
+})
+router.post('/acgnrecord/configPicUpload', multipartMiddleware, function (req, res, next) {
+  console.log(req)
+  fileRenameAndTurnUrl(req, res)
 })
 module.exports = router

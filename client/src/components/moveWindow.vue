@@ -111,13 +111,16 @@ export default {
     background-color: $acgnThemeColor;
   }
   .move-window-header {
+    top: 0%;
     display: flex;
     justify-content: space-around;
     align-items: center;
   }
   .move-window-main {
     width: 100%;
-    position: relative;
+    height: calc(100% - 40px);
+    position: absolute;
+    overflow: auto;
   }
   .move-window-footer {
     bottom: 0;
