@@ -19,6 +19,7 @@
     <div class="move-window-main" :style="{ top: 40 + 'px' }">
       <acgn-config v-if="windowType === 'config'"></acgn-config>
       <acgn-list v-else-if="windowType === 'list'"></acgn-list>
+      <acgn-handle v-else-if="windowType === 'dataHandle'"></acgn-handle>
       <acgn-content v-else :windowType="windowType"></acgn-content>
       <slot></slot>
     </div>
@@ -28,13 +29,15 @@
 
 <script>
 import acgnContent from '@/components/acgnContent'
+import acgnHandle from '@/components/acgnHandle'
 import acgnList from '@/components/acgnList'
 import acgnConfig from '@/components/acgnConfig'
 export default {
   components: {
     acgnContent,
     acgnList,
-    acgnConfig
+    acgnConfig,
+    acgnHandle
   },
   props: {
     zIndex: {

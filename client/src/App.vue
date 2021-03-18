@@ -2,7 +2,7 @@
   <div id="app" @contextmenu.prevent="rightClick">
     <move-menu v-moveMenu v-if="hasMenu" :zIndex="998" :top="mouseTop" :left="mouseLeft" :title="'系统菜单'">
       <div class="db-menu" @click="changeMode">{{ nowMode == 'readerIndex' ? '管理模式' : '浏览模式' }}</div>
-      <div class="db-menu" @click="closeSakura">{{ sakuraShow ? '关闭樱花' : '开启樱花' }}</div>
+      <div class="db-menu" @click="closeSakura">{{ acgnConfig.sakuraShow ? '关闭樱花' : '开启樱花' }}</div>
       <div class="db-menu" @click="changeBG">{{ acgnConfig.slidesOrOnly ? '单图背景' : '幻灯片背景' }}</div>
       <div class="db-menu" @click="configWindow">系统设置</div>
       <div class="db-menu" @click="logout">退出登录</div>
@@ -30,6 +30,7 @@
       @mouseleave.native="playerHide"
       :music="musicList[0]"
       :list="musicList"
+      :autoplay="acgnConfig.autoplay"
     >
     </aplayer>
     <transition name="router-anime">
@@ -40,10 +41,11 @@
 
 <script>
 import Bus from '@/common/bus'
-import { acgnConfig } from '@/common/acgnConfig'
+// import { acgnConfig } from '@/common/acgnConfig'
 import moveMenu from './components/moveMenu'
 import moveWindow from '@/components/moveWindow.vue'
 import Aplayer from 'vue-aplayer'
+import { changeTheme, musicDataHandle } from '@/util/systemStyle'
 import { stopSakura, startSakura } from './util/sakuraDrop'
 export default {
   name: 'App',
@@ -54,11 +56,17 @@ export default {
   },
   data() {
     return {
-      acgnConfig,
+      acgnConfig: {},
+      defaultAcgnConfig: {
+        sakuraShow: true,
+        slidesOrOnly: true,
+        autoplay: true,
+        acgnTheme: 1001
+      },
       hasMenu: false,
-      sakuraShow: true,
+      // sakuraShow: true,
       // slidesOrOnly: acgnConfig.slidesOrOnly, //true为轮播背景，false为单图背景
-      autoplay: false,
+      // autoplay: false,
       nowMode: 'readerIndex',
       mouseTop: 0,
       mouseLeft: 0,
@@ -66,17 +74,31 @@ export default {
       backgroundCssAnime: null,
       apiSrc: 'http://localhost:9810/acgnrecord/defaultImage/',
       backgroundImages: ['fgo-bg2.png', 'fgo-bg.png', 'arisu-bg.png', 'jk-bg.png'],
+      defaultApiSrc: 'http://localhost:9810/acgnrecord/defaultImage/',
+      defaultBackgroundImages: ['fgo-bg2.png', 'fgo-bg.png', 'arisu-bg.png', 'jk-bg.png'],
       mini: true,
       musicList: [
         {
           title: 'ここにある空',
           artist: '米倉千尋',
-          src: 'http://localhost:9810/acgnrecord/music/米倉千尋 - ここにある空.mp3'
+          src: 'http://localhost:9810/acgnrecord/defaultMusic/米倉千尋 - ここにある空.mp3'
         },
         {
           title: 'ふたり',
           artist: '米倉千尋',
-          src: 'http://localhost:9810/acgnrecord/music/米倉千尋 - ふたり.mp3'
+          src: 'http://localhost:9810/acgnrecord/defaultMusic/米倉千尋 - ふたり.mp3'
+        }
+      ],
+      defaultMusicList: [
+        {
+          title: 'ここにある空',
+          artist: '米倉千尋',
+          src: 'http://localhost:9810/acgnrecord/defaultMusic/米倉千尋 - ここにある空.mp3'
+        },
+        {
+          title: 'ふたり',
+          artist: '米倉千尋',
+          src: 'http://localhost:9810/acgnrecord/defaultMusic/米倉千尋 - ふたり.mp3'
         }
       ]
     }
@@ -84,13 +106,26 @@ export default {
   created() {
     Bus.$on('loadAcgnConfig', () => {
       console.log(111111)
-      if (acgnConfig.backgroundImages) {
+      this.acgnConfig = this.$localStorage.get('acgnConfig') || this.defaultAcgnConfig
+      if (this.acgnConfig.backgroundImages && this.acgnConfig.backgroundImages.length != 0) {
         this.apiSrc = 'http://localhost:9810/acgnrecord/image/'
-        this.backgroundImages = acgnConfig.backgroundImages
+        this.backgroundImages = this.acgnConfig.backgroundImages
+        this.getBackgroundAnimetion()
+        this.getBackgroundImage()
+      } else {
+        this.apiSrc = this.defaultApiSrc
+        this.backgroundImages = this.defaultBackgroundImages
         this.getBackgroundAnimetion()
         this.getBackgroundImage()
       }
+      if (this.acgnConfig.backgroundMusic && this.acgnConfig.backgroundMusic.length != 0) {
+        this.musicList = musicDataHandle(this.acgnConfig.backgroundMusic)
+      } else {
+        this.musicList = this.defaultMusicList
+      }
+      this.loadSystemStyle()
     })
+    this.acgnConfig = this.$localStorage.get('acgnConfig') || this.defaultAcgnConfig
     this.createBackgroundStlye()
   },
   mounted() {
@@ -99,13 +134,16 @@ export default {
     } else {
       this.nowMode = this.$route.name
     }
-    this.getBackgroundAnimetion()
-    this.getBackgroundImage()
-    setTimeout(() => {
-      let aplayerChildren = document.getElementById('aplayer').children
-      let audio = Array.apply({}, aplayerChildren).find((item) => item.tagName == 'AUDIO')
-      audio.play()
-    }, 2000)
+    if (
+      (this.acgnConfig.backgroundImages && this.acgnConfig.backgroundImages.length != 0) ||
+      (this.acgnConfig.backgroundMusic && this.acgnConfig.backgroundMusic.length != 0)
+    ) {
+      Bus.$emit('loadAcgnConfig')
+    } else {
+      this.getBackgroundAnimetion()
+      this.getBackgroundImage()
+      this.loadSystemStyle()
+    }
   },
   methods: {
     rightClick(event) {
@@ -118,12 +156,16 @@ export default {
       }
     },
     closeSakura() {
-      this.sakuraShow = !this.sakuraShow
-      stopSakura()
+      this.acgnConfig.sakuraShow = !this.acgnConfig.sakuraShow
+      if (this.acgnConfig.sakuraShow) {
+        startSakura() //是否开局樱花特效
+      } else {
+        stopSakura()
+      }
     },
     changeBG() {
-      console.log(acgnConfig.slidesOrOnly)
-      acgnConfig.slidesOrOnly = !acgnConfig.slidesOrOnly
+      console.log(this.acgnConfig.slidesOrOnly)
+      this.acgnConfig.slidesOrOnly = !this.acgnConfig.slidesOrOnly
       this.getBackgroundImage()
     },
     configWindow() {
@@ -131,6 +173,8 @@ export default {
     },
     logout() {
       this.$localStorage.remove('Token')
+      this.$localStorage.remove('acgnConfig')
+      this.$localStorage.remove('userData')
       this.$router.push({
         name: 'login'
       })
@@ -149,8 +193,23 @@ export default {
         })
       }
     },
+    loadSystemStyle() {
+      if (this.acgnConfig.autoplay) {
+        setTimeout(() => {
+          let aplayerChildren = document.getElementById('aplayer').children
+          let audio = Array.apply({}, aplayerChildren).find((item) => item.tagName == 'AUDIO')
+          audio.play()
+        }, 3000)
+      }
+      if (this.acgnConfig.sakuraShow) {
+        startSakura() //是否开局樱花特效
+      } else {
+        stopSakura()
+      }
+      changeTheme(this.acgnConfig.acgnTheme)
+    },
     getBackgroundImage() {
-      if (acgnConfig.slidesOrOnly) {
+      if (this.acgnConfig.slidesOrOnly) {
         this.$nextTick(() => {
           let background1 = this.$refs.background1
           let background2 = this.$refs.background2
@@ -303,7 +362,7 @@ export default {
   background-repeat: no-repeat;
   background-position: 0px 0px;
   background-attachment: fixed;
-  animation: changeBG1 linear infinite 10s;
+  animation: changeBG1 linear infinite 14s;
   z-index: -1;
 }
 .bg2 {
@@ -316,7 +375,7 @@ export default {
   background-repeat: no-repeat;
   background-position: 0px 0px;
   background-attachment: fixed;
-  animation: changeBG2 linear infinite 10s;
+  animation: changeBG2 linear infinite 14s;
   z-index: -2;
 }
 .router-anime-enter-active {

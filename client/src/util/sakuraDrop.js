@@ -229,12 +229,14 @@ export function startSakura() {
 // };
 
 export function stopSakura() {
-  if (staticx) {
-    var child = document.getElementById('canvas_sakura')
+  // if (staticx) {
+  var child = document.getElementById('canvas_sakura')
+  if (child) {
     child.parentNode.removeChild(child)
     window.cancelAnimationFrame(stop)
     staticx = false
-  } else {
-    startSakura()
   }
+  // } else {
+  //   startSakura()
+  // }
 }

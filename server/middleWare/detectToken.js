@@ -13,6 +13,7 @@ module.exports = (req, res, next) => {
     '/acgnrecord/image',
     '/acgnrecord/defaultImage/',
     '/acgnrecord/music',
+    '/acgnrecord/defaultMusic',
     '/acgnrecord/sendEmail'
   ]
   // 验证当前的api是否存在不需要验证的api的列表里面

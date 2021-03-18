@@ -8,6 +8,8 @@
       :subTitle="item.subTitle"
       :top="item.top"
       :left="item.left"
+      :width="item.width"
+      :height="item.height"
       @clickBall="clickBall(item)"
     ></float-ball>
     <move-window
@@ -37,35 +39,47 @@ export default {
     moveWindow
   },
   data() {
+    let ballWidth = window.innerWidth / 6
+    let ballTop = window.innerHeight / 10
     return {
+      ballWidth,
+      ballTop,
       ballData: [
         {
           ballKey: 'Anime',
           title: 'Anime',
           subTitle: '动画',
-          top: 100,
-          left: 300
+          top: ballTop,
+          left: ballWidth,
+          width: ballWidth,
+          height: ballWidth
         },
         {
           ballKey: 'Comic',
           title: 'Comic',
           subTitle: '漫画',
-          top: 100,
-          left: 1200
+          top: ballTop,
+          left: ballWidth * 4,
+          width: ballWidth,
+          height: ballWidth
         },
         {
           ballKey: 'Game',
           title: 'Game',
           subTitle: '游戏',
-          top: 600,
-          left: 300
+          top: ballTop * 3 + ballWidth,
+          left: ballWidth,
+          width: ballWidth,
+          height: ballWidth
         },
         {
           ballKey: 'Novel',
           title: 'Novel',
           subTitle: '小说',
-          top: 600,
-          left: 1200
+          top: ballTop * 3 + ballWidth,
+          left: ballWidth * 4,
+          width: ballWidth,
+          height: ballWidth
         }
       ],
       maxZIndex: 0, //置顶窗口zIndex值
@@ -73,6 +87,7 @@ export default {
       windowData: []
     }
   },
+  created() {},
   methods: {
     clickBall(item) {
       this.windowData.push({

@@ -35,7 +35,7 @@ router.get('/acgnrecord/defaultImage/*', function (req, res) {
 // const option = {}
 router.get('/acgnrecord/music/*', function (req, res) {
   let musicName = decodeURIComponent(path.basename(req.url))
-  res.sendFile('C://Users/Administrator/Documents/ACGNrecord/systemDefaultResource/music/' + musicName)
+  res.sendFile('C://Users/Administrator/Documents/ACGNrecord/userUpData/music/upload_uid' + musicName)
   // res.sendFile( '/public/images/'+path.basename(req.url) );
 })
 router.get('/acgnrecord/defaultMusic/*', function (req, res) {

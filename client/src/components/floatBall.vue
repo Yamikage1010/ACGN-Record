@@ -5,7 +5,7 @@
     :style="{ top: top + 'px', left: left + 'px', width: width + 'px', height: height + 'px' }"
     @click="clickBall"
   >
-    <img src="@/assets/noania.png" />
+    <img src="@/assets/noania.png" :style="{ width: width + 'px', height: height + 'px' }" />
     <div class="float-ball-title">{{ title }}</div>
     <div class="float-ball-subTitle">{{ subTitle }}</div>
   </div>

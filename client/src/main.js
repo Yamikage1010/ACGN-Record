@@ -9,14 +9,11 @@ import './util/sakuraDrop'
 import './util/moveWindow'
 import './util/moveMenu'
 import './util/componentsImport'
-//加载对象
-import './common/acgn'
 //加载全局样式
 import './main.scss'
 //加载插件
 import 'animate.css'
 Vue.config.productionTip = false
-
 Vue.prototype.$localStorage = localStorageStore
 new Vue({
   router,
