@@ -26,7 +26,6 @@
       :windowType="item.windowType"
       @click="setZIndex"
     >
-      <a href="https://bangumi.tv/subject_search/clannad?cat=all" target="_blank"> 跳转至bangumi搜索 </a>
     </move-window>
   </div>
 </template>

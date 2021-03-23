@@ -142,18 +142,6 @@ export default {
   methods: {
     changeTheme() {
       changeTheme(this.acgnConfig.acgnTheme)
-      // let body = document.getElementsByTagName('body')[0]
-      // if (this.acgnConfig.acgnTheme === 1001) {
-      //   body.style.setProperty('--backgroundColor-theme', '#ffaaee')
-      //   body.style.setProperty('--color-theme', '#ff88cc')
-      //   body.style.setProperty('--backgroundColorHover-theme', '#ff88cc')
-      //   body.style.setProperty('--colorHover-theme', '#ff88cc')
-      // } else if (this.acgnConfig.acgnTheme === 1000) {
-      //   body.style.setProperty('--backgroundColor-theme', '#91bef0')
-      //   body.style.setProperty('--color-theme', '#6eb1fd')
-      //   body.style.setProperty('--backgroundColorHover-theme', '#6eb1fd')
-      //   body.style.setProperty('--colorHover-theme', '#6eb1fd')
-      // }
     },
     saveAcgnConfig() {
       let backgroundImages = this.fileList.map((item) => {
