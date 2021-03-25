@@ -5,9 +5,17 @@
     :style="{ top: top + 'px', left: left + 'px', width: width + 'px', height: height + 'px' }"
     @click="clickBall"
   >
-    <img src="@/assets/noania.png" :style="{ width: width + 'px', height: height + 'px' }" />
-    <div class="float-ball-title">{{ title }}</div>
-    <div class="float-ball-subTitle">{{ subTitle }}</div>
+    <img
+      class="float-ball-image animate__animated animate__fadeIn__image"
+      :src="ballImage"
+      :style="{ width: width + 'px', height: height + 'px' }"
+    />
+    <div class="float-ball-title animate__animated animate__fadeIn" :style="{ fontSize: width / 4.3 + 'px' }">
+      {{ title }}
+    </div>
+    <div class="float-ball-subTitle animate__animated animate__fadeIn" :style="{ fontSize: width / 8 + 'px' }">
+      {{ subTitle }}
+    </div>
   </div>
 </template>
 
@@ -38,6 +46,7 @@ export default {
   },
   created() {
     this.ref = 'floatBall' + this.ballKey
+    this.ballImage = 'http://localhost:9810/acgnrecord/defaultImage/' + this.ballKey + '.jpg'
     this.createStlye()
   },
   mounted() {
@@ -46,7 +55,8 @@ export default {
   data() {
     return {
       ref: null,
-      floatBallCssAnime: null
+      floatBallCssAnime: null,
+      ballImage: ''
     }
   },
   methods: {
@@ -119,7 +129,7 @@ export default {
   height: 300px;
   transition: 0.3s ease;
   border-radius: 150px;
-  background-color: $bgColor;
+  background-color: transparent;
   color: $fontColor;
   display: flex;
   flex-direction: column;
@@ -133,8 +143,7 @@ export default {
     transition: 0.3s ease;
     font-size: 25px;
   }
-  img {
-    opacity: 0.5;
+  .float-ball-image {
     width: 300px;
     position: absolute;
     border-radius: 150px;
@@ -147,5 +156,16 @@ export default {
 }
 .destruction-ball {
   opacity: 0;
+}
+.animate__fadeIn__image {
+  animation-name: image_fadeIn;
+}
+@keyframes image_fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.5;
+  }
 }
 </style>

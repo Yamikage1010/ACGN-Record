@@ -1,5 +1,7 @@
 <template>
-  <div class="acgnContent">{{ windowType }}</div>
+  <div class="acgnContent">
+    {{ windowType }} <a href="https://bangumi.tv/subject_search/clannad?cat=all" target="_blank"> 跳转至bangumi搜索 </a>
+  </div>
 </template>
 
 <script>

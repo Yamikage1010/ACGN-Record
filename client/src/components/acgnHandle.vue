@@ -14,6 +14,10 @@
       <input v-model="acgnFormData.acgnTitle" />
     </div>
     <div class="acgn-form">
+      <label class="acgn-form-label">标题</label>
+      <input disabled />
+    </div>
+    <div class="acgn-form">
       <label class="acgn-form-label">副标题</label>
       <input v-model="acgnFormData.acgnSubTitle" />
     </div>

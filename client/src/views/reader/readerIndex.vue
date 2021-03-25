@@ -23,9 +23,9 @@
       :windowHeight="300"
       :windowWidth="300"
       :animateType="'flip'"
+      :windowKey="item.key"
       @click="setZIndex"
     >
-      <a href="https://bangumi.tv/subject_search/clannad?cat=all" target="_blank"> 跳转至bangumi搜索 </a>
     </move-window>
   </div>
 </template>
@@ -33,6 +33,7 @@
 <script>
 import floatBall from '@/components/floatBall'
 import moveWindow from '@/components/moveWindow.vue'
+import { ACGN } from '@/common/acgn'
 export default {
   components: {
     floatBall,
@@ -46,7 +47,7 @@ export default {
       ballTop,
       ballData: [
         {
-          ballKey: 'Anime',
+          ballKey: ACGN.A,
           title: 'Anime',
           subTitle: '动画',
           top: ballTop,
@@ -55,7 +56,7 @@ export default {
           height: ballWidth
         },
         {
-          ballKey: 'Comic',
+          ballKey: ACGN.C,
           title: 'Comic',
           subTitle: '漫画',
           top: ballTop,
@@ -64,7 +65,7 @@ export default {
           height: ballWidth
         },
         {
-          ballKey: 'Game',
+          ballKey: ACGN.G,
           title: 'Game',
           subTitle: '游戏',
           top: ballTop * 3 + ballWidth,
@@ -73,7 +74,7 @@ export default {
           height: ballWidth
         },
         {
-          ballKey: 'Novel',
+          ballKey: ACGN.N,
           title: 'Novel',
           subTitle: '小说',
           top: ballTop * 3 + ballWidth,

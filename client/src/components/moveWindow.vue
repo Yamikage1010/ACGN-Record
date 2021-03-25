@@ -18,12 +18,12 @@
     </div>
     <div class="move-window-main" :style="{ top: 40 + 'px' }">
       <acgn-config v-if="windowType === 'config'"></acgn-config>
-      <acgn-list v-else-if="windowType === 'list'"></acgn-list>
+      <acgn-list v-else-if="windowType === 'list'" :windowKey="windowKey"></acgn-list>
       <acgn-handle v-else-if="windowType === 'dataHandle'"></acgn-handle>
       <acgn-content v-else :windowType="windowType"></acgn-content>
       <slot></slot>
     </div>
-    <!-- <div class="move-window-footer" :style="{height:windowHFHeight+'px'}"></div> -->
+    <div class="move-window-footer" :style="{ height: windowHFHeight + 'px' }"></div>
   </div>
 </template>
 
@@ -91,7 +91,7 @@ export default {
       if (this.animateType == 'bounceIn') {
         this.$refs['moveWindow' + this.title].classList.add('animate__bounceOut')
       } else {
-        this.$refs['moveWindow' + this.title].classList.add('animate__flipOutY')
+        this.$refs['moveWindow' + this.title].classList.add('animate__bounceOut')
       }
       // this.windowShow = false;
       this.$emit('closeWindow')
@@ -111,22 +111,23 @@ export default {
   .move-window-footer {
     width: 100%;
     position: absolute;
-    background-color: $acgnThemeColor;
   }
   .move-window-header {
     top: 0%;
     display: flex;
     justify-content: space-around;
     align-items: center;
+    background-color: $acgnThemeColor;
   }
   .move-window-main {
     width: 100%;
     height: calc(100% - 40px);
     position: absolute;
     overflow: auto;
+    bottom: 17px;
   }
   .move-window-footer {
-    bottom: 0;
+    bottom: 0%;
   }
 }
 .window-animate-flip {

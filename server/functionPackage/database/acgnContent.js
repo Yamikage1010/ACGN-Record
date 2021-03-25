@@ -28,8 +28,19 @@ async function addAcgnContent(req) {
   console.log(result)
   return result
 }
-async function register(user) {
-  const result = await exec(sql.table('user').data(user).insert())
+async function getAcgnContentList(req) {
+  let selectData = {
+    uid: req.uid,
+    acgnType: req.body.acgnType
+  }
+  const result = await exec(sql.table('acgn_content').field('*').where(selectData).select())
+  if (result.length > 0) {
+    result.forEach((item) => {
+      item.acgnMemoryImage = JSON.parse(item.acgnMemoryImage)
+      item.acgnAttribute = JSON.parse(item.acgnAttribute)
+      item.acgnMusic = JSON.parse(item.acgnMusic)
+    })
+  }
   return result
 }
-module.exports = { addAcgnContent }
+module.exports = { addAcgnContent, getAcgnContentList }

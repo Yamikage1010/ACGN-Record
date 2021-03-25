@@ -69,6 +69,12 @@ select {
   }
 }
 
+input:disabled,
+select:disabled,
+button:disabled {
+  cursor: not-allowed;
+}
+
 .acgn-form-label {
   font-size: 18px;
 }
