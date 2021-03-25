@@ -11,11 +11,11 @@
     </div>
     <div class="acgn-form">
       <label class="acgn-form-label">标题</label>
-      <input :v-model="acgnFormData.acgnTitle" />
+      <input v-model="acgnFormData.acgnTitle" />
     </div>
     <div class="acgn-form">
       <label class="acgn-form-label">副标题</label>
-      <input :v-model="acgnFormData.acgnSubTitle" />
+      <input v-model="acgnFormData.acgnSubTitle" />
     </div>
     <div class="acgn-form">
       <label class="acgn-form-label">上传封面图</label>
@@ -24,7 +24,7 @@
         action="http://localhost:9810/acgnrecord/picUpload"
         ref="acgnContentImage"
         multiple
-        :auto-upload="false"
+        :auto-upload="true"
         :headers="requesHeaders"
         list-type="picture-card"
         :before-upload="beforeUpload"
@@ -68,6 +68,10 @@
       </div>
       <acgn-button @click="addAcgnAttribute">添加属性</acgn-button>
     </div>
+    <div class="acgn-form">
+      <label class="acgn-form-label">作品评析</label>
+      <input v-model="acgnFormData.acgnComment" />
+    </div>
     <div class="acgn-characters" v-for="(character, index) in acgnCharacters" :key="index">
       <div class="acgn-form">
         <label class="acgn-form-label">人物名字</label>
@@ -100,12 +104,13 @@
           class="upload-pic"
           action="http://localhost:9810/acgnrecord/picUpload"
           ref="acgnContentImage"
+          :data="{ characterIndex: index }"
           multiple
-          :auto-upload="false"
+          :auto-upload="true"
           :headers="requesHeaders"
           list-type="picture-card"
           :before-upload="beforeUpload"
-          :on-success="uploadSuccess"
+          :on-success="uploadCharacterSuccess"
           :on-progress="uploadProgress"
         >
           <div slot="file" slot-scope="{ file }">
@@ -129,8 +134,8 @@
 </template>
 
 <script>
+import { addAcgnContent } from '@/api/acgnContent'
 import { ACGN } from '@/common/acgn'
-import * as echarts from 'echarts'
 import acgnRadar from '@/components/acgnRadar'
 export default {
   components: {
@@ -209,7 +214,23 @@ export default {
   },
   methods: {
     addAcgnContent() {
-      this.$refs.acgnContentImage.submit()
+      console.log(this.acgnFormData)
+      console.log(this.acgnCharacters)
+      addAcgnContent({
+        acgnContent: JSON.stringify(this.acgnFormData),
+        acgnCharacters: JSON.stringify(this.acgnCharacters)
+      })
+        .then((res) => {
+          if (res.code == 200) {
+            this.$message.success(res.msg)
+          } else {
+            this.$message.warning(res.msg)
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+        })
+      // this.$refs.acgnContentImage.submit()
     },
     addAcgnAttribute() {
       this.acgnFormData.acgnAttribute.indicator.push({
@@ -230,6 +251,7 @@ export default {
       this.acgnCharacters.push({
         characterName: '',
         characterComment: '',
+        characterImage: [],
         characterAttribute: {
           indicator: [
             { name: '塑造', max: 100 },
@@ -237,11 +259,19 @@ export default {
             { name: '人设', max: 100 }
           ],
           dataValue: [90, 80, 70]
-        }
+        },
+        characterVoice: []
       })
     },
     uploadSuccess(response, file) {
-      console.log(file)
+      let exName = this.userData.uid + '_' + file.name
+      this.acgnFormData.acgnMemoryImage.push(exName)
+    },
+    uploadCharacterSuccess(response, file, fileList) {
+      console.log(response)
+      let characterIndex = response.data.index
+      let exName = this.userData.uid + '_' + file.name
+      this.acgnCharacters[characterIndex].characterImage.push(exName)
     },
     uploadMusicSuccess(response, file) {
       // console.log(file)

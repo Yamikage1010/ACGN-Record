@@ -9,6 +9,7 @@ var multipart = require('connect-multiparty')
 var multipartMiddleware = multipart({ maxFieldsSize: '10MB' })
 function fileRenameAndTurnUrl(req, res, dataType) {
   let file = req.files.file
+  let characterIndex = req.body.characterIndex || null
   var extname = req.uid + '_' + file.name
   var fileName = 'upload_uid' + extname
   console.log(file)
@@ -30,7 +31,8 @@ function fileRenameAndTurnUrl(req, res, dataType) {
           msg: '上传成功',
           data: {
             uid: req.uid,
-            file: file
+            file: file,
+            index: characterIndex
           }
         })
       }
