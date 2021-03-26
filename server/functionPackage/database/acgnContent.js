@@ -15,8 +15,6 @@ async function addAcgnContent(req) {
       acgnCharacter.characterImage = JSON.stringify(acgnCharacter.characterImage)
       acgnCharacter.characterAttribute = JSON.stringify(acgnCharacter.characterAttribute)
       acgnCharacter.characterVoice = JSON.stringify(acgnCharacter.characterVoice)
-      console.log(sql.table('acgn_characters').data(acgnCharacter).insert())
-      console.log(acgnCharacter)
       let result2 = await exec(sql.table('acgn_characters').data(acgnCharacter).insert())
       console.log(result2)
       if (!(result2.insertId || result2.insertId === 0)) {
@@ -43,4 +41,19 @@ async function getAcgnContentList(req) {
   }
   return result
 }
-module.exports = { addAcgnContent, getAcgnContentList }
+async function getAcgnCharacters(req) {
+  let selectData = {
+    uid: req.uid,
+    acgnId: req.body.acgnId
+  }
+  const result = await exec(sql.table('acgn_characters').field('*').where(selectData).select())
+  if (result.length > 0) {
+    result.forEach((item) => {
+      item.characterImage = JSON.parse(item.characterImage)
+      item.characterAttribute = JSON.parse(item.characterAttribute)
+      item.characterVoice = JSON.parse(item.characterVoice)
+    })
+  }
+  return result
+}
+module.exports = { addAcgnContent, getAcgnContentList, getAcgnCharacters }

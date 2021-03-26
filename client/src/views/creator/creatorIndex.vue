@@ -1,8 +1,8 @@
 <template>
   <div>
     <float-ball
-      v-for="item in ballData"
-      :key="item.ballKey"
+      v-for="(item, index) in ballData"
+      :key="item.ballKey + index"
       :ballKey="item.ballKey"
       :title="item.title"
       :subTitle="item.subTitle"
@@ -16,16 +16,19 @@
       v-dialogDrag
       v-for="(item, index) in windowData"
       :key="index"
-      :zIndex="index"
+      :zIndex="item.zIndex"
       :title="item.title"
       :top="item.top"
       :left="item.left"
+      :acgnEditData="item.acgnEditData"
       :windowHeight="item.height"
       :windowWidth="item.width"
-      :animateType="'flip'"
+      :animateType="item.animateType"
       :windowType="item.windowType"
       :windowKey="item.key"
+      @closeWindow="closeWindow(item.key, item.windowType)"
       @click="setZIndex"
+      @clickListItem="clickListItem"
     >
     </move-window>
   </div>
@@ -68,6 +71,16 @@ export default {
           height: ballTop
         }
       ],
+      addBallData: {
+        ballKey: 'add',
+        title: 'add',
+        subTitle: '新增作品',
+        top: ballTop,
+        left: ballWidth,
+        width: ballTop,
+        height: ballTop,
+        windowType: 'dataHandle'
+      },
       acgnBallData: [
         {
           ballKey: ACGN.A,
@@ -76,7 +89,8 @@ export default {
           top: ballTop2,
           left: ballWidth * 2.5,
           width: ballWidth,
-          height: ballWidth
+          height: ballWidth,
+          windowType: 'handleList'
         },
         {
           ballKey: ACGN.C,
@@ -85,7 +99,8 @@ export default {
           top: ballTop2,
           left: ballWidth * 4.5,
           width: ballWidth,
-          height: ballWidth
+          height: ballWidth,
+          windowType: 'handleList'
         },
         {
           ballKey: ACGN.G,
@@ -94,7 +109,8 @@ export default {
           top: ballTop2 * 3 + ballWidth,
           left: ballWidth * 2.5,
           width: ballWidth,
-          height: ballWidth
+          height: ballWidth,
+          windowType: 'handleList'
         },
         {
           ballKey: ACGN.N,
@@ -103,7 +119,8 @@ export default {
           top: ballTop2 * 3 + ballWidth,
           left: ballWidth * 4.5,
           width: ballWidth,
-          height: ballWidth
+          height: ballWidth,
+          windowType: 'handleList'
         }
       ],
       maxZIndex: 0, //置顶窗口zIndex值
@@ -119,28 +136,50 @@ export default {
         this.windowData.push({
           title: item.title,
           subTitle: item.subTitle,
+          zIndex: ++this.maxZIndex,
           key: item.ballKey,
           top: item.top,
           left: item.left,
           width: item.width,
           height: item.height,
-          windowType: item.windowType
+          windowType: item.windowType,
+          animateType: 'flip'
         })
         this.moveWindowCount++
       }
     },
-    // closeWindow(windowItemKey) {
-    //   console.log(this.windowData.findIndex(item => item.key == windowItemKey));
-    //   this.windowData.splice(this.windowData.findIndex(item => item.key == windowItemKey) - 1, 1);
-    //   this.windowData = this.windowData.filter(item => item.key);
-    // },
+    closeWindow(windowKey, windowType) {
+      if (windowType === 'handleList') {
+        let acgnBallData = { ...this.acgnBallData.find((item) => item.ballKey === windowKey) }
+        this.ballData.push(acgnBallData)
+      } else if (windowKey === 'add') {
+        this.ballData.push(this.addBallData)
+      }
+    },
     //点击窗口置顶
     setZIndex(e) {
-      if (e.srcElement.parentElement.className.toString().includes('move-window')) {
-        console.log(e.srcElement.parentElement.style.zIndex)
-        e.srcElement.parentElement.style.zIndex = ++this.maxZIndex
-      } else {
-        e.srcElement.style.zIndex = ++this.maxZIndex
+      let getMoveWindow = (element) => {
+        if (element.id === 'moveWindow') {
+          return element
+        } else {
+          return getMoveWindow(element.parentElement)
+        }
+      }
+      getMoveWindow(e.srcElement).style.zIndex = ++this.maxZIndex
+    },
+    clickListItem(value) {
+      console.log(value)
+      if (value.windowType === 'handleList') {
+        let acgnEditData = value.acgnContent
+        this.windowData.push({
+          acgnEditData: acgnEditData,
+          title: acgnEditData.acgnTitle,
+          subTitle: acgnEditData.acgnSubTitle,
+          zIndex: ++this.maxZIndex,
+          key: acgnEditData.acgnType,
+          windowType: 'dataHandle'
+        })
+        this.moveWindowCount++
       }
     }
   }

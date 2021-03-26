@@ -81,8 +81,6 @@ export default {
   },
   mounted() {
     this.$nextTick(() => {
-      console.log(this.radarOption.radar.indicator)
-      console.log(this.radarOption.series[0].data)
       this.radarOption.radar.indicator = this.indicator
       this.radarOption.series[0].data = [{ value: this.dataValue }]
       this.drawAcgnRadar()

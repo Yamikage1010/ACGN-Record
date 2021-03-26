@@ -2,6 +2,7 @@
   <div
     :ref="'moveWindow' + title"
     v-if="windowShow"
+    id="moveWindow"
     class="move-window animate__animated"
     :class="{ 'window-animate-flip': animateType === 'flip', animate__bounceIn: animateType === 'bounceIn' }"
     :style="{
@@ -14,16 +15,22 @@
   >
     <div class="move-window-header" :style="{ height: 40 + 'px' }">
       <div>{{ title }}</div>
-      <a @click="closeWindow" style="cursor: pointer">关闭</a>
+      <a @click.stop="closeWindow" style="cursor: pointer">关闭</a>
     </div>
     <div class="move-window-main" :style="{ top: 40 + 'px' }">
       <acgn-config v-if="windowType === 'config'"></acgn-config>
-      <acgn-list v-else-if="windowType === 'list'" :windowKey="windowKey"></acgn-list>
-      <acgn-handle v-else-if="windowType === 'dataHandle'"></acgn-handle>
+      <acgn-list v-else-if="windowType === 'list'" :windowKey="windowKey" @clickListItem="clickListItem"></acgn-list>
+      <acgn-handle-list
+        v-else-if="windowType === 'handleList'"
+        :windowKey="windowKey"
+        @clickListItem="clickListItem"
+      ></acgn-handle-list>
+      <acgn-handle v-else-if="windowType === 'dataHandle'" :acgnEditData="acgnEditData"></acgn-handle>
       <acgn-content v-else :windowType="windowType"></acgn-content>
       <slot></slot>
     </div>
-    <div class="move-window-footer" :style="{ height: windowHFHeight + 'px' }"></div>
+    <!-- <div class="move-window-footer" :style="{ height: windowHFHeight + 'px' }"></div> -->
+    <div class="move-window-footer"></div>
   </div>
 </template>
 
@@ -31,15 +38,20 @@
 import acgnContent from '@/components/acgnContent'
 import acgnHandle from '@/components/acgnHandle'
 import acgnList from '@/components/acgnList'
+import acgnHandleList from '@/components/acgnHandleList'
 import acgnConfig from '@/components/acgnConfig'
 export default {
   components: {
     acgnContent,
     acgnList,
+    acgnHandleList,
     acgnConfig,
     acgnHandle
   },
   props: {
+    acgnEditData: {
+      default: null
+    },
     zIndex: {
       type: Number,
       default: 0
@@ -95,6 +107,12 @@ export default {
       }
       // this.windowShow = false;
       this.$emit('closeWindow')
+    },
+    clickListItem(acgnContent) {
+      this.$emit('clickListItem', {
+        acgnContent: acgnContent,
+        windowType: this.windowType
+      })
     }
   }
 }
@@ -121,12 +139,13 @@ export default {
   }
   .move-window-main {
     width: 100%;
-    height: calc(100% - 40px);
+    height: calc(100% - 50px);
     position: absolute;
     overflow: auto;
-    bottom: 17px;
+    bottom: 10px;
   }
   .move-window-footer {
+    height: 10px;
     bottom: 0%;
   }
 }

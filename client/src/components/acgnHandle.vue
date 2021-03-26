@@ -14,10 +14,6 @@
       <input v-model="acgnFormData.acgnTitle" />
     </div>
     <div class="acgn-form">
-      <label class="acgn-form-label">标题</label>
-      <input disabled />
-    </div>
-    <div class="acgn-form">
       <label class="acgn-form-label">副标题</label>
       <input v-model="acgnFormData.acgnSubTitle" />
     </div>
@@ -138,7 +134,7 @@
 </template>
 
 <script>
-import { addAcgnContent } from '@/api/acgnContent'
+import { addAcgnContent, getAcgnCharacters } from '@/api/acgnContent'
 import { ACGN } from '@/common/acgn'
 import acgnRadar from '@/components/acgnRadar'
 export default {
@@ -146,12 +142,8 @@ export default {
     acgnRadar
   },
   props: {
-    acgnContent: {
-      default: () => {
-        return {
-          acgnType: ACGN.A
-        }
-      }
+    acgnEditData: {
+      default: null
     }
   },
   data() {
@@ -195,6 +187,21 @@ export default {
         { name: 'CV', max: 100 }
       ],
       characterDataValue: [89, 98, 50, 40]
+    }
+  },
+  created() {
+    if (this.acgnEditData) {
+      this.acgnFormData = { ...this.acgnEditData }
+      getAcgnCharacters({
+        acgnId: this.acgnEditData.acgnId
+      }).then((res) => {
+        if (res.code == 200) {
+          this.acgnCharacters.push(...res.data.acgnCharacters)
+          this.$message.success(res.msg)
+        } else {
+          this.$message.warning(res.msg)
+        }
+      })
     }
   },
   mounted() {
