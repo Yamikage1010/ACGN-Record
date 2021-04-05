@@ -75,12 +75,39 @@ button:disabled {
   cursor: not-allowed;
 }
 
-.acgn-form-label {
+
+.image-manage-mask {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  opacity: .5;
+  background: #000;
+  z-index: 1998;
+}
+
+.acgn-form-item-label {
   font-size: 18px;
 }
 
-
 .acgn-form {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.acgn-form-box {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: column;
+  border: 1px solid $fontColor;
+  flex: 0 0 40%;
+  padding: 3% 0;
+  margin: 2% 0;
+}
+
+.acgn-form-item {
   display: flex;
   flex-direction: column;
   justify-content: space-around;

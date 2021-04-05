@@ -1,7 +1,8 @@
 const { init, exec, sql, transaction } = require('../../config/mysqlConfig')
 async function addAcgnContent(req) {
   let acgnContent = JSON.parse(req.body.acgnContent)
-  acgnContent.uid = req.uid
+  acgnContent.acgnUid = req.acgnUid
+  acgnContent.acgnStatus = 'normal'
   acgnContent.acgnMemoryImage = JSON.stringify(acgnContent.acgnMemoryImage)
   acgnContent.acgnAttribute = JSON.stringify(acgnContent.acgnAttribute)
   acgnContent.acgnMusic = JSON.stringify(acgnContent.acgnMusic)
@@ -10,7 +11,7 @@ async function addAcgnContent(req) {
     let acgnCharacters = JSON.parse(req.body.acgnCharacters)
     for (let i = 0; i < acgnCharacters.length; i++) {
       let acgnCharacter = { ...acgnCharacters[i] }
-      acgnCharacter.uid = req.uid
+      acgnCharacter.acgnUid = req.acgnUid
       acgnCharacter.acgnId = result.insertId
       acgnCharacter.characterImage = JSON.stringify(acgnCharacter.characterImage)
       acgnCharacter.characterAttribute = JSON.stringify(acgnCharacter.characterAttribute)
@@ -28,7 +29,7 @@ async function addAcgnContent(req) {
 }
 async function getAcgnContentList(req) {
   let selectData = {
-    uid: req.uid,
+    acgnUid: req.acgnUid,
     acgnType: req.body.acgnType
   }
   const result = await exec(sql.table('acgn_content').field('*').where(selectData).select())
@@ -43,7 +44,7 @@ async function getAcgnContentList(req) {
 }
 async function getAcgnCharacters(req) {
   let selectData = {
-    uid: req.uid,
+    acgnUid: req.acgnUid,
     acgnId: req.body.acgnId
   }
   const result = await exec(sql.table('acgn_characters').field('*').where(selectData).select())

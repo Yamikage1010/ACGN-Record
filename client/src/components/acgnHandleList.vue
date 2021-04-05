@@ -25,9 +25,9 @@ export default {
     }
   },
   mounted() {
-    this.userData = this.$localStorage.get('userData') || { uid: null }
+    this.userData = this.$localStorage.get('userData') || { acgnUid: null }
     getAcgnContentList({
-      uid: this.userData.uid,
+      acgnUid: this.userData.acgnUid,
       acgnType: this.windowKey
     }).then((res) => {
       if (res.code == 200) {

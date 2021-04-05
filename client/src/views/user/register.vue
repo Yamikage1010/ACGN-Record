@@ -3,15 +3,15 @@
     <div class="acgn-logo">ACGN Record</div>
     <div>
       <label>用户名：</label>
-      <input type="text" v-model="user.name" />
+      <input type="text" v-model="user.acgnUserName" />
     </div>
     <div>
       <label>密<span style="opacity: 0">—</span>码：</label>
-      <input type="text" v-model="user.password" />
+      <input type="text" v-model="user.acgnUserPassword" />
     </div>
     <div>
       <label>邮<span style="opacity: 0">—</span>箱：</label>
-      <input type="text" v-model="user.email" />
+      <input type="text" v-model="user.acgnUserEmail" />
     </div>
     <div>
       <label>验证码：</label>
@@ -29,9 +29,9 @@ export default {
   data() {
     return {
       user: {
-        name: '',
-        password: '',
-        email: '',
+        acgnUserName: '',
+        acgnUserPassword: '',
+        acgnUserEmail: '',
         code: ''
       },
       loginRes: null
@@ -54,7 +54,7 @@ export default {
     },
     getCode() {
       sendEmail({
-        email: this.user.email
+        acgnUserEmail: this.user.acgnUserEmail
       }).then((res) => {
         if (res.code == 200) {
           this.$message.success(res.msg)

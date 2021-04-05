@@ -1,8 +1,8 @@
 class User {
   constructor(user) {
-    this.name = user.name
-    this.password = user.password
-    this.email = user.email
+    this.acgnUserName = user.acgnUserName
+    this.acgnUserPassword = user.acgnUserPassword
+    this.acgnUserEmail = user.acgnUserEmail
     this.acgnConfig = this.getInitConfig()
     this.createDate = new Date().getTime()
   }

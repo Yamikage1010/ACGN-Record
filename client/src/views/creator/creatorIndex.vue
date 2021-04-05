@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="creator-index">
     <float-ball
       v-for="(item, index) in ballData"
       :key="item.ballKey + index"
@@ -31,17 +31,21 @@
       @clickListItem="clickListItem"
     >
     </move-window>
+    <image-manage ref="imageManage"></image-manage>
   </div>
 </template>
 
 <script>
+import Bus from '@/common/bus'
 import floatBall from '@/components/floatBall'
 import moveWindow from '@/components/moveWindow.vue'
 import { ACGN } from '@/common/acgn'
+import imageManage from '@/components/imageManage.vue'
 export default {
   components: {
     floatBall,
-    moveWindow
+    moveWindow,
+    imageManage
   },
   data() {
     let ballWidth = window.innerWidth / 6
@@ -128,6 +132,12 @@ export default {
       windowData: []
     }
   },
+  mounted() {
+    Bus.$on('openImageManage', (imageList) => {
+      console.log(1111)
+      this.$refs.imageManage.openImageManage(imageList)
+    })
+  },
   methods: {
     clickBall(item) {
       if (item.ballKey == 'manage') {
@@ -187,4 +197,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.creator-index {
+  width: 100%;
+  height: 100%;
+}
 </style>

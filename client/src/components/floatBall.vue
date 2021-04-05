@@ -134,6 +134,7 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  z-index: 1;
   cursor: pointer;
   .float-ball-title {
     font-size: 70px;

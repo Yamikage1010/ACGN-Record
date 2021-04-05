@@ -11,7 +11,7 @@ const check = {} //声明一个对象缓存邮箱和验证码，留着
 
 //发送邮件接口
 router.post('/acgnrecord/sendEmail', function (req, res, next) {
-  const mail = req.body.email
+  const mail = req.body.acgnUserEmail
   if (!mail) {
     return res.send('参数错误')
   } //email出错时或者为空时
@@ -38,8 +38,8 @@ router.post('/acgnrecord/sendEmail', function (req, res, next) {
 //登录接口
 router.post('/acgnrecord/login', urlencodedParser, (req, res) => {
   let user = {
-    name: req.body.name,
-    password: req.body.password
+    acgnUserName: req.body.acgnUserName,
+    acgnUserPassword: req.body.acgnUserPassword
   }
   login(user)
     .then((result) => {
@@ -74,7 +74,7 @@ router.post('/acgnrecord/login', urlencodedParser, (req, res) => {
 router.post('/acgnrecord/register', urlencodedParser, (req, res) => {
   console.log(check)
   let user = new User(req.body)
-  if (req.body.code == check[user.email]) {
+  if (req.body.code == check[user.acgnUserEmail]) {
     register(user)
       .then((result) => {
         console.log(result)

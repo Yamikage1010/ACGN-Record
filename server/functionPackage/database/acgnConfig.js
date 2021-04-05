@@ -1,6 +1,6 @@
 const { init, exec, sql, transaction } = require('../../config/mysqlConfig')
-async function saveAcgnConfig(uid, acgnConfig) {
-  const result = await exec(sql.table('user').where({ uid: uid }).data({ acgnConfig: acgnConfig }).update())
+async function saveAcgnConfig(acgnUid, acgnConfig) {
+  const result = await exec(sql.table('user').where({ acgnUid: acgnUid }).data({ acgnConfig: acgnConfig }).update())
   console.log(result)
   return result
 }

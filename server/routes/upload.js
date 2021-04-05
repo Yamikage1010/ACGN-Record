@@ -10,7 +10,7 @@ var multipartMiddleware = multipart({ maxFieldsSize: '10MB' })
 function fileRenameAndTurnUrl(req, res, dataType) {
   let file = req.files.file
   let characterIndex = req.body.characterIndex || null
-  var extname = req.uid + '_' + file.name
+  var extname = req.acgnUid + '_' + file.name
   var fileName = 'upload_uid' + extname
   console.log(file)
   fs.rename(
@@ -30,7 +30,7 @@ function fileRenameAndTurnUrl(req, res, dataType) {
           code: 200,
           msg: '上传成功',
           data: {
-            uid: req.uid,
+            acgnUid: req.acgnUid,
             file: file,
             index: characterIndex
           }

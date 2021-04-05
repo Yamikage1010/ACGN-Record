@@ -147,13 +147,13 @@ export default {
   },
   methods: {
     rightClick(event) {
-      let event1 = event.target
-      let event2 = event.currentTarget
-      if (event1 === event2) {
-        this.mouseTop = event.clientY
-        this.mouseLeft = event.clientX
-        this.hasMenu = !this.hasMenu
-      }
+      // let event1 = event.target
+      // let event2 = event.currentTarget
+      // if (event1 === event2) {
+      this.mouseTop = event.clientY
+      this.mouseLeft = event.clientX
+      this.hasMenu = !this.hasMenu
+      // }
     },
     closeSakura() {
       this.acgnConfig.sakuraShow = !this.acgnConfig.sakuraShow

@@ -7,8 +7,8 @@ var router = express.Router()
 
 //保存系统设置
 router.post('/acgnrecord/saveAcgnConfig', function (req, res, next) {
-  console.log(req.uid, req.body.acgnConfig)
-  saveAcgnConfig(req.uid, req.body.acgnConfig)
+  console.log(req.acgnUid, req.body.acgnConfig)
+  saveAcgnConfig(req.acgnUid, req.body.acgnConfig)
     .then((results) => {
       console.log(results)
       if (results.changedRows > 0) {

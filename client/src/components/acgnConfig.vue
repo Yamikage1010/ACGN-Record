@@ -1,27 +1,27 @@
 <template>
   <div class="acgnConfig">
-    <div class="acgn-form">
+    <div class="acgn-form-item">
       <label>樱花特效</label>
       <el-radio-group v-model="acgnConfig.sakuraShow">
         <el-radio :label="true">默认开启</el-radio>
         <el-radio :label="false">默认关闭</el-radio>
       </el-radio-group>
     </div>
-    <div class="acgn-form">
+    <div class="acgn-form-item">
       <label>主题颜色</label>
       <el-radio-group v-model="acgnConfig.acgnTheme" @change="changeTheme">
         <el-radio :label="1001">樱花粉</el-radio>
         <el-radio :label="1000">蕾姆蓝</el-radio>
       </el-radio-group>
     </div>
-    <div class="acgn-form">
+    <div class="acgn-form-item">
       <label>背景音乐</label>
       <el-radio-group v-model="acgnConfig.autoplay">
         <el-radio :label="true">默认播放</el-radio>
         <el-radio :label="false">默认关闭</el-radio>
       </el-radio-group>
     </div>
-    <div class="acgn-form">
+    <div class="acgn-form-item">
       <label>背景图片</label>
       <el-radio-group v-model="acgnConfig.slidesOrOnly">
         <el-radio :label="true">默认幻灯片</el-radio>
@@ -63,7 +63,7 @@
       </el-upload>
     </div>
 
-    <div class="acgn-form">
+    <div class="acgn-form-item">
       <label>上传音乐</label>
       <el-upload
         class="upload-demo"
@@ -114,7 +114,7 @@ export default {
   },
   mounted() {
     this.requesHeaders.token = this.$localStorage.get('Token')
-    this.userData = this.$localStorage.get('userData') || { uid: null }
+    this.userData = this.$localStorage.get('userData') || { acgnUid: null }
     if (this.$localStorage.get('acgnConfig')) {
       this.acgnConfig = this.$localStorage.get('acgnConfig')
       if (this.acgnConfig.backgroundImages && this.acgnConfig.backgroundImages.length != 0) {
@@ -146,12 +146,12 @@ export default {
     saveAcgnConfig() {
       let backgroundImages = this.fileList.map((item) => {
         if (item.status === 'success') {
-          return this.userData.uid + '_' + item.file.name
+          return this.userData.acgnUid + '_' + item.file.name
         }
       })
       let backgroundMusic = this.musicList.map((item) => {
         // if (item.status === 'success') {
-        return this.userData.uid + '_' + item
+        return this.userData.acgnUid + '_' + item
         // }
       })
       if (!this.acgnConfig.backgroundImages) {

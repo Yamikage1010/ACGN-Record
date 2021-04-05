@@ -1,88 +1,97 @@
 <template>
-  <div class="acgn-handle">
-    <div class="acgn-form">
-      <label class="acgn-form-label">作品类型</label>
-      <select>
-        <option :value="ACGN.A">{{ ACGN.A }}</option>
-        <option :value="ACGN.C">{{ ACGN.C }}</option>
-        <option :value="ACGN.G">{{ ACGN.G }}</option>
-        <option :value="ACGN.N">{{ ACGN.N }}</option>
-      </select>
+  <div class="acgn-handle acgn-form">
+    <div class="acgn-form-box">
+      <div class="acgn-form-item">
+        <label class="acgn-form-item-label">作品类型</label>
+        <select>
+          <option :value="ACGN.A">{{ ACGN.A }}</option>
+          <option :value="ACGN.C">{{ ACGN.C }}</option>
+          <option :value="ACGN.G">{{ ACGN.G }}</option>
+          <option :value="ACGN.N">{{ ACGN.N }}</option>
+        </select>
+      </div>
+      <div class="acgn-form-item">
+        <label class="acgn-form-item-label">标题</label>
+        <input v-model="acgnFormData.acgnTitle" />
+      </div>
+      <div class="acgn-form-item">
+        <label class="acgn-form-item-label">副标题</label>
+        <input v-model="acgnFormData.acgnSubTitle" />
+      </div>
     </div>
-    <div class="acgn-form">
-      <label class="acgn-form-label">标题</label>
-      <input v-model="acgnFormData.acgnTitle" />
-    </div>
-    <div class="acgn-form">
-      <label class="acgn-form-label">副标题</label>
-      <input v-model="acgnFormData.acgnSubTitle" />
-    </div>
-    <div class="acgn-form">
-      <label class="acgn-form-label">上传封面图</label>
-      <el-upload
-        class="upload-pic"
-        action="http://localhost:9810/acgnrecord/picUpload"
-        ref="acgnContentImage"
-        multiple
-        :auto-upload="true"
-        :headers="requesHeaders"
-        list-type="picture-card"
-        :before-upload="beforeUpload"
-        :on-success="uploadSuccess"
-        :on-progress="uploadProgress"
-      >
-        <div slot="file" slot-scope="{ file }">
-          <div class="upload-mask">
-            <!-- <div class="upload-status">{{ fileStatus(file) }}</div>
+    <div class="acgn-form-box">
+      <div class="acgn-form-item">
+        <label class="acgn-form-item-label">上传封面图</label>
+        <acgn-button @click="openImageManage">图片管理</acgn-button>
+        <el-upload
+          class="upload-pic"
+          action="http://localhost:9810/acgnrecord/picUpload"
+          ref="acgnContentImage"
+          multiple
+          :auto-upload="true"
+          :headers="requesHeaders"
+          list-type="picture-card"
+          :before-upload="beforeUpload"
+          :on-success="uploadSuccess"
+          :on-progress="uploadProgress"
+        >
+          <div slot="file" slot-scope="{ file }">
+            <div class="upload-mask">
+              <!-- <div class="upload-status">{{ fileStatus(file) }}</div>
             <div class="upload-progress">{{ fileProgress(file) }}</div> -->
-          </div>
-          <img class="el-upload-list__item-thumbnail" :src="file.url" alt="" />
-          <!-- <span class="el-upload-list__item-actions">
+            </div>
+            <img class="el-upload-list__item-thumbnail" :src="file.url" alt="" />
+            <!-- <span class="el-upload-list__item-actions">
             <span class="el-upload-list__item-preview" @click="handlePictureCardPreview(file)">查看 </span>
           </span> -->
-        </div>
-      </el-upload>
-    </div>
-    <div class="acgn-form">
-      <label class="acgn-form-label">评分</label>
-      <el-rate v-model="acgnFormData.acgnScore" :max="10"></el-rate>
-    </div>
-    <div class="acgn-form">
-      <label class="acgn-form-label">属性评级</label>
-      <acgn-radar
-        :width="400"
-        :height="400"
-        :indicator="acgnFormData.acgnAttribute.indicator"
-        :dataValue="acgnFormData.acgnAttribute.dataValue"
-      ></acgn-radar>
-      <div class="acgn-attribute">
-        <div class="attributeList" v-for="(item, index) in acgnFormData.acgnAttribute.indicator" :key="index">
-          <div class="attribute-name" v-if="index < 3">{{ item.name }}</div>
-          <input class="attribute-name" v-else v-model="item.name" />：
-          <input
-            class="attribute-value"
-            @change="AcgnAttributeChange"
-            v-model="acgnFormData.acgnAttribute.dataValue[index]"
-          />
-        </div>
+          </div>
+        </el-upload>
       </div>
-      <acgn-button @click="addAcgnAttribute">添加属性</acgn-button>
     </div>
-    <div class="acgn-form">
-      <label class="acgn-form-label">作品评析</label>
-      <input v-model="acgnFormData.acgnComment" />
+    <div class="acgn-form-box">
+      <div class="acgn-form-item">
+        <label class="acgn-form-item-label">评分</label>
+        <el-rate v-model="acgnFormData.acgnScore" :max="10"></el-rate>
+      </div>
+      <div class="acgn-form-item">
+        <label class="acgn-form-item-label">作品评析</label>
+        <input v-model="acgnFormData.acgnComment" />
+      </div>
+    </div>
+    <div class="acgn-form-box">
+      <div class="acgn-form-item">
+        <label class="acgn-form-item-label">属性评级</label>
+        <acgn-radar
+          :width="400"
+          :height="400"
+          :indicator="acgnFormData.acgnAttribute.indicator"
+          :dataValue="acgnFormData.acgnAttribute.dataValue"
+        ></acgn-radar>
+        <div class="acgn-attribute">
+          <div class="attributeList" v-for="(item, index) in acgnFormData.acgnAttribute.indicator" :key="index">
+            <div class="attribute-name" v-if="index < 3">{{ item.name }}</div>
+            <input class="attribute-name" v-else v-model="item.name" />：
+            <input
+              class="attribute-value"
+              @change="AcgnAttributeChange"
+              v-model="acgnFormData.acgnAttribute.dataValue[index]"
+            />
+          </div>
+        </div>
+        <acgn-button @click="addAcgnAttribute">添加属性</acgn-button>
+      </div>
     </div>
     <div class="acgn-characters" v-for="(character, index) in acgnCharacters" :key="index">
-      <div class="acgn-form">
-        <label class="acgn-form-label">人物名字</label>
+      <div class="acgn-form-item">
+        <label class="acgn-form-item-label">人物名字</label>
         <input v-model="character.characterName" />
       </div>
-      <div class="acgn-form">
-        <label class="acgn-form-label">人物评析</label>
+      <div class="acgn-form-item">
+        <label class="acgn-form-item-label">人物评析</label>
         <input v-model="character.characterComment" />
       </div>
-      <div class="acgn-form">
-        <label class="acgn-form-label">人物评级</label>
+      <div class="acgn-form-item">
+        <label class="acgn-form-item-label">人物评级</label>
         <acgn-radar
           :width="300"
           :height="300"
@@ -98,8 +107,8 @@
         <acgn-button @click="addCharacterAttribute(index)">添加属性</acgn-button>
       </div>
 
-      <div class="acgn-form">
-        <label class="acgn-form-label">上传人物图</label>
+      <div class="acgn-form-item">
+        <label class="acgn-form-item-label">上传人物图</label>
         <el-upload
           class="upload-pic"
           action="http://localhost:9810/acgnrecord/picUpload"
@@ -126,14 +135,19 @@
         </el-upload>
       </div>
     </div>
-    <acgn-button @click="addCharacters">添加人物</acgn-button>
-    <div class="acgn-form">
-      <acgn-button @click="addAcgnContent">确认新增</acgn-button>
+    <div class="acgn-form-box">
+      <div class="acgn-form-item">
+        <acgn-button @click="addCharacters">添加人物</acgn-button>
+      </div>
+      <div class="acgn-form-item">
+        <acgn-button @click="addAcgnContent">确认新增</acgn-button>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
+import Bus from '@/common/bus'
 import { addAcgnContent, getAcgnCharacters } from '@/api/acgnContent'
 import { ACGN } from '@/common/acgn'
 import acgnRadar from '@/components/acgnRadar'
@@ -206,7 +220,7 @@ export default {
   },
   mounted() {
     this.requesHeaders.token = this.$localStorage.get('Token')
-    this.userData = this.$localStorage.get('userData') || { uid: null }
+    this.userData = this.$localStorage.get('userData') || { acgnUid: null }
   },
   computed: {
     fileStatus() {
@@ -243,6 +257,11 @@ export default {
         })
       // this.$refs.acgnContentImage.submit()
     },
+    openImageManage() {
+      let imageList = this.acgnFormData.acgnMemoryImage
+      Bus.$emit('openImageManage', imageList)
+      console.log(111111)
+    },
     addAcgnAttribute() {
       this.acgnFormData.acgnAttribute.indicator.push({
         name: '属性名',
@@ -275,13 +294,13 @@ export default {
       })
     },
     uploadSuccess(response, file) {
-      let exName = this.userData.uid + '_' + file.name
+      let exName = this.userData.acgnUid + '_' + file.name
       this.acgnFormData.acgnMemoryImage.push(exName)
     },
     uploadCharacterSuccess(response, file, fileList) {
       console.log(response)
       let characterIndex = response.data.index
-      let exName = this.userData.uid + '_' + file.name
+      let exName = this.userData.acgnUid + '_' + file.name
       this.acgnCharacters[characterIndex].characterImage.push(exName)
     },
     uploadMusicSuccess(response, file) {
@@ -312,7 +331,7 @@ input {
     }
   }
 }
-.acgn-form {
+.acgn-form-item {
   .acgn-attribute {
     display: flex;
     justify-content: center;

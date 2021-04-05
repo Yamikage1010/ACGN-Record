@@ -1,13 +1,13 @@
 <template>
   <div class="acgn-login">
     <div class="acgn-logo">ACGN Record</div>
-    <div class="user-name">
+    <div class="user-acgnUserName">
       <label>用户名：</label>
-      <input type="text" v-model="user.name" @keyup.enter="userLogin" />
+      <input type="text" v-model="user.acgnUserName" @keyup.enter="userLogin" />
     </div>
-    <div class="user-password">
+    <div class="user-acgnUserPassword">
       <label>密<span style="opacity: 0">—</span>码：</label>
-      <input type="text" v-model="user.password" @keyup.enter="userLogin" />
+      <input type="text" v-model="user.acgnUserPassword" @keyup.enter="userLogin" />
     </div>
     <!-- <button @click="userLogin">登录</button> -->
     <acgn-button @click="userLogin" :fontSize="20">登录</acgn-button>
@@ -23,8 +23,8 @@ export default {
   data() {
     return {
       user: {
-        name: '',
-        password: ''
+        acgnUserName: '',
+        acgnUserPassword: ''
       },
       loginRes: null,
       moveWindowCount: 1, //窗口数量
@@ -35,11 +35,11 @@ export default {
   methods: {
     userLogin() {
       login({
-        name: this.user.name,
-        password: this.user.password
+        acgnUserName: this.user.acgnUserName,
+        acgnUserPassword: this.user.acgnUserPassword
       }).then((res) => {
         if (res.code == 200) {
-          this.loginRes = res.data.name
+          this.loginRes = res.data.acgnUserName
           this.$message.success(res.msg)
           this.$localStorage.set('Token', res.data.token)
           this.$localStorage.set('acgnConfig', res.data.acgnConfig)

@@ -33,10 +33,10 @@ module.exports = (req, res, next) => {
       })
     default:
   }
-  exec(sql.table('user').field('uid,name').where({ token: token }).select())
+  exec(sql.table('user').field('acgnUid,acgnUserName').where({ token: token }).select())
     .then((result) => {
       if (result[0]) {
-        req.uid = result[0].uid
+        req.acgnUid = result[0].acgnUid
         next()
       } else {
         return res.status(401).json({
