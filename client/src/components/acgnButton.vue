@@ -1,6 +1,7 @@
 <template>
   <button
     class="acgn-button"
+    :class="{ 'acgn-button-danger': buttonType === 'danger' }"
     :style="{ width: width + 'px', fontSize: fontSize + 'px', cursor: disabled ? 'wait' : 'pointer' }"
     @click="click"
     :disabled="disabled"
@@ -20,11 +21,15 @@ export default {
     },
     disabled: {
       default: false
+    },
+    buttonType: {
+      default: 'normal'
     }
   },
   methods: {
-    click() {
+    click(event) {
       this.$emit('click')
+      event.stopPropagation()
     }
   }
 }
@@ -44,6 +49,12 @@ export default {
     background-color: $acgnThemeBGColorHover;
     transform: scale(1.03);
     cursor: pointer;
+  }
+}
+.acgn-button-danger {
+  background-color: #ff4c4c;
+  &:hover {
+    background-color: #ff0000;
   }
 }
 </style>
