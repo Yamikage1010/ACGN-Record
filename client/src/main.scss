@@ -127,7 +127,10 @@ button:disabled {
       background: $acgnThemeColor;
     }
 
-    .el-upload-dragger {}
+    .el-upload-dragger {
+      width: auto;
+      height: auto;
+    }
 
     .el-upload-list__item {
       background-color: rgba(255, 255, 255, 0);

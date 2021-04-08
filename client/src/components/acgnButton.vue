@@ -24,12 +24,17 @@ export default {
     },
     buttonType: {
       default: 'normal'
+    },
+    noStop: {
+      default: false
     }
   },
   methods: {
     click(event) {
       this.$emit('click')
-      event.stopPropagation()
+      if (!this.noStop) {
+        event.stopPropagation()
+      }
     }
   }
 }

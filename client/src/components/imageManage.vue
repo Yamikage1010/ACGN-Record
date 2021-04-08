@@ -12,12 +12,27 @@
       <div class="close-manage" v-if="imageManageVisible" @click="closeImageManage">X</div>
       <div class="image-manage-left">
         <div class="image-box">
-          <img :src="'http://localhost:9810/acgnrecord/image/' + leftImage" />
+          <img :src="leftImage" />
         </div>
       </div>
       <div class="image-manage-right">
-        <div class="image-box" v-for="(imgItem, index) in imageManageList" :key="index" @click="clickImage(imgItem)">
-          <img :src="'http://localhost:9810/acgnrecord/image/' + imgItem" />
+        <div
+          class="image-box"
+          v-for="(imgItem, index) in imageManageList"
+          :key="index"
+          @click="clickImage(imgItem.url)"
+        >
+          <div class="image-box-mask" v-if="imgItem.status !== 'noNowUpData'">
+            <!-- {{ imgItem.status === 'success' ? '上传成功' : '上传失败' }} -->
+            <el-progress
+              type="circle"
+              :width="70"
+              :percentage="imgItem.loaded"
+              :stroke-width="3"
+              :status="imgItem.status"
+            ></el-progress>
+          </div>
+          <img :src="imgItem.url" />
           <div class="setting-image">
             <acgn-button v-if="index !== 0" :fontSize="10" :width="50" @click="setTitleImage(index)">封面</acgn-button>
             <acgn-button :fontSize="10" :width="50" :buttonType="'danger'" @click="deleteImage(index)"
@@ -25,9 +40,39 @@
             >
           </div>
         </div>
+        <div class="image-box">
+          <el-upload
+            class="upload-pic"
+            action="http://localhost:9810/acgnrecord/picUpload"
+            :show-file-list="false"
+            :auto-upload="true"
+            :list-type="'picture'"
+            :headers="requesHeaders"
+            :before-upload="beforeUpload"
+            :on-success="uploadSuccess"
+            :on-progress="uploadProgress"
+            drag
+            multiple
+          >
+            <img src="http://localhost:9810/acgnrecord/defaultImage/sora.png" />
+          </el-upload>
+        </div>
       </div>
       <div slot="footer">
-        <acgn-button>上传图片</acgn-button>
+        <el-upload
+          class="upload-pic"
+          action="http://localhost:9810/acgnrecord/picUpload"
+          multiple
+          :show-file-list="false"
+          :auto-upload="true"
+          :list-type="'picture'"
+          :headers="requesHeaders"
+          :before-upload="beforeUpload"
+          :on-success="uploadSuccess"
+          :on-progress="uploadProgress"
+        >
+          <acgn-button :noStop="true">上传图片</acgn-button>
+        </el-upload>
         <acgn-button @click="saveImageManage">保存</acgn-button>
       </div>
     </el-dialog>
@@ -39,18 +84,30 @@
 export default {
   data() {
     return {
+      userData: {},
       imageManageList: [],
       imageList: [],
       leftImage: '',
-      imageManageVisible: false
+      imageManageVisible: false,
+      requesHeaders: {}
     }
+  },
+  mounted() {
+    this.requesHeaders.token = this.$localStorage.get('Token')
+    this.userData = this.$localStorage.get('userData') || { acgnUid: null }
   },
   methods: {
     openImageManage(imageList) {
       console.log(imageList)
       this.imageList = imageList
-      this.imageManageList = [...imageList]
-      this.leftImage = this.imageManageList[0]
+      this.imageManageList = imageList.map((item) => {
+        return {
+          name: item,
+          status: 'noNowUpData',
+          url: 'http://localhost:9810/acgnrecord/image/' + item
+        }
+      })
+      this.leftImage = this.imageManageList[0].url
       this.imageManageVisible = true
     },
     closeImageManage() {
@@ -73,8 +130,48 @@ export default {
       this.imageManageList.splice(index, 1)
     },
     saveImageManage() {
-      this.imageList.splice(0, this.imageList.length, ...this.imageManageList)
+      this.imageList.splice(0, this.imageList.length, ...this.imageManageList.map((item) => item.name))
       this.closeImageManage()
+    },
+    beforeUpload(file) {
+      //file是File对象
+      if (file.type === 'image/jpeg' || file.type === 'image/png' || file.type === 'image/gif') {
+        let fileUrl
+        try {
+          fileUrl = URL.createObjectURL(file)
+        } catch (err) {
+          console.error('[Element Error][Upload]', err)
+        }
+        let exName = this.userData.acgnUid + '_' + file.name
+        this.imageManageList.push({
+          fileName: file.name,
+          name: exName,
+          status: null,
+          loaded: 0,
+          url: fileUrl
+        })
+      } else {
+        this.$message.warning('选择的文件中存在非图片文件，请上传图片文件')
+        return false
+      }
+    },
+    uploadChange(file, fileList) {},
+    uploadSuccess(response, file, fileList) {
+      console.log(fileList)
+      console.log(file)
+      let successFile = this.imageManageList.find((item) => item.fileName === file.name)
+      successFile.loaded = 100
+      successFile.status = 'success'
+      // successFile.url = 'http://localhost:9810/acgnrecord/image/' + successFile.name
+      // this.imageManageList.find((item) => item.fileName === file.name).url = 'success'
+    },
+    uploadProgress(event, file, fileList) {
+      this.imageManageList.find((item) => item.fileName === file.name).loaded = Math.floor(
+        (event.loaded / file.size) * 100
+      )
+      // console.log(fileList)
+      // console.log(event)
+      // console.log(file)
     }
   }
 }
@@ -86,6 +183,10 @@ export default {
   height: 100%;
   position: absolute;
   &::v-deep {
+    .el-upload-dragger {
+      width: auto;
+      height: auto;
+    }
     .el-dialog {
       background-color: $bgColor;
     }
@@ -97,6 +198,9 @@ export default {
       height: 90px;
       .acgn-button {
         margin-left: 20px;
+      }
+      .upload-pic {
+        display: inline-block;
       }
     }
     .el-dialog__body {
@@ -137,12 +241,31 @@ export default {
           display: flex;
           flex-direction: column;
           padding: 4px;
+          position: relative;
           &:hover {
             cursor: pointer;
             border-color: $acgnThemeBGColor;
           }
           img {
             width: 120px;
+          }
+          .image-box-mask {
+            position: absolute;
+            top: 0px;
+            left: 0px;
+            background: rgba(0, 0, 0, 0.6);
+            width: 100%;
+            height: calc(100% - 23px);
+            // padding-top: 20%;
+            color: #fff;
+            font-size: 20px;
+            &::v-deep {
+              .el-progress__text {
+                font-size: 13px;
+              }
+            }
+          }
+          .image-box-mask:after {
           }
           .acgn-button {
             padding: 0;
