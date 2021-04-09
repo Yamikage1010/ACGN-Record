@@ -1,6 +1,7 @@
 body {
   margin: 0;
   padding: 0;
+  font-family: '微软雅黑';
 }
 
 
@@ -70,9 +71,32 @@ select {
   }
 }
 
+textarea {
+  font-family: '微软雅黑';
+  font-size: 17px;
+  padding: 3px;
+  color: $bgColor;
+  background-color: rgba(255, 255, 255, 0.7);
+  border: none;
+  margin: 15px 0 0 0;
+  border-radius: 5px;
+  min-width: 300px;
+  min-height: 300px;
+  max-width: 400px;
+
+  &:focus {
+    border: none;
+    outline: none;
+    transition: 0.2s ease;
+    background-color: rgba(255, 255, 255, 1);
+    transform: scale(1.03);
+  }
+}
+
 input:disabled,
 select:disabled,
-button:disabled {
+button:disabled,
+textarea:disabled {
   cursor: not-allowed;
 }
 
@@ -103,9 +127,15 @@ button:disabled {
   justify-content: space-around;
   flex-direction: column;
   border: 1px solid $fontColor;
+  min-width: 400px;
   flex: 0 0 40%;
-  padding: 3% 0;
+  padding: 5% 2%;
   margin: 2% 0;
+  background-color: rgba(0, 0, 0, 0.4);
+
+  &:hover {
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.7);
+  }
 }
 
 .acgn-form-item {
@@ -115,7 +145,7 @@ button:disabled {
   align-items: center;
   min-height: 70px;
   height: auto;
-  margin-top: 25px;
+  margin-bottom: 25px;
 
   ::v-deep {
     .el-radio__input.is-checked+.el-radio__label {
@@ -142,6 +172,10 @@ button:disabled {
       width: 150px;
       height: 150px;
       background-image: url("http://localhost:9810/acgnrecord/defaultImage/sora.png");
+    }
+
+    .el-carousel__mask {
+      display: none;
     }
   }
 }

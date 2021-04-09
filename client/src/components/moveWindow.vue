@@ -123,8 +123,8 @@ export default {
   top: 0;
   left: 0;
   position: fixed;
-  background-color: $bgColor;
   border-radius: 5px;
+  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
   .move-window-header,
   .move-window-footer {
     width: 100%;
@@ -143,10 +143,12 @@ export default {
     position: absolute;
     overflow: auto;
     bottom: 10px;
+    background-color: $bgColor;
   }
   .move-window-footer {
     height: 10px;
     bottom: 0%;
+    background-color: $bgColor;
   }
 }
 .window-animate-flip {

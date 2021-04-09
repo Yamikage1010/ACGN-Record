@@ -150,8 +150,8 @@ export default {
           key: item.ballKey,
           top: item.top,
           left: item.left,
-          width: item.width,
-          height: item.height,
+          width: 400,
+          height: 400,
           windowType: item.windowType,
           animateType: 'flip'
         })

@@ -1,7 +1,12 @@
 const User = require('../object/user')
 var express = require('express')
 const { init, exec, sql, transaction } = require('../config/mysqlConfig')
-const { addAcgnContent, getAcgnContentList, getAcgnCharacters } = require('../functionPackage/database/acgnContent')
+const {
+  addAcgnContent,
+  editAcgnContent,
+  getAcgnContentList,
+  getAcgnCharacters
+} = require('../functionPackage/database/acgnContent')
 var bodyParser = require('body-parser')
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 var router = express.Router()
@@ -23,6 +28,27 @@ router.post('/acgnrecord/addAcgnContent', urlencodedParser, (req, res) => {
         status: 'warning',
         code: 400,
         msg: '新增失败',
+        data: err
+      })
+    })
+})
+router.post('/acgnrecord/editAcgnContent', urlencodedParser, (req, res) => {
+  editAcgnContent(req)
+    .then((result) => {
+      console.log(result)
+      res.send({
+        status: 'success',
+        code: 200,
+        msg: '修改成功',
+        data: result
+      })
+    })
+    .catch((err) => {
+      console.log(err)
+      res.send({
+        status: 'warning',
+        code: 400,
+        msg: '出bug啦',
         data: err
       })
     })

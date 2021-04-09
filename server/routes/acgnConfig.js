@@ -11,7 +11,7 @@ router.post('/acgnrecord/saveAcgnConfig', function (req, res, next) {
   saveAcgnConfig(req.acgnUid, req.body.acgnConfig)
     .then((results) => {
       console.log(results)
-      if (results.changedRows > 0) {
+      if (results.affectedRows > 0) {
         res.send({
           status: 'success',
           code: 200,

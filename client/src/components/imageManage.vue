@@ -99,16 +99,21 @@ export default {
   methods: {
     openImageManage(imageList) {
       console.log(imageList)
-      this.imageList = imageList
-      this.imageManageList = imageList.map((item) => {
-        return {
-          name: item,
-          status: 'noNowUpData',
-          url: 'http://localhost:9810/acgnrecord/image/' + item
-        }
-      })
-      this.leftImage = this.imageManageList[0].url
       this.imageManageVisible = true
+      this.imageList = imageList
+      if (imageList.length > 0) {
+        this.imageManageList = imageList.map((item) => {
+          return {
+            name: item,
+            status: 'noNowUpData',
+            url: 'http://localhost:9810/acgnrecord/image/' + item
+          }
+        })
+        this.leftImage = this.imageManageList[0].url
+      } else {
+        this.imageManageList = []
+        this.leftImage = ''
+      }
     },
     closeImageManage() {
       this.imageManageVisible = false
@@ -189,6 +194,7 @@ export default {
     }
     .el-dialog {
       background-color: $bgColor;
+      box-shadow: 5px 5px 9px rgba(0, 0, 0, 0.5);
     }
     .el-dialog__header {
       padding-bottom: 0;
