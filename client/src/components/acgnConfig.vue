@@ -72,7 +72,7 @@
         :headers="requesHeaders"
         :on-success="uploadMusicSuccess"
       >
-        <acgn-button>点击上传</acgn-button>
+        <acgn-button :noStop="true">点击上传</acgn-button>
         <div slot="file" slot-scope="{ file }">
           <!-- <div class="upload-progress"></div> -->
           <div>{{ file.name }}</div>

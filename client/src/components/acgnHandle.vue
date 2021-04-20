@@ -3,7 +3,7 @@
     <div class="acgn-form-box">
       <div class="acgn-form-item">
         <label class="acgn-form-item-label">作品类型</label>
-        <select>
+        <select v-model="acgnFormData.acgnType">
           <option :value="ACGN.A">{{ ACGN.A }}</option>
           <option :value="ACGN.C">{{ ACGN.C }}</option>
           <option :value="ACGN.G">{{ ACGN.G }}</option>
@@ -27,7 +27,7 @@
           type="card"
           height="150px"
           style="margin-top: 30px; min-width: 350px"
-          v-if="acgnFormData.acgnMemoryImage.length > 1"
+          v-if="acgnFormData.acgnMemoryImage.length > 0"
         >
           <el-carousel-item v-for="(item, index) in acgnFormData.acgnMemoryImage" :key="index">
             <img :src="'http://localhost:9810/acgnrecord/image/' + item" width="200px" />
@@ -93,7 +93,7 @@
             type="card"
             height="150px"
             style="margin-top: 30px; min-width: 350px"
-            v-if="character.characterImage.length > 1"
+            v-if="character.characterImage.length > 0"
           >
             <el-carousel-item v-for="(item, index) in character.characterImage" :key="index">
               <img style="width: 300px" :src="'http://localhost:9810/acgnrecord/image/' + item" width="200px" />
@@ -225,6 +225,7 @@ export default {
         .then((res) => {
           if (res.code == 200) {
             this.$message.success(res.msg)
+            this.$emit('closeWindow')
           } else {
             this.$message.warning(res.msg)
           }

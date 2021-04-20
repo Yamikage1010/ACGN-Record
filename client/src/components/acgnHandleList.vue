@@ -78,6 +78,10 @@ export default {
       transition: 0.4s ease-in-out;
       z-index: 2;
       left: 10px;
+
+      overflow-x: hidden;
+      white-space: nowrap;
+      max-width: -webkit-fill-available;
     }
     .acgn-image {
       min-width: 280px;

@@ -29,7 +29,7 @@ module.exports = (req, res, next) => {
   switch (true) {
     case token === '':
       return res.status(402).json({
-        msg: 'wdnmd token 呢'
+        msg: '不是你 token 呢'
       })
     default:
   }
@@ -40,7 +40,7 @@ module.exports = (req, res, next) => {
         next()
       } else {
         return res.status(401).json({
-          msg: 'wdnmd先登录啊闸总'
+          msg: 'wdnmd先登录啊'
         })
       }
       console.log(result)

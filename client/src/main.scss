@@ -179,3 +179,14 @@ textarea:disabled {
     }
   }
 }
+
+
+.el-message,
+.el-message--warning,
+.el-message--success,
+.el-message--error {
+  background-color: $bgColor;
+  min-width: 200px;
+  justify-content: center;
+  padding-right: 20px;
+}

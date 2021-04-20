@@ -14,10 +14,13 @@
     @click="click"
   >
     <div class="move-window-header" :style="{ height: 40 + 'px' }">
-      <div>{{ title }}</div>
-      <a @click.stop="closeWindow" style="cursor: pointer">关闭</a>
+      <div class="window-title">{{ title }}</div>
+      <div class="window-handle">
+        <div class="window-reduce" @click.stop="reduceWindow">一</div>
+        <div class="window-close" @click.stop="closeWindow">X</div>
+      </div>
     </div>
-    <div class="move-window-main" :style="{ top: 40 + 'px' }">
+    <div class="move-window-main" :style="{ top: 40 + 'px' }" ref="moveWindowMain">
       <acgn-config v-if="windowType === 'config'"></acgn-config>
       <acgn-list v-else-if="windowType === 'list'" :windowKey="windowKey" @clickListItem="clickListItem"></acgn-list>
       <acgn-handle-list
@@ -25,8 +28,17 @@
         :windowKey="windowKey"
         @clickListItem="clickListItem"
       ></acgn-handle-list>
-      <acgn-handle v-else-if="windowType === 'dataHandle'" :acgnEditData="acgnEditData"></acgn-handle>
-      <acgn-content v-else :windowType="windowType"></acgn-content>
+      <acgn-handle
+        v-else-if="windowType === 'dataHandle'"
+        :acgnEditData="acgnEditData"
+        @closeWindow="closeWindow"
+      ></acgn-handle>
+      <acgn-content
+        v-else
+        :windowKey="windowKey"
+        @clickListItem="clickListItem"
+        :acgnReadData="acgnReadData"
+      ></acgn-content>
       <slot></slot>
     </div>
     <!-- <div class="move-window-footer" :style="{ height: windowHFHeight + 'px' }"></div> -->
@@ -50,6 +62,9 @@ export default {
   },
   props: {
     acgnEditData: {
+      default: null
+    },
+    acgnReadData: {
       default: null
     },
     zIndex: {
@@ -91,7 +106,8 @@ export default {
   },
   data() {
     return {
-      windowShow: true
+      windowShow: true,
+      reduceWindowHeight: 0
     }
   },
   methods: {
@@ -99,14 +115,44 @@ export default {
       this.$emit('click', e)
     },
     closeWindow() {
-      this.$refs['moveWindow' + this.title].classList.remove('window-animate-flip')
+      this.$refs['moveWindow' + this.title].classList.remove(
+        'window-animate-flip',
+        'reduce-window-animetion',
+        'enlarge-window-animetion'
+      )
       if (this.animateType == 'bounceIn') {
         this.$refs['moveWindow' + this.title].classList.add('animate__bounceOut')
       } else {
         this.$refs['moveWindow' + this.title].classList.add('animate__bounceOut')
       }
-      // this.windowShow = false;
+      setTimeout(() => {
+        this.windowShow = false
+      }, 1000)
       this.$emit('closeWindow')
+    },
+    reduceWindow() {
+      let moveWindow = this.$refs['moveWindow' + this.title]
+      moveWindow.classList.remove('window-animate-flip', 'animate__bounceIn')
+      if (moveWindow.classList.contains('reduce-window-animetion')) {
+        moveWindow.classList.remove('reduce-window-animetion')
+        let enlargeWindow = `
+        @keyframes enlargeWindow {
+          from {
+            height:50px;
+          }
+          to {
+            height: ${this.reduceWindowHeight}px;
+          }
+        }`
+        let windowStyle = document.createElement('style')
+        document.getElementsByTagName('head')[0].appendChild(windowStyle)
+        windowStyle.appendChild(document.createTextNode(enlargeWindow))
+        moveWindow.classList.add('enlarge-window-animetion')
+      } else {
+        this.reduceWindowHeight = moveWindow.style.height
+        moveWindow.classList.remove('enlarge-window-animetion')
+        moveWindow.classList.add('reduce-window-animetion')
+      }
     },
     clickListItem(acgnContent) {
       this.$emit('clickListItem', {
@@ -133,9 +179,39 @@ export default {
   .move-window-header {
     top: 0%;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-items: center;
     background-color: $acgnThemeColor;
+    .window-title {
+      margin-left: 20px;
+    }
+    .window-handle {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 80px;
+      margin-right: 20px;
+      .window-reduce,
+      .window-close {
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+        position: relative;
+        background-color: $acgnThemeColorHover;
+        color: $fontColor;
+        border-radius: 15px;
+        transition: 0.3s ease;
+        cursor: pointer;
+        &:hover {
+          background-color: $bgColor;
+          transform: rotate(180deg);
+        }
+      }
+      .window-reduce {
+      }
+      .window-close {
+      }
+    }
   }
   .move-window-main {
     width: 100%;
@@ -151,6 +227,18 @@ export default {
     background-color: $bgColor;
   }
 }
+.reduce-window-animetion {
+  animation-name: reduceWindow;
+  animation-timing-function: linear;
+  animation-duration: 0.3s;
+  // animation: 0.5s linear reduceWindow !important;
+}
+.enlarge-window-animetion {
+  animation-name: enlargeWindow;
+  animation-timing-function: linear;
+  animation-duration: 0.3s;
+  // animation: 0.5s linear enlargeWindow !important;
+}
 .window-animate-flip {
   -webkit-backface-visibility: visible !important;
   backface-visibility: visible !important;
@@ -158,6 +246,14 @@ export default {
   animation-name: windowFlip;
   animation-delay: 0.5s;
   -webkit-animation-delay: 0.5s;
+}
+
+@keyframes reduceWindow {
+  from {
+  }
+  to {
+    height: 50px;
+  }
 }
 @keyframes windowFlip {
   from {

@@ -26,7 +26,7 @@
       :animateType="item.animateType"
       :windowType="item.windowType"
       :windowKey="item.key"
-      @closeWindow="closeWindow(item.key, item.windowType)"
+      @closeWindow="closeWindow(item)"
       @click="setZIndex"
       @clickListItem="clickListItem"
     >
@@ -143,28 +143,35 @@ export default {
       if (item.ballKey == 'manage') {
         this.ballData.push(...this.acgnBallData)
       } else {
-        this.windowData.push({
-          title: item.title,
-          subTitle: item.subTitle,
-          zIndex: ++this.maxZIndex,
-          key: item.ballKey,
-          top: item.top,
-          left: item.left,
-          width: 400,
-          height: 400,
-          windowType: item.windowType,
-          animateType: 'flip'
-        })
-        this.moveWindowCount++
+        let windowId = item.ballKey + '_' + item.windowType
+        if (!this.windowData.find((wd) => wd.windowId === windowId)) {
+          this.windowData.push({
+            title: item.title,
+            subTitle: item.subTitle,
+            zIndex: ++this.maxZIndex,
+            key: item.ballKey,
+            top: item.top,
+            left: item.left,
+            width: 400,
+            height: 400,
+            windowType: item.windowType,
+            animateType: 'flip',
+            windowId: windowId
+          })
+          this.moveWindowCount++
+        } else {
+          this.$message.warning('已打开该窗口')
+        }
       }
     },
-    closeWindow(windowKey, windowType) {
-      if (windowType === 'handleList') {
-        let acgnBallData = { ...this.acgnBallData.find((item) => item.ballKey === windowKey) }
+    closeWindow(windowData) {
+      if (windowData.windowType === 'handleList') {
+        let acgnBallData = { ...this.acgnBallData.find((item) => item.ballKey === windowData.key) }
         this.ballData.push(acgnBallData)
-      } else if (windowKey === 'add') {
+      } else if (windowData.key === 'add') {
         this.ballData.push(this.addBallData)
       }
+      this.windowData.find((wd) => wd.windowId === windowData.windowId).windowId = ''
     },
     //点击窗口置顶
     setZIndex(e) {
@@ -181,15 +188,21 @@ export default {
       console.log(value)
       if (value.windowType === 'handleList') {
         let acgnEditData = value.acgnContent
-        this.windowData.push({
-          acgnEditData: acgnEditData,
-          title: acgnEditData.acgnTitle,
-          subTitle: acgnEditData.acgnSubTitle,
-          zIndex: ++this.maxZIndex,
-          key: acgnEditData.acgnType,
-          windowType: 'dataHandle'
-        })
-        this.moveWindowCount++
+        let windowId = acgnEditData.acgnId + '_' + value.windowType
+        if (!this.windowData.find((wd) => wd.windowId === windowId)) {
+          this.windowData.push({
+            acgnEditData: acgnEditData,
+            title: acgnEditData.acgnTitle,
+            subTitle: acgnEditData.acgnSubTitle,
+            zIndex: ++this.maxZIndex,
+            key: acgnEditData.acgnType,
+            windowType: 'dataHandle',
+            windowId: windowId
+          })
+          this.moveWindowCount++
+        } else {
+          this.$message.warning('已打开该窗口')
+        }
       }
     }
   }
