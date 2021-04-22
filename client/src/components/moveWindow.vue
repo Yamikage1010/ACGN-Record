@@ -143,7 +143,8 @@ export default {
     clickListItem(acgnContent) {
       this.$emit('clickListItem', {
         acgnContent: acgnContent,
-        windowType: this.windowType
+        windowType: this.windowType,
+        windowKey: this.windowKey
       })
     }
   }

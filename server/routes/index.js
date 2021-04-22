@@ -4,10 +4,11 @@ const upload = require('./upload')
 const systemResource = require('./systemResource')
 const acgnConfig = require('./acgnConfig')
 const acgnContent = require('./acgnContent')
+const tomo = require('./tomo')
 app.use(systemResource)
 app.use(users)
 app.use(upload)
 app.use(acgnConfig)
 app.use(acgnContent)
-
+app.use(tomo)
 module.exports = app

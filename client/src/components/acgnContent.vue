@@ -133,9 +133,13 @@
 <script>
 import acgnRadar from '@/components/acgnRadar'
 import { getAcgnCharacters } from '@/api/acgnContent'
+import { getTomoAcgnCharacters } from '@/api/tomo'
 import html2canvas from 'html2canvas'
 export default {
   props: {
+    windowKey: {
+      default: ''
+    },
     windowType: {
       default: 'Animetion'
     },
@@ -154,36 +158,59 @@ export default {
     }
   },
   created() {
-    getAcgnCharacters({
-      acgnId: this.acgnReadData.acgnId
-    }).then((res) => {
-      if (res.code == 200) {
-        console.log([...res.data.acgnCharacters])
-
-        let acgnCharacters = res.data.acgnCharacters.map((item, index) => {
-          return {
-            ...item,
-            style:
-              index === 0
-                ? { transform: 'translate3d(0,0,0) rotateY(0deg)' }
-                : { transform: 'translate3d(100%,0,0) rotateY(-180deg)' }
+    if (this.windowKey) {
+      getTomoAcgnCharacters({
+        acgnUid: this.acgnReadData.acgnUid,
+        acgnId: this.acgnReadData.acgnId
+      })
+        .then((res) => {
+          if (res.code == 200) {
+            this.apiDataHandle([...res.data.acgnCharacters])
+            this.$message.success(res.msg)
+          } else {
+            this.$message.warning(res.msg)
           }
         })
-        if (acgnCharacters.length === 2) {
-          acgnCharacters.push({ ...acgnCharacters[0] })
-        }
-        this.acgnCharacters.push(...acgnCharacters)
-        this.charactersActiveImageIndex = this.acgnCharacters.map(() => 0)
-        this.$message.success(res.msg)
-      } else {
-        this.$message.warning(res.msg)
-      }
-    })
+        .catch(() => {
+          this.$message.error('前端出bug啦')
+        })
+    } else {
+      getAcgnCharacters({
+        acgnId: this.acgnReadData.acgnId
+      })
+        .then((res) => {
+          if (res.code == 200) {
+            this.apiDataHandle([...res.data.acgnCharacters])
+            this.$message.success(res.msg)
+          } else {
+            this.$message.warning(res.msg)
+          }
+        })
+        .catch(() => {
+          this.$message.error('前端出bug啦')
+        })
+    }
   },
   mounted() {
     console.log(this.acgnReadData)
   },
   methods: {
+    apiDataHandle(data) {
+      let acgnCharacters = data.map((item, index) => {
+        return {
+          ...item,
+          style:
+            index === 0
+              ? { transform: 'translate3d(0,0,0) rotateY(0deg)' }
+              : { transform: 'translate3d(100%,0,0) rotateY(-180deg)' }
+        }
+      })
+      if (acgnCharacters.length === 2) {
+        acgnCharacters.push({ ...acgnCharacters[0] })
+      }
+      this.acgnCharacters.push(...acgnCharacters)
+      this.charactersActiveImageIndex = this.acgnCharacters.map(() => 0)
+    },
     getAcgnContentImage() {
       let acgnContent = this.$refs.acgnContent
       console.dir(acgnContent)

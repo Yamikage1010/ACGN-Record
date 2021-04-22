@@ -10,7 +10,7 @@
     </move-menu>
     <move-menu
       v-moveMenu
-      v-if="hasTomoList"
+      v-if="tomoListType"
       :zIndex="999"
       :top="mouseTop"
       :left="mouseLeft"
@@ -21,7 +21,29 @@
       :hasReduce="true"
       @closeMenu="closeTomoList"
     >
+      <template v-if="tomoListType === 'tomoList'">
+        <div class="db-list" v-for="item in tomoList" :key="item.acgnUid" @click="openTomoAcgnContentList(item)">
+          {{ item.acgnUserName
+          }}<acgn-button :buttonType="'danger'" :fontSize="10" :width="50" @click="deleteTomo(item)">
+            删除
+          </acgn-button>
+        </div>
+      </template>
+      <template v-else-if="tomoListType === 'requestTomoList'">
+        <div class="db-list" v-for="item in requestTomoList" :key="item.requestId">
+          <span>{{ item.requestName }}</span>
+          <span v-if="item.requestStatus === 2"
+            ><acgn-button :fontSize="10" :width="50" @click="agreeTomoRequest(item, 4)"> 同意 </acgn-button>
+            <acgn-button :fontSize="10" :width="50" @click="agreeTomoRequest(item, 3)" :buttonType="'danger'">
+              拒绝
+            </acgn-button></span
+          >
+
+          <span v-else>{{ item.requestStatus === 3 ? '拒绝' : '同意' }}</span>
+        </div>
+      </template>
       <acgn-button @click="openAddTomo">添加好友</acgn-button>
+      <acgn-button @click="openTomoRequest">{{ tomoListType === 'tomoList' ? '好友请求' : '好友列表' }}</acgn-button>
     </move-menu>
     <move-message
       v-moveMessage
@@ -31,7 +53,22 @@
       :title="item.title"
       v-for="(item, index) in messageData"
       :key="index"
-    ></move-message>
+      @closeMessage="closeMessage(index)"
+      @confirmMessage="confirmMessage(index)"
+    >
+      <div style="margin-top: 10px" v-if="item.messageType === 'addTomo'">
+        <div class="acgn-form-item">
+          <label class="acgn-form-item-label">请输入用户昵称（必须完整）</label>
+          <input v-model="addTomoUserName" />
+        </div>
+      </div>
+      <div style="margin-top: 10px" v-if="item.messageType === 'tomoAcgnTitle'">
+        <div class="acgn-form-item">
+          <label class="acgn-form-item-label">请输入用户记录的其中一部作品名字</label>
+          <input v-model="addTomoAcgnTitle" />
+        </div>
+      </div>
+    </move-message>
     <move-window
       v-dialogDrag
       :windowKey="'config'"
@@ -72,6 +109,15 @@ import moveWindow from '@/components/moveWindow.vue'
 import Aplayer from 'vue-aplayer'
 import { changeTheme, musicDataHandle } from '@/util/systemStyle'
 import { stopSakura, startSakura } from './util/sakuraDrop'
+import {
+  searchTomo,
+  addTomo,
+  requestHandle,
+  getTomoList,
+  getTomoRequestList,
+  getTomoAcgnContentList,
+  getTomoAcgnCharacters
+} from './api/tomo'
 export default {
   name: 'App',
   components: {
@@ -90,7 +136,12 @@ export default {
       },
       messageData: [],
       hasMenu: false,
-      hasTomoList: false,
+      tomoListType: '',
+      addTomoUid: null,
+      addTomoUserName: '',
+      addTomoAcgnTitle: '',
+      tomoList: [],
+      requestTomoList: [],
       // sakuraShow: true,
       // slidesOrOnly: acgnConfig.slidesOrOnly, //true为轮播背景，false为单图背景
       // autoplay: false,
@@ -183,23 +234,130 @@ export default {
       // }
     },
     closeTomoList() {
-      this.hasTomoList = false
+      this.tomoListType = ''
     },
     openTomoList(event) {
       this.mouseTop = event.clientY
       this.mouseLeft = event.clientX
-      if (this.hasTomoList) {
+      if (this.tomoListType) {
         this.$message.warning('好友列表已打开')
       } else {
-        this.hasTomoList = true
+        this.tomoListType = 'tomoList'
+        getTomoList()
+          .then((res) => {
+            if (res.code == 200) {
+              this.tomoList = res.data.acgnTomo || []
+            } else {
+              this.$message.warning(res.msg)
+            }
+          })
+          .catch(() => {
+            this.$message.error('出bug了！！')
+          })
+      }
+    },
+    openTomoRequest() {
+      if (this.tomoListType === 'tomoList') {
+        getTomoRequestList()
+          .then((res) => {
+            if (res.code == 200) {
+              this.requestTomoList = res.data.tomoList || []
+            } else {
+              this.$message.warning(res.msg)
+            }
+            this.tomoListType = 'requestTomoList'
+          })
+          .catch(() => {
+            this.$message.error('出bug了！！')
+          })
+      } else if (this.tomoListType === 'requestTomoList') {
+        getTomoList()
+          .then((res) => {
+            if (res.code == 200) {
+              this.tomoList = res.data.acgnTomo || []
+            } else {
+              this.$message.warning(res.msg)
+            }
+            this.tomoListType = 'tomoList'
+          })
+          .catch(() => {
+            this.$message.error('出bug了！！')
+          })
+      }
+    },
+    closeMessage(dataIndex) {
+      this.messageData[dataIndex].messageType = ''
+    },
+    deleteTomo(tomoData) {
+      console.log(tomoData)
+    },
+    agreeTomoRequest(requestData, requestStatus) {
+      requestHandle({
+        requestId: requestData.requestId,
+        acgnUid: requestData.requestUid,
+        acgnUserName: requestData.requestName,
+        requestStatus: requestStatus
+      })
+        .then((res) => {
+          if (res.code == 200) {
+            this.$message.success(res.msg)
+            requestData.requestStatus = requestStatus
+          } else {
+            this.$message.warning(res.msg)
+          }
+        })
+        .catch(() => {
+          this.$message.error('出bug了！！')
+        })
+    },
+    confirmMessage(dataIndex) {
+      if (this.messageData[dataIndex].messageType === 'addTomo') {
+        searchTomo({
+          acgnUserName: this.addTomoUserName
+        })
+          .then((res) => {
+            if (res.code == 200) {
+              this.messageData[dataIndex].messageType = 'tomoAcgnTitle'
+              this.addTomoUid = res.data.tomoUid
+            } else {
+              this.$message.warning(res.msg)
+            }
+          })
+          .catch(() => {
+            this.$message.error('出bug了！！')
+          })
+      } else {
+        addTomo({
+          acgnUid: this.addTomoUid,
+          acgnUserName: this.addTomoUserName,
+          acgnTitle: this.addTomoAcgnTitle
+        })
+          .then((res) => {
+            if (res.code === 200) {
+              this.$message.success(res.msg)
+            } else {
+              this.$message.warning(res.msg)
+            }
+          })
+          .catch(() => {
+            this.$message.warning('出bug了！！')
+          })
       }
     },
     openAddTomo(event) {
-      this.messageData.push({
-        top: event.clientY,
-        left: event.clientX,
-        title: '添加好友'
-      })
+      if (this.messageData.find((item) => item.messageType === 'addTomo')) {
+        this.$message.warning('已打开该窗口')
+      } else {
+        this.messageData.push({
+          top: event.clientY,
+          left: event.clientX,
+          title: '添加好友',
+          messageType: 'addTomo'
+        })
+      }
+    },
+    openTomoAcgnContentList(tomoData) {
+      Bus.$emit('openTomoAcgnContentList', tomoData)
     },
     closeSakura() {
       this.acgnConfig.sakuraShow = !this.acgnConfig.sakuraShow
@@ -375,11 +533,31 @@ export default {
   color: $fontColor;
   background-color: $mask;
 }
+.db-list {
+  color: #bfbfbf;
+  font-size: 20px;
+  padding: 5px;
+  margin: 5px;
+  display: flex;
+  justify-content: space-between;
+  &:hover {
+    color: $hoverFontColor;
+    background-color: $hoverBgColor;
+    cursor: pointer;
+  }
+  .acgn-button {
+    margin-top: 0;
+    margin-left: 5px;
+  }
+}
 .db-menu {
   color: #bfbfbf;
   font-size: 20px;
   padding: 5px;
   margin: 5px;
+  .acgn-button {
+    margin-top: 0;
+  }
 }
 .db-menu:hover {
   color: $hoverFontColor;

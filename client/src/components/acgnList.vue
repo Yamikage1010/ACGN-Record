@@ -21,6 +21,7 @@
 <script>
 import { ACGN } from '@/common/acgn'
 import { getAcgnContentList } from '@/api/acgnContent'
+import { getTomoAcgnContentList } from '@/api/tomo'
 export default {
   props: {
     windowKey: {
@@ -29,17 +30,35 @@ export default {
   },
   mounted() {
     this.userData = this.$localStorage.get('userData') || { acgnUid: null }
-    getAcgnContentList({
-      acgnUid: this.userData.acgnUid,
-      acgnType: this.windowKey
-    }).then((res) => {
-      if (res.code == 200) {
-        this.acgnContentList = res.data.acgnContentList
-        this.$message.success(res.msg)
-      } else {
-        this.$message.warning(res.msg)
-      }
-    })
+    if (this.windowKey.includes('tomo')) {
+      let tomoUid = this.windowKey.split('_')[1]
+      getTomoAcgnContentList({
+        acgnUid: parseInt(tomoUid)
+      })
+        .then((res) => {
+          if (res.code === 200) {
+            this.acgnContentList = res.data.acgnContentList
+            this.$message.success(res.msg)
+          } else {
+            this.$message.warning(res.msg)
+          }
+        })
+        .catch(() => {
+          this.$message.error('前端出bug啦')
+        })
+    } else {
+      getAcgnContentList({
+        acgnUid: this.userData.acgnUid,
+        acgnType: this.windowKey
+      }).then((res) => {
+        if (res.code == 200) {
+          this.acgnContentList = res.data.acgnContentList
+          this.$message.success(res.msg)
+        } else {
+          this.$message.warning(res.msg)
+        }
+      })
+    }
   },
   data() {
     return {

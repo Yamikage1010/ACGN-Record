@@ -35,6 +35,7 @@
 </template>
 
 <script>
+import Bus from '@/common/bus'
 import floatBall from '@/components/floatBall'
 import moveWindow from '@/components/moveWindow.vue'
 import { ACGN } from '@/common/acgn'
@@ -136,7 +137,27 @@ export default {
       windowData: []
     }
   },
-  created() {},
+  created() {
+    Bus.$on('openTomoAcgnContentList', (tomoData) => {
+      let windowId = 'tomo_' + tomoData.acgnUid
+      if (!this.windowData.find((wd) => wd.windowId === windowId)) {
+        this.windowData.push({
+          title: tomoData.acgnUserName + '记录的作品',
+          zIndex: ++this.maxZIndex,
+          key: 'tomo_' + tomoData.acgnUid,
+          top: 0,
+          left: 100,
+          width: 600,
+          height: 800,
+          windowType: 'list',
+          windowId: windowId
+        })
+        this.moveWindowCount++
+      } else {
+        this.$message.warning('已打开该窗口')
+      }
+    })
+  },
   methods: {
     clickBall(item) {
       let windowId = item.ballKey + '_' + item.windowType
@@ -188,7 +209,7 @@ export default {
             title: acgnReadData.acgnTitle,
             subTitle: acgnReadData.acgnSubTitle,
             zIndex: ++this.maxZIndex,
-            key: acgnReadData.acgnType,
+            key: value.windowKey,
             windowType: acgnReadData.acgnType,
             windowId: windowId,
             top: 0,

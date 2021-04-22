@@ -20,8 +20,8 @@
     <div class="move-message-main" :style="{ top: windowHFHeight + 'px' }">
       <slot></slot>
       <div class="message-btnGroup">
-        <acgn-button :buttonType="'danger'">取消</acgn-button>
-        <acgn-button>确定</acgn-button>
+        <acgn-button :buttonType="'danger'" @click="closeMessage">取消</acgn-button>
+        <acgn-button @click="confirmMessage">确定</acgn-button>
       </div>
     </div>
     <!-- <div class="move-message-footer" :style="{height:windowHFHeight+'px'}"></div> -->
@@ -80,6 +80,9 @@ export default {
     closeMessage() {
       this.windowShow = false
       this.$emit('closeMessage')
+    },
+    confirmMessage() {
+      this.$emit('confirmMessage')
     }
   }
 }
@@ -142,6 +145,7 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: space-around;
+    margin-top: 40px;
     .message-btnGroup {
       position: relative;
       display: flex;

@@ -37,6 +37,7 @@ module.exports = (req, res, next) => {
     .then((result) => {
       if (result[0]) {
         req.acgnUid = result[0].acgnUid
+        req.acgnUserName = result[0].acgnUserName
         next()
       } else {
         return res.status(401).json({
