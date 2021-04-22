@@ -7,13 +7,13 @@
  */
 // v-dialogDrag: 弹窗拖拽+水平方向伸缩
 import Vue from 'vue'
-Vue.directive('moveMenu', {
+Vue.directive('moveMessage', {
   bind(el, binding, vnode, oldVnode) {
     // console.log(binding);
     // console.log(vnode);
     // console.log(oldVnode);
     // 获取弹框头部（这部分可双击全屏）
-    const dialogHeaderEl = el.querySelector('.move-menu-header')
+    const dialogHeaderEl = el.querySelector('.move-message-header')
     // 弹窗
     const dragDom = el
     // 清除选择头部文字效果

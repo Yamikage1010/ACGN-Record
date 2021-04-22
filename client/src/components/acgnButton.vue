@@ -31,7 +31,7 @@ export default {
   },
   methods: {
     click(event) {
-      this.$emit('click')
+      this.$emit('click', event)
       if (!this.noStop) {
         event.stopPropagation()
       }
@@ -57,9 +57,9 @@ export default {
   }
 }
 .acgn-button-danger {
-  background-color: #ff4c4c;
+  background-color: #ffaaee;
   &:hover {
-    background-color: #ff0000;
+    background-color: #ff88cc;
   }
 }
 </style>

@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import { Upload, Dialog, Message, Radio, RadioGroup, Rate, Progress, Carousel, CarouselItem } from 'element-ui'
 import acgnButton from '@/components/acgnButton'
+import moveMessage from '@/components/moveMessage'
 import cP from '@/components/cP'
 import 'element-ui/lib/theme-chalk/upload.css'
 import 'element-ui/lib/theme-chalk/dialog.css'
@@ -20,4 +21,5 @@ Vue.use(Progress)
 Vue.use(Carousel)
 Vue.use(CarouselItem)
 Vue.component('acgn-button', acgnButton)
+Vue.component('move-message', moveMessage)
 Vue.component('c-p', cP)

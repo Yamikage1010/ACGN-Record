@@ -3,7 +3,11 @@
 </template>
 
 <script>
-import * as echarts from 'echarts'
+import * as echarts from 'echarts/core'
+import { RadarChart } from 'echarts/charts'
+import { TitleComponent, TooltipComponent, GridComponent } from 'echarts/components'
+import { CanvasRenderer } from 'echarts/renderers'
+echarts.use([TitleComponent, TooltipComponent, GridComponent, RadarChart, CanvasRenderer])
 export default {
   props: {
     width: {

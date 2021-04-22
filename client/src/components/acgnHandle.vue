@@ -43,7 +43,7 @@
     </div>
     <div class="acgn-form-box">
       <div class="acgn-form-item">
-        <label class="acgn-form-item-label">评分</label>
+        <label class="acgn-form-item-label">综合评价</label>
         <el-rate v-model="acgnFormData.acgnScore" :max="10"></el-rate>
       </div>
       <div class="acgn-form-item">

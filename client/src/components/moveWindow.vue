@@ -107,7 +107,7 @@ export default {
   data() {
     return {
       windowShow: true,
-      reduceWindowHeight: 0
+      reduceWindowHeight: ''
     }
   },
   methods: {
@@ -132,26 +132,12 @@ export default {
     },
     reduceWindow() {
       let moveWindow = this.$refs['moveWindow' + this.title]
-      moveWindow.classList.remove('window-animate-flip', 'animate__bounceIn')
-      if (moveWindow.classList.contains('reduce-window-animetion')) {
-        moveWindow.classList.remove('reduce-window-animetion')
-        let enlargeWindow = `
-        @keyframes enlargeWindow {
-          from {
-            height:50px;
-          }
-          to {
-            height: ${this.reduceWindowHeight}px;
-          }
-        }`
-        let windowStyle = document.createElement('style')
-        document.getElementsByTagName('head')[0].appendChild(windowStyle)
-        windowStyle.appendChild(document.createTextNode(enlargeWindow))
-        moveWindow.classList.add('enlarge-window-animetion')
+      if (this.reduceWindowHeight) {
+        moveWindow.style.height = this.reduceWindowHeight
+        this.reduceWindowHeight = ''
       } else {
         this.reduceWindowHeight = moveWindow.style.height
-        moveWindow.classList.remove('enlarge-window-animetion')
-        moveWindow.classList.add('reduce-window-animetion')
+        moveWindow.style.height = '50px'
       }
     },
     clickListItem(acgnContent) {
@@ -171,6 +157,7 @@ export default {
   position: fixed;
   border-radius: 5px;
   box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
+  transition: height 0.5s ease-in-out;
   .move-window-header,
   .move-window-footer {
     width: 100%;

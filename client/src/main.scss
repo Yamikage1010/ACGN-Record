@@ -180,6 +180,11 @@ textarea:disabled {
   }
 }
 
+.el-rate__item {
+  .el-rate__icon {
+    color: $acgnThemeColor !important;
+  }
+}
 
 .el-message,
 .el-message--warning,

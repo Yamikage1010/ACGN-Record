@@ -4,9 +4,34 @@
       <div class="db-menu" @click="changeMode">{{ nowMode == 'readerIndex' ? '管理模式' : '浏览模式' }}</div>
       <div class="db-menu" @click="closeSakura">{{ acgnConfig.sakuraShow ? '关闭樱花' : '开启樱花' }}</div>
       <div class="db-menu" @click="changeBG">{{ acgnConfig.slidesOrOnly ? '单图背景' : '幻灯片背景' }}</div>
+      <div class="db-menu" @click="openTomoList">好友列表</div>
       <div class="db-menu" @click="configWindow">系统设置</div>
       <div class="db-menu" @click="logout">退出登录</div>
     </move-menu>
+    <move-menu
+      v-moveMenu
+      v-if="hasTomoList"
+      :zIndex="999"
+      :top="mouseTop"
+      :left="mouseLeft"
+      :width="300"
+      :height="600"
+      :title="'好友列表'"
+      :hasClose="true"
+      :hasReduce="true"
+      @closeMenu="closeTomoList"
+    >
+      <acgn-button @click="openAddTomo">添加好友</acgn-button>
+    </move-menu>
+    <move-message
+      v-moveMessage
+      :zIndex="1000"
+      :top="item.top"
+      :left="item.left"
+      :title="item.title"
+      v-for="(item, index) in messageData"
+      :key="index"
+    ></move-message>
     <move-window
       v-dialogDrag
       :windowKey="'config'"
@@ -63,7 +88,9 @@ export default {
         autoplay: true,
         acgnTheme: 1001
       },
+      messageData: [],
       hasMenu: false,
+      hasTomoList: false,
       // sakuraShow: true,
       // slidesOrOnly: acgnConfig.slidesOrOnly, //true为轮播背景，false为单图背景
       // autoplay: false,
@@ -154,6 +181,25 @@ export default {
       this.mouseLeft = event.clientX
       this.hasMenu = !this.hasMenu
       // }
+    },
+    closeTomoList() {
+      this.hasTomoList = false
+    },
+    openTomoList(event) {
+      this.mouseTop = event.clientY
+      this.mouseLeft = event.clientX
+      if (this.hasTomoList) {
+        this.$message.warning('好友列表已打开')
+      } else {
+        this.hasTomoList = true
+      }
+    },
+    openAddTomo(event) {
+      this.messageData.push({
+        top: event.clientY,
+        left: event.clientX,
+        title: '添加好友'
+      })
     },
     closeSakura() {
       this.acgnConfig.sakuraShow = !this.acgnConfig.sakuraShow

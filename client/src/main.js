@@ -8,6 +8,7 @@ import './util/onLoadSystemResource'
 import './util/sakuraDrop'
 import './util/moveWindow'
 import './util/moveMenu'
+import './util/moveMessage'
 import './util/componentsImport'
 //加载全局样式
 import './main.scss'

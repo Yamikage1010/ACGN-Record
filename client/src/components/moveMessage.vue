@@ -1,7 +1,8 @@
 <template>
   <div
-    ref="moveMenu"
-    class="move-menu animate__animated animate__bounceIn"
+    ref="moveMessage"
+    v-if="windowShow"
+    class="move-message animate__animated animate__bounceIn"
     :style="{
       height: windowHeight + 'px',
       width: windowWidth + 'px',
@@ -10,18 +11,20 @@
     }"
     @click="click"
   >
-    <img :src="imgSrc" />
-    <div class="move-menu-header" :style="{ height: windowHFHeight + 'px' }">
+    <div class="move-message-header" :style="{ height: 40 + 'px' }">
       <div class="window-title">{{ title }}</div>
-      <div class="window-handle" v-if="hasClose || hasReduce">
-        <div class="window-reduce" v-if="hasReduce" @click.stop="reduceWindow">一</div>
-        <div class="window-close" v-if="hasClose" @click.stop="closeMenu">X</div>
+      <div class="window-handle">
+        <div class="window-close" @click.stop="closeMessage">X</div>
       </div>
     </div>
-    <div class="move-menu-main" :style="{ top: windowHFHeight + 'px' }">
+    <div class="move-message-main" :style="{ top: windowHFHeight + 'px' }">
       <slot></slot>
+      <div class="message-btnGroup">
+        <acgn-button :buttonType="'danger'">取消</acgn-button>
+        <acgn-button>确定</acgn-button>
+      </div>
     </div>
-    <!-- <div class="move-menu-footer" :style="{height:windowHFHeight+'px'}"></div> -->
+    <!-- <div class="move-message-footer" :style="{height:windowHFHeight+'px'}"></div> -->
   </div>
 </template>
 
@@ -38,28 +41,18 @@ export default {
     left: {
       default: 0
     },
-    title: {
-      default: 'title'
-    },
     height: {
-      default: 400
+      default: 300
     },
     width: {
-      default: 200
+      default: 400
     },
-    hasClose: {
-      default: false
-    },
-    hasReduce: {
-      default: false
-    },
-    imgSrc: {
-      default: 'http://localhost:9810/acgnrecord/defaultImage/noa.jpg'
+    title: {
+      default: 'title'
     }
   },
-  created() {},
   mounted() {
-    this.$refs.moveMenu.style.zIndex = this.zIndex
+    this.$refs.moveMessage.style.zIndex = this.zIndex
     this.windowTop = this.top
     this.windowLeft = this.left
     this.windowHeight = this.height
@@ -67,16 +60,16 @@ export default {
   },
   computed: {
     windowHFHeight() {
-      return 40
+      return this.windowHeight / 10
     }
   },
   data() {
     return {
+      windowShow: true,
       windowTop: 0,
       windowLeft: 0,
-      windowHeight: 400,
-      windowWidth: 200,
-      reduceWindowHeight: ''
+      windowHeight: 300,
+      windowWidth: 400
     }
   },
   methods: {
@@ -84,57 +77,46 @@ export default {
       this.$emit('click', e)
     },
 
-    reduceWindow() {
-      let moveMenu = this.$refs.moveMenu
-      if (this.reduceWindowHeight) {
-        moveMenu.style.height = this.reduceWindowHeight
-        this.reduceWindowHeight = ''
-      } else {
-        this.reduceWindowHeight = moveMenu.style.height
-        moveMenu.style.height = '40px'
-      }
-    },
-    closeMenu(e) {
-      this.$emit('closeMenu', e)
+    closeMessage() {
+      this.windowShow = false
+      this.$emit('closeMessage')
     }
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.move-menu {
+.move-message {
   position: fixed;
   background-color: $bgColor;
   border-radius: 3px;
-  transition: height 0.5s ease-in-out;
-  overflow: hidden;
   img {
     opacity: 0.5;
-    width: 100%;
+    width: 200px;
     position: absolute;
     transform: translate(-50%, 0);
   }
-  .move-menu-header,
-  .move-menu-footer {
+  .move-message-header,
+  .move-message-footer {
     width: 100%;
     position: absolute;
     background-color: $acgnThemeColor;
   }
-  .move-menu-header {
+  .move-message-header {
+    top: 0%;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 20px;
+    background-color: $acgnThemeColor;
     .window-title {
       margin-left: 20px;
     }
     .window-handle {
       display: flex;
-      justify-content: space-around;
+      justify-content: flex-end;
       align-items: center;
       width: 80px;
       margin-right: 20px;
-      .window-reduce,
       .window-close {
         width: 30px;
         height: 30px;
@@ -154,11 +136,19 @@ export default {
       }
     }
   }
-  .move-menu-main {
+  .move-message-main {
     width: 100%;
     position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    .message-btnGroup {
+      position: relative;
+      display: flex;
+      justify-content: space-around;
+    }
   }
-  .move-menu-footer {
+  .move-message-footer {
     bottom: 0;
   }
 }
