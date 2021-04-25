@@ -1,12 +1,16 @@
 <template>
   <div id="app" @contextmenu.prevent="rightClick">
     <move-menu v-moveMenu v-if="hasMenu" :zIndex="998" :top="mouseTop" :left="mouseLeft" :title="'系统菜单'">
-      <div class="db-menu" @click="changeMode">{{ nowMode == 'readerIndex' ? '管理模式' : '浏览模式' }}</div>
+      <div class="db-menu" v-if="routerName === 'readerIndex' || routerName === 'creatorIndex'" @click="changeMode">
+        {{ routerName == 'readerIndex' ? '管理模式' : '浏览模式' }}
+      </div>
       <div class="db-menu" @click="closeSakura">{{ acgnConfig.sakuraShow ? '关闭樱花' : '开启樱花' }}</div>
       <div class="db-menu" @click="changeBG">{{ acgnConfig.slidesOrOnly ? '单图背景' : '幻灯片背景' }}</div>
-      <div class="db-menu" @click="openTomoList">好友列表</div>
-      <div class="db-menu" @click="configWindow">系统设置</div>
-      <div class="db-menu" @click="logout">退出登录</div>
+      <div class="db-menu" v-if="routerName === 'readerIndex'" @click="openTomoList">好友列表</div>
+      <div class="db-menu" v-if="routerName !== 'login' && routerName !== 'register'" @click="configWindow">
+        系统设置
+      </div>
+      <div class="db-menu" v-if="routerName !== 'login' && routerName !== 'register'" @click="logout">退出登录</div>
     </move-menu>
     <move-menu
       v-moveMenu
@@ -145,7 +149,6 @@ export default {
       // sakuraShow: true,
       // slidesOrOnly: acgnConfig.slidesOrOnly, //true为轮播背景，false为单图背景
       // autoplay: false,
-      nowMode: 'readerIndex',
       mouseTop: 0,
       mouseLeft: 0,
       configShow: false,
@@ -181,6 +184,11 @@ export default {
       ]
     }
   },
+  computed: {
+    routerName() {
+      return this.$route.name
+    }
+  },
   created() {
     Bus.$on('loadAcgnConfig', () => {
       console.log(111111)
@@ -207,11 +215,6 @@ export default {
     this.createBackgroundStlye()
   },
   mounted() {
-    if (!this.$route.name) {
-      this.nowMode = 'readerIndex'
-    } else {
-      this.nowMode = this.$route.name
-    }
     if (
       (this.acgnConfig.backgroundImages && this.acgnConfig.backgroundImages.length != 0) ||
       (this.acgnConfig.backgroundMusic && this.acgnConfig.backgroundMusic.length != 0)
@@ -386,12 +389,10 @@ export default {
     changeMode() {
       console.log(this.$route)
       if (this.$route.name == 'readerIndex') {
-        this.nowMode = 'creatorIndex'
         this.$router.push({
           name: 'creatorIndex'
         })
       } else {
-        this.nowMode = 'readerIndex'
         this.$router.push({
           name: 'readerIndex'
         })

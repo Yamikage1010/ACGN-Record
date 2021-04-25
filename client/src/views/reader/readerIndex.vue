@@ -181,7 +181,7 @@ export default {
       }
     },
     closeWindow(windowData) {
-      if (windowData.windowType === 'list') {
+      if (windowData.windowType === 'list' && !windowData.windowId.includes('tomo')) {
         let acgnBallData = { ...this.ballData.find((item) => item.ballKey === windowData.key) }
         this.ballData.push(acgnBallData)
       }

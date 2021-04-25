@@ -11,6 +11,7 @@ module.exports = (req, res, next) => {
     '/acgnrecord/register',
     '/acgnrecord/getSakura',
     '/acgnrecord/image',
+    '/acgnrecord/masterImage/',
     '/acgnrecord/defaultImage/',
     '/acgnrecord/music',
     '/acgnrecord/defaultMusic',

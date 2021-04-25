@@ -195,3 +195,45 @@ textarea:disabled {
   justify-content: center;
   padding-right: 20px;
 }
+
+.el-table {
+  color: #ffffff;
+
+  &::v-deep {
+    .hover-row>td {
+      background-color: $bgColor;
+
+      &:hover {
+        background-color: $bgColor;
+      }
+    }
+  }
+}
+
+.el-pager li {
+  background-color: $bgColor2;
+
+  &:hover {
+    color: $acgnThemeColor;
+  }
+
+  &.active {
+    color: $acgnThemeColor;
+  }
+}
+
+.el-pagination .btn-prev,
+.el-pagination .btn-next {
+  color: $fontColor;
+  background-color: $bgColor;
+}
+
+.el-pagination button:disabled {
+  color: #ffffff1f;
+  background-color: $bgColor;
+}
+
+.el-table th,
+.el-table tr {
+  background-color: $bgColor;
+}

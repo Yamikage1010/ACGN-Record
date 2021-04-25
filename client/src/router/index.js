@@ -19,6 +19,11 @@ export const constantRoutes = [
     component: () => import('@/views/creator/creatorIndex.vue')
   },
   {
+    path: '/masterIndex',
+    name: 'masterIndex',
+    component: () => import('@/views/master/masterIndex.vue')
+  },
+  {
     path: '/login',
     name: 'login',
     component: () => import('@/views/user/login.vue')

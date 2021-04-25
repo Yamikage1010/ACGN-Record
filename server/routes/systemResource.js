@@ -13,6 +13,16 @@ try {
 } catch (err) {
   console.error('读取文件出错: ' + err.message)
 }
+//检查文件状态
+async function detectionFile(req, fileName) {
+  let fileData = {
+    acgnUid: parseInt(fileName.split('_')[0]),
+    acgnFileName: fileName
+  }
+  const result = await exec(sql.table('acgn_file').field('acgnFileStatus').where(fileData).select())
+  console.log(fileData, result)
+  return result
+}
 //樱花花瓣接口
 router.post('/acgnrecord/getSakura', urlencodedParser, (req, res) => {
   res.send({
@@ -24,13 +34,28 @@ router.post('/acgnrecord/getSakura', urlencodedParser, (req, res) => {
 })
 router.get('/acgnrecord/image/*', function (req, res) {
   let imageName = decodeURIComponent(path.basename(req.url))
-  res.sendFile('C://Users/Administrator/Documents/ACGNrecord/userUpData/image/upload_uid' + imageName)
+  detectionFile(req, imageName)
+    .then((result) => {
+      if (result[0].acgnFileStatus === 1) {
+        res.sendFile('C://Users/Administrator/Documents/ACGNrecord/userUpData/image/upload_uid' + imageName)
+      } else {
+        res.sendFile('C://Users/Administrator/Documents/ACGNrecord/systemDefaultResource/image/' + 'nene_era.png')
+      }
+    })
+    .catch((err) => {
+      console.log(imageName + '图片状态查询出错\n')
+      console.log(err)
+    })
   // res.sendFile( '/public/images/'+path.basename(req.url) );
 })
 router.get('/acgnrecord/defaultImage/*', function (req, res) {
   let imageName = decodeURIComponent(path.basename(req.url))
   res.sendFile('C://Users/Administrator/Documents/ACGNrecord/systemDefaultResource/image/' + imageName)
   // res.sendFile( '/public/images/'+path.basename(req.url) );
+})
+router.get('/acgnrecord/masterImage/*', function (req, res) {
+  let imageName = decodeURIComponent(path.basename(req.url))
+  res.sendFile('C://Users/Administrator/Documents/ACGNrecord/userUpData/image/upload_uid' + imageName)
 })
 // const option = {}
 router.get('/acgnrecord/music/*', function (req, res) {

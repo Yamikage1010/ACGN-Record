@@ -7,11 +7,23 @@ var urlencodedParser = bodyParser.urlencoded({ extended: false })
 var router = express.Router()
 var multipart = require('connect-multiparty')
 var multipartMiddleware = multipart({ maxFieldsSize: '10MB' })
+
+async function uploadData(req, extname) {
+  let upload = {
+    acgnUid: req.acgnUid,
+    acgnUserName: req.acgnUserName,
+    acgnFileName: extname,
+    acgnFileStatus: 1,
+    createDate: new Date().getTime()
+  }
+  const result = await exec(sql.table('acgn_file').data(upload).insert())
+  return result
+}
 function fileRenameAndTurnUrl(req, res, dataType) {
   let file = req.files.file
   let characterIndex = req.body.characterIndex || null
-  var extname = req.acgnUid + '_' + file.name
-  var fileName = 'upload_uid' + extname
+  let extname = req.acgnUid + '_' + file.name
+  let fileName = 'upload_uid' + extname
   console.log(file)
   fs.rename(
     file.path,
@@ -25,16 +37,31 @@ function fileRenameAndTurnUrl(req, res, dataType) {
           data: err
         })
       } else {
-        res.send({
-          status: 'success',
-          code: 200,
-          msg: '上传成功',
-          data: {
-            acgnUid: req.acgnUid,
-            file: file,
-            index: characterIndex
-          }
-        })
+        uploadData(req, extname)
+          .then((result) => {
+            if (result.insertId) {
+              res.send({
+                status: 'success',
+                code: 200,
+                msg: '上传成功',
+                data: {
+                  acgnUid: req.acgnUid,
+                  file: file,
+                  index: characterIndex
+                }
+              })
+            } else {
+              res.send({
+                status: 'error',
+                code: 404,
+                msg: '上传失败，出bug啦',
+                data: err
+              })
+            }
+          })
+          .catch(() => {
+            console.log('上传出bug了')
+          })
       }
     }
   )

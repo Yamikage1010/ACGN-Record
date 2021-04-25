@@ -2,7 +2,7 @@ const { init, exec, sql, transaction } = require('../../config/mysqlConfig')
 async function addAcgnContent(req) {
   let acgnContent = JSON.parse(req.body.acgnContent)
   acgnContent.acgnUid = req.acgnUid
-  acgnContent.acgnStatus = 'normal'
+  acgnContent.acgnStatus = 1
   acgnContent.acgnMemoryImage = JSON.stringify(acgnContent.acgnMemoryImage)
   acgnContent.acgnAttribute = JSON.stringify(acgnContent.acgnAttribute)
   acgnContent.acgnMusic = JSON.stringify(acgnContent.acgnMusic)
@@ -29,7 +29,6 @@ async function addAcgnContent(req) {
 }
 async function editAcgnContent(req) {
   let acgnContent = JSON.parse(req.body.acgnContent)
-  acgnContent.acgnStatus = acgnContent.acgnStatus ? acgnContent.acgnStatus : 'normal'
   acgnContent.acgnMemoryImage = JSON.stringify(acgnContent.acgnMemoryImage)
   acgnContent.acgnAttribute = JSON.stringify(acgnContent.acgnAttribute)
   acgnContent.acgnMusic = JSON.stringify(acgnContent.acgnMusic)

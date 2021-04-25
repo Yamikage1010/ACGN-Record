@@ -15,7 +15,7 @@ async function login(user) {
   }
 }
 async function register(user) {
-  user.acgnUserStatus = 'normal'
+  user.acgnUserStatus = 1
   const result = await exec(sql.table('user').data(user).insert())
   return result
 }

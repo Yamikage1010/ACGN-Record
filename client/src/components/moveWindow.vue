@@ -33,6 +33,21 @@
         :acgnEditData="acgnEditData"
         @closeWindow="closeWindow"
       ></acgn-handle>
+      <acgn-file-master
+        v-else-if="windowType === 'master' && windowKey === 'file'"
+        :windowKey="windowKey"
+        @closeWindow="closeWindow"
+      ></acgn-file-master>
+      <acgn-master
+        v-else-if="windowType === 'master' && windowKey === 'acgn'"
+        :windowKey="windowKey"
+        @closeWindow="closeWindow"
+      ></acgn-master>
+      <acgn-user-master
+        v-else-if="windowType === 'master' && windowKey === 'user'"
+        :windowKey="windowKey"
+        @closeWindow="closeWindow"
+      ></acgn-user-master>
       <acgn-content
         v-else
         :windowKey="windowKey"
@@ -52,13 +67,19 @@ import acgnHandle from '@/components/acgnHandle'
 import acgnList from '@/components/acgnList'
 import acgnHandleList from '@/components/acgnHandleList'
 import acgnConfig from '@/components/acgnConfig'
+import acgnFileMaster from '@/components/acgnFileMaster'
+import acgnUserMaster from '@/components/acgnUserMaster'
+import acgnMaster from '@/components/acgnMaster'
 export default {
   components: {
     acgnContent,
     acgnList,
     acgnHandleList,
     acgnConfig,
-    acgnHandle
+    acgnHandle,
+    acgnFileMaster,
+    acgnUserMaster,
+    acgnMaster
   },
   props: {
     acgnEditData: {
