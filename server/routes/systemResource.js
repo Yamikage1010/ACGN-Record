@@ -34,23 +34,35 @@ router.post('/acgnrecord/getSakura', urlencodedParser, (req, res) => {
 })
 router.get('/acgnrecord/image/*', function (req, res) {
   let imageName = decodeURIComponent(path.basename(req.url))
-  detectionFile(req, imageName)
-    .then((result) => {
-      if (result[0].acgnFileStatus === 1) {
-        res.sendFile('C://Users/Administrator/Documents/ACGNrecord/userUpData/image/upload_uid' + imageName)
-      } else {
-        res.sendFile('C://Users/Administrator/Documents/ACGNrecord/systemDefaultResource/image/' + 'nene_era.png')
-      }
-    })
-    .catch((err) => {
-      console.log(imageName + '图片状态查询出错\n')
-      console.log(err)
-    })
+  // detectionFile(req, imageName)
+  //   .then((result) => {
+  //     if (result[0].acgnFileStatus === 1) {
+  //       res.sendFile('C://Users/Administrator/Documents/ACGNrecord/userUpData/image/upload_uid' + imageName)
+  //     } else {
+  //       res.sendFile('C://Users/Administrator/Documents/ACGNrecord/systemDefaultResource/image/' + 'nene_era.png')
+  //     }
+  //   })
+  //   .catch((err) => {
+  //     console.log(imageName + '图片状态查询出错\n')
+  //     console.log(err)
+  //   })
+  res.sendFile('C://Users/Administrator/Documents/ACGNrecord/userUpData/image/upload_uid' + imageName)
   // res.sendFile( '/public/images/'+path.basename(req.url) );
 })
 router.get('/acgnrecord/defaultImage/*', function (req, res) {
   let imageName = decodeURIComponent(path.basename(req.url))
   res.sendFile('C://Users/Administrator/Documents/ACGNrecord/systemDefaultResource/image/' + imageName)
+  // res.sendFile( '/public/images/'+path.basename(req.url) );
+})
+router.get('/acgnrecord/fsReaderImage/*', function (req, res) {
+  let imageName = decodeURIComponent(path.basename(req.url))
+  let fsPath = './public/images/' + imageName
+  try {
+    console.log(__dirname)
+    res.sendFile(fsPath, { root: 'D://yamikage/salf/ACGN-Record/server' })
+  } catch (err) {
+    console.log('尝试fs获取图片出错', err)
+  }
   // res.sendFile( '/public/images/'+path.basename(req.url) );
 })
 router.get('/acgnrecord/masterImage/*', function (req, res) {

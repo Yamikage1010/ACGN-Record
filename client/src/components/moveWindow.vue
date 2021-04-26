@@ -9,7 +9,8 @@
       height: windowHeight + 'px',
       width: windowWidth + 'px',
       top: top + 'px',
-      left: left + 'px'
+      left: left + 'px',
+      transition: transition
     }"
     @click="click"
   >
@@ -119,6 +120,11 @@ export default {
   },
   mounted() {
     this.$refs['moveWindow' + this.title].style.zIndex = this.zIndex
+    this.$refs['moveWindow' + this.title].addEventListener('transitionend', () => {
+      setTimeout(() => {
+        this.transition = ''
+      }, 0)
+    })
   },
   computed: {
     windowHFHeight() {
@@ -128,7 +134,8 @@ export default {
   data() {
     return {
       windowShow: true,
-      reduceWindowHeight: ''
+      reduceWindowHeight: '',
+      transition: ''
     }
   },
   methods: {
@@ -153,6 +160,7 @@ export default {
     },
     reduceWindow() {
       let moveWindow = this.$refs['moveWindow' + this.title]
+      this.transition = 'height 0.3s ease-in-out'
       if (this.reduceWindowHeight) {
         moveWindow.style.height = this.reduceWindowHeight
         this.reduceWindowHeight = ''
@@ -179,7 +187,8 @@ export default {
   position: fixed;
   border-radius: 5px;
   box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
-  transition: height 0.5s ease-in-out;
+  // -webkit-backdrop-filter: blur(5px);
+  // backdrop-filter: blur(5px);
   .move-window-header,
   .move-window-footer {
     width: 100%;

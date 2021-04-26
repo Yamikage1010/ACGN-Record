@@ -15,6 +15,7 @@ import {
 } from 'element-ui'
 import acgnButton from '@/components/acgnButton'
 import moveMessage from '@/components/moveMessage'
+import acgnLoading from '@/components/acgnLoading'
 import cP from '@/components/cP'
 import 'element-ui/lib/theme-chalk/upload.css'
 import 'element-ui/lib/theme-chalk/dialog.css'
@@ -41,4 +42,5 @@ Vue.use(TableColumn)
 Vue.use(Pagination)
 Vue.component('acgn-button', acgnButton)
 Vue.component('move-message', moveMessage)
+Vue.component('acgn-loading', acgnLoading)
 Vue.component('c-p', cP)

@@ -342,6 +342,7 @@ export default {
         z-index: 2;
         img {
           border: 4px solid #ffffffc5;
+          box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.5);
           border-radius: 3px;
           max-width: calc(100% - 3px);
           max-height: 590px;

@@ -1,5 +1,10 @@
 <template>
   <div id="app" @contextmenu.prevent="rightClick">
+    <acgn-loading
+      v-if="loadData.loaded !== backgroundImages.length"
+      :loaded="loadData.loaded"
+      :loadSize="backgroundImages.length"
+    ></acgn-loading>
     <move-menu v-moveMenu v-if="hasMenu" :zIndex="998" :top="mouseTop" :left="mouseLeft" :title="'系统菜单'">
       <div class="db-menu" v-if="routerName === 'readerIndex' || routerName === 'creatorIndex'" @click="changeMode">
         {{ routerName == 'readerIndex' ? '管理模式' : '浏览模式' }}
@@ -181,7 +186,11 @@ export default {
           artist: '米倉千尋',
           src: 'http://localhost:9810/acgnrecord/defaultMusic/米倉千尋 - ふたり.mp3'
         }
-      ]
+      ],
+      loadData: {
+        apiSrc: '',
+        loaded: 0
+      }
     }
   },
   computed: {
@@ -196,11 +205,21 @@ export default {
       if (this.acgnConfig.backgroundImages && this.acgnConfig.backgroundImages.length != 0) {
         this.apiSrc = 'http://localhost:9810/acgnrecord/image/'
         this.backgroundImages = this.acgnConfig.backgroundImages
+        this.loadData.apiSrc = this.apiSrc
+        this.loadData.loaded = 0
+        this.loadAcgnImage([...this.backgroundImages], this.loadData).then((imgArr) => {
+          console.log(imgArr)
+        })
         this.getBackgroundAnimetion()
         this.getBackgroundImage()
       } else {
         this.apiSrc = this.defaultApiSrc
         this.backgroundImages = this.defaultBackgroundImages
+        this.loadData.apiSrc = this.defaultApiSrc
+        this.loadData.loaded = 0
+        this.loadAcgnImage([...this.backgroundImages], this.loadData).then((imgArr) => {
+          console.log(imgArr)
+        })
         this.getBackgroundAnimetion()
         this.getBackgroundImage()
       }
@@ -221,6 +240,11 @@ export default {
     ) {
       Bus.$emit('loadAcgnConfig')
     } else {
+      this.loadData.apiSrc = this.defaultApiSrc
+      this.loadData.loaded = 0
+      this.loadAcgnImage([...this.backgroundImages], this.loadData).then((imgArr) => {
+        console.log(imgArr)
+      })
       this.getBackgroundAnimetion()
       this.getBackgroundImage()
       this.loadSystemStyle()

@@ -4,6 +4,7 @@
     :ref="ref"
     :style="{ top: top + 'px', left: left + 'px', width: width + 'px', height: height + 'px' }"
     @click="clickBall"
+    data-tilt
   >
     <img
       class="float-ball-image animate__animated animate__fadeIn__image"
@@ -20,6 +21,7 @@
 </template>
 
 <script>
+import VanillaTilt from 'vanilla-tilt'
 export default {
   props: {
     top: {
@@ -68,6 +70,7 @@ export default {
       let top = Number(this.top)
       let left = Number(this.left)
       const floatBall = this.$refs[this.ref]
+      VanillaTilt.init(floatBall, { reverse: true, max: 40 })
       floatBall.classList.add('float-ball-' + ballKey)
       const floatKetframes = `@keyframes ballFloat${ballKey}{
         20% {
@@ -127,6 +130,11 @@ export default {
   position: fixed;
   width: 300px;
   height: 300px;
+  border-top: 1px solid #ffffff;
+  border-left: 1px solid #ffffff;
+  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.7);
+  // -webkit-backdrop-filter: blur(5px);
+  // backdrop-filter: blur(5px);
   transition: 0.3s ease;
   border-radius: 150px;
   background-color: transparent;
