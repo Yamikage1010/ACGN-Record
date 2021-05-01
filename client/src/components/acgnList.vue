@@ -1,5 +1,6 @@
 <template>
   <div class="acgn-list">
+    <!-- <acgn-loading :loaded="loadData.loaded" :loadSize="imageArray.length"></acgn-loading> -->
     <div class="acgn-list-item" v-for="item in acgnContentList" :key="item.acgnId" @click.stop="readAcgnContent(item)">
       <div class="acgn-title">{{ item.acgnTitle }}</div>
       <!-- <div class="acgn-subTitle">{{ item.acgnSubTitle }}</div> -->
@@ -9,7 +10,7 @@
         v-if="item.acgnMemoryImage.length > 0"
         :src="'http://localhost:9810/acgnrecord/image/' + item.acgnMemoryImage[0]"
       />
-      <img class="acgn-image" v-else :src="'http://localhost:9810/acgnrecord/defaultImage/sora.png'" />
+      <img class="acgn-image" v-else :src="'http://localhost:9810/acgnrecord/image/_noImage.jpg'" />
       <div class="acgn-image-mask"></div>
       <!-- <div class="delete-acgn">X</div> -->
       <!-- <div class="acgn-subTitle">{{ item.acgnSubTitle }}</div> -->
@@ -38,6 +39,10 @@ export default {
         .then((res) => {
           if (res.code === 200) {
             this.acgnContentList = res.data.acgnContentList
+            this.imageArray = this.acgnContentList.map((item) => {
+              return item.acgnMemoryImage[0] || '_noImage.jpg'
+            })
+            this.loadAcgnImage(this.imageArray, this.loadData)
             this.$message.success(res.msg)
           } else {
             this.$message.warning(res.msg)
@@ -53,6 +58,10 @@ export default {
       }).then((res) => {
         if (res.code == 200) {
           this.acgnContentList = res.data.acgnContentList
+          this.imageArray = this.acgnContentList.map((item) => {
+            return item.acgnMemoryImage[0] || '_noImage.jpg'
+          })
+          this.loadAcgnImage(this.imageArray, this.loadData)
           this.$message.success(res.msg)
         } else {
           this.$message.warning(res.msg)
@@ -63,7 +72,12 @@ export default {
   data() {
     return {
       userData: {},
-      acgnContentList: []
+      acgnContentList: [],
+      imageArray: [],
+      loadData: {
+        apiSrc: 'http://localhost:9810/acgnrecord/image/',
+        loaded: 0
+      }
     }
   },
   methods: {
@@ -78,6 +92,8 @@ export default {
 .acgn-list {
   margin-top: 20px;
   text-align: center;
+  width: 100%;
+  height: 100%;
   .acgn-list-item {
     padding: 10px;
     margin-bottom: 40px;

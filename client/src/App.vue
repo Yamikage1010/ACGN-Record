@@ -1,10 +1,6 @@
 <template>
   <div id="app" @contextmenu.prevent="rightClick">
-    <acgn-loading
-      v-if="loadData.loaded !== backgroundImages.length"
-      :loaded="loadData.loaded"
-      :loadSize="backgroundImages.length"
-    ></acgn-loading>
+    <!-- <acgn-loading :loaded="loadData.loaded" :loadSize="backgroundImages.length"></acgn-loading> -->
     <move-menu v-moveMenu v-if="hasMenu" :zIndex="998" :top="mouseTop" :left="mouseLeft" :title="'系统菜单'">
       <div class="db-menu" v-if="routerName === 'readerIndex' || routerName === 'creatorIndex'" @click="changeMode">
         {{ routerName == 'readerIndex' ? '管理模式' : '浏览模式' }}

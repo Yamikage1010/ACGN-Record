@@ -49,6 +49,12 @@ router.get('/acgnrecord/image/*', function (req, res) {
   res.sendFile('C://Users/Administrator/Documents/ACGNrecord/userUpData/image/upload_uid' + imageName)
   // res.sendFile( '/public/images/'+path.basename(req.url) );
 })
+
+router.get('/acgnrecord/GMImage/*', function (req, res) {
+  let imageName = decodeURIComponent(path.basename(req.url))
+  res.sendFile('C://Users/Administrator/Documents/ACGNrecord/userUpData/GMImage/gm_upload_uid' + imageName)
+  // res.sendFile( '/public/images/'+path.basename(req.url) );
+})
 router.get('/acgnrecord/defaultImage/*', function (req, res) {
   let imageName = decodeURIComponent(path.basename(req.url))
   res.sendFile('C://Users/Administrator/Documents/ACGNrecord/systemDefaultResource/image/' + imageName)
@@ -69,6 +75,7 @@ router.get('/acgnrecord/masterImage/*', function (req, res) {
   let imageName = decodeURIComponent(path.basename(req.url))
   res.sendFile('C://Users/Administrator/Documents/ACGNrecord/userUpData/image/upload_uid' + imageName)
 })
+
 // const option = {}
 router.get('/acgnrecord/music/*', function (req, res) {
   let musicName = decodeURIComponent(path.basename(req.url))

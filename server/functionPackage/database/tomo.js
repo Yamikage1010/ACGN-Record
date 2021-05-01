@@ -124,7 +124,7 @@ async function getTomoAcgnContentList(req) {
     result.forEach((item) => {
       item.acgnMemoryImage = JSON.parse(item.acgnMemoryImage)
       item.acgnAttribute = JSON.parse(item.acgnAttribute)
-      item.acgnMusic = JSON.parse(item.acgnMusic)
+      item.acgnCharacteristic = JSON.parse(item.acgnCharacteristic)
     })
   }
   return result

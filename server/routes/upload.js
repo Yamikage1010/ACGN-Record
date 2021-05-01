@@ -6,6 +6,7 @@ var bodyParser = require('body-parser')
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 var router = express.Router()
 var multipart = require('connect-multiparty')
+var gm = require('gm')
 var multipartMiddleware = multipart({ maxFieldsSize: '10MB' })
 
 async function uploadData(req, extname) {
@@ -37,6 +38,20 @@ function fileRenameAndTurnUrl(req, res, dataType) {
           data: err
         })
       } else {
+        if (dataType === 'image') {
+          gm('C://Users/Administrator/Documents/ACGNrecord/userUpData/' + dataType + '/' + fileName)
+            .setFormat('JPEG')
+            .quality(5) //设置压缩质量: 0-100
+            .strip()
+            .autoOrient()
+            .write('C://Users/Administrator/Documents/ACGNrecord/userUpData/GMImage/gm_' + fileName, function (err) {
+              if (err) {
+                console.log('图片压缩err: ' + err)
+              } else {
+                console.log('图片压缩成功')
+              }
+            })
+        }
         uploadData(req, extname)
           .then((result) => {
             if (result.insertId) {

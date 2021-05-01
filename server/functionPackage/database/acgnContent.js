@@ -5,7 +5,7 @@ async function addAcgnContent(req) {
   acgnContent.acgnStatus = 1
   acgnContent.acgnMemoryImage = JSON.stringify(acgnContent.acgnMemoryImage)
   acgnContent.acgnAttribute = JSON.stringify(acgnContent.acgnAttribute)
-  acgnContent.acgnMusic = JSON.stringify(acgnContent.acgnMusic)
+  acgnContent.acgnCharacteristic = JSON.stringify(acgnContent.acgnCharacteristic)
   const result = await exec(sql.table('acgn_content').data(acgnContent).insert())
   if (result.insertId || result.insertId === 0) {
     let acgnCharacters = JSON.parse(req.body.acgnCharacters)
@@ -31,7 +31,7 @@ async function editAcgnContent(req) {
   let acgnContent = JSON.parse(req.body.acgnContent)
   acgnContent.acgnMemoryImage = JSON.stringify(acgnContent.acgnMemoryImage)
   acgnContent.acgnAttribute = JSON.stringify(acgnContent.acgnAttribute)
-  acgnContent.acgnMusic = JSON.stringify(acgnContent.acgnMusic)
+  acgnContent.acgnCharacteristic = JSON.stringify(acgnContent.acgnCharacteristic)
   const result = await exec(sql.table('acgn_content').where({ acgnId: acgnContent.acgnId }).data(acgnContent).update())
   if (result.affectedRows || result.affectedRows > 0) {
     let acgnCharacters = JSON.parse(req.body.acgnCharacters)
@@ -66,7 +66,7 @@ async function getAcgnContentList(req) {
     result.forEach((item) => {
       item.acgnMemoryImage = JSON.parse(item.acgnMemoryImage)
       item.acgnAttribute = JSON.parse(item.acgnAttribute)
-      item.acgnMusic = JSON.parse(item.acgnMusic)
+      item.acgnCharacteristic = JSON.parse(item.acgnMacgnCharacteristicusic)
     })
   }
   return result

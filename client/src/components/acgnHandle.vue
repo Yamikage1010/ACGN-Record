@@ -173,7 +173,7 @@ export default {
           dataValue: [100, 100, 100, 100, 100, 100]
         },
         acgnComment: '',
-        acgnMusic: []
+        acgnCharacteristic: []
       },
       indicator: [
         { name: '剧情', max: 100 },
