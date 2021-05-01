@@ -66,7 +66,7 @@ async function getAcgnContentList(req) {
     result.forEach((item) => {
       item.acgnMemoryImage = JSON.parse(item.acgnMemoryImage)
       item.acgnAttribute = JSON.parse(item.acgnAttribute)
-      item.acgnCharacteristic = JSON.parse(item.acgnMacgnCharacteristicusic)
+      item.acgnCharacteristic = JSON.parse(item.acgnCharacteristic)
     })
   }
   return result

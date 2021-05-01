@@ -124,6 +124,9 @@
           </div>
         </div>
       </div>
+      <!--作品特性信息 -->
+      <acgn-content-characteristic v-if="acgnReadData.acgnCharacteristic.readShow" :acgnReadData="acgnReadData">
+      </acgn-content-characteristic>
       <!-- <acgn-button @click="getAcgnContentImage">生成图片</acgn-button>
       <img :src="acgnContentImage" /> -->
     </div>
@@ -132,6 +135,7 @@
 
 <script>
 import acgnRadar from '@/components/acgnRadar'
+import acgnContentCharacteristic from '@/components/acgnContentCharacteristic'
 import { getAcgnCharacters } from '@/api/acgnContent'
 import { getTomoAcgnCharacters } from '@/api/tomo'
 import html2canvas from 'html2canvas'
@@ -146,7 +150,8 @@ export default {
     acgnReadData: Object
   },
   components: {
-    acgnRadar
+    acgnRadar,
+    acgnContentCharacteristic
   },
   data() {
     return {
@@ -154,9 +159,11 @@ export default {
       activeCharacterIndex: 0,
       acgnCharacters: [],
       charactersActiveImageIndex: [],
-      acgnContentImage: ''
+      acgnContentImage: '',
+      acgnCharacteristic: {}
     }
   },
+  watch: {},
   created() {
     if (this.windowKey) {
       getTomoAcgnCharacters({
@@ -192,6 +199,26 @@ export default {
     }
   },
   mounted() {
+    if (this.acgnReadData.acgnType === 'Comic' || this.acgnReadData.acgnType === 'Novel') {
+      this.acgnCharacteristic.volumes = []
+      this.acgnCharacteristic.readShow = true
+      let volumes = [
+        {
+          cover: '1_未散.jpg',
+          title: '恋爱与选举巧克力',
+          content:
+            '未散像猫一样巨萌，未散像猫一样巨萌，未散像猫一样巨萌，未散像猫一样巨萌，未散像猫一样巨萌，未散像猫一样巨萌。'
+        },
+        {
+          cover: '1_meguru.jpg',
+          title: 'サノバウイッチ',
+          content:
+            '爱瑠超级萌，爱瑠超级萌，爱瑠超级萌，爱瑠超级萌，爱瑠超级萌，爱瑠超级萌，爱瑠超级萌，爱瑠超级萌，爱瑠超级萌，爱瑠超级萌。'
+        }
+      ]
+      this.acgnCharacteristic.volumes = volumes
+    }
+    this.acgnReadData.acgnCharacteristic = { ...this.acgnCharacteristic }
     console.log(this.acgnReadData)
   },
   methods: {
