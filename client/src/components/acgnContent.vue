@@ -1,5 +1,6 @@
 <template>
   <div class="acgnContent" ref="acgnContent">
+    <acgn-loading :loadSuccess="getImage" :loadingText="'生成中'"></acgn-loading>
     <div class="acgn-content-header">
       <div class="acgn-slide" v-if="acgnReadData.acgnMemoryImage.length > 0">
         <div
@@ -127,13 +128,16 @@
       <!--作品特性信息 -->
       <acgn-content-characteristic v-if="acgnReadData.acgnCharacteristic.readShow" :acgnReadData="acgnReadData">
       </acgn-content-characteristic>
-      <!-- <acgn-button @click="getAcgnContentImage">生成图片</acgn-button>
-      <img :src="acgnContentImage" /> -->
+    </div>
+    <div class="window-bottom" @click="windowBottom" :style="{ bottom: windowBottomShow ? '50px' : '0' }"></div>
+    <div class="window-handle" :style="{ height: windowBottomShow ? '50px' : '0' }">
+      <acgn-button v-show="windowBottomShow" @click="getAcgnContentImage">生成图片</acgn-button>
     </div>
   </div>
 </template>
 
 <script>
+import Bus from '@/common/bus'
 import acgnRadar from '@/components/acgnRadar'
 import acgnContentCharacteristic from '@/components/acgnContentCharacteristic'
 import { getAcgnCharacters } from '@/api/acgnContent'
@@ -145,7 +149,7 @@ export default {
       default: ''
     },
     windowType: {
-      default: 'Animetion'
+      default: 'Animation'
     },
     acgnReadData: Object
   },
@@ -160,7 +164,9 @@ export default {
       acgnCharacters: [],
       charactersActiveImageIndex: [],
       acgnContentImage: '',
-      acgnCharacteristic: {}
+      acgnCharacteristic: {},
+      windowBottomShow: false,
+      getImage: true
     }
   },
   watch: {},
@@ -199,9 +205,9 @@ export default {
     }
   },
   mounted() {
+    this.acgnCharacteristic.readShow = true
     if (this.acgnReadData.acgnType === 'Comic' || this.acgnReadData.acgnType === 'Novel') {
       this.acgnCharacteristic.volumes = []
-      this.acgnCharacteristic.readShow = true
       let volumes = [
         {
           cover: '1_未散.jpg',
@@ -217,6 +223,36 @@ export default {
         }
       ]
       this.acgnCharacteristic.volumes = volumes
+    }
+    if (this.acgnReadData.acgnType === 'Animation') {
+      this.acgnCharacteristic.animationSourse = []
+      let animationSourse = [
+        {
+          fileType: 'music',
+          title: '阿比盖尔·威廉姆斯',
+          image: '1_shiruvi_to_ria.png',
+          music: '1_DracoVirgo - 清廉なるHeretics.mp3',
+          content:
+            '未散像猫一样巨萌，未散像猫一样巨萌，未散像猫一样巨萌，未散像猫一样巨萌，未散像猫一样巨萌，未散像猫一样巨萌。'
+        },
+        {
+          fileType: 'music',
+          title: '9-nine',
+          image: '1_bandicam 2020-11-29 10-10-22-542.jpg',
+          music: '1_米倉千尋 - ハルトキ～Spring Moment～.mp3',
+          content:
+            '爱瑠超级萌，爱瑠超级萌，爱瑠超级萌，爱瑠超级萌，爱瑠超级萌，爱瑠超级萌，爱瑠超级萌，爱瑠超级萌，爱瑠超级萌，爱瑠超级萌。'
+        },
+        {
+          fileType: 'video',
+          title: '9-nine',
+          // image: '1_bandicam 2020-11-29 10-10-22-542.jpg',
+          video: '1_9-nine混剪.mp4',
+          content:
+            '爱瑠超级萌，爱瑠超级萌，爱瑠超级萌，爱瑠超级萌，爱瑠超级萌，爱瑠超级萌，爱瑠超级萌，爱瑠超级萌，爱瑠超级萌，爱瑠超级萌。'
+        }
+      ]
+      this.acgnCharacteristic.animationSourse = animationSourse
     }
     this.acgnReadData.acgnCharacteristic = { ...this.acgnCharacteristic }
     console.log(this.acgnReadData)
@@ -238,9 +274,12 @@ export default {
       this.acgnCharacters.push(...acgnCharacters)
       this.charactersActiveImageIndex = this.acgnCharacters.map(() => 0)
     },
+    windowBottom() {
+      this.windowBottomShow = !this.windowBottomShow
+    },
     getAcgnContentImage() {
       let acgnContent = this.$refs.acgnContent
-      console.dir(acgnContent)
+      this.getImage = false
       html2canvas(acgnContent, {
         imageTimeout: 0,
         useCORS: true,
@@ -252,10 +291,9 @@ export default {
         y: acgnContent.pageYOffset
       }).then((canvas) => {
         let dataURL = canvas.toDataURL('image/png')
+        Bus.$emit('openAcgnContentImageDialog', dataURL)
         this.acgnContentImage = dataURL
-        if (this.acgnContentImage !== '') {
-          console.log(this.acgnContentImage)
-        }
+        this.getImage = true
       })
     },
     clickSlideSwichItem(itemIndex, characterIndex) {
@@ -337,6 +375,7 @@ export default {
   flex-direction: column;
   overflow-y: auto;
   overflow-x: hidden;
+  background-color: $bgColor;
   .acgn-content-header {
     width: 100%;
     height: 700px;
@@ -627,6 +666,39 @@ export default {
           display: none;
         }
       }
+    }
+  }
+  .window-bottom {
+    z-index: 999;
+    border-top: 1px solid;
+    border-left: 1px solid;
+    border-right: 1px solid;
+    border-bottom: 1px solid $bgColor;
+    border-top-left-radius: 1px;
+    border-top-right-radius: 1px;
+    position: fixed;
+    width: 30px;
+    height: 20px;
+    right: 20px;
+    cursor: pointer;
+    background-color: $bgColor;
+  }
+  .window-handle {
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    height: 0;
+    right: 0px;
+    bottom: 0;
+    border-top-left-radius: 1px;
+    border-top: 1px solid;
+    border-left: 1px solid;
+    border-right: 1px solid;
+    background-color: $bgColor;
+    .acgn-button {
+      margin-top: 0;
     }
   }
 }

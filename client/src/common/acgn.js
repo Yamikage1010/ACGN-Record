@@ -1,5 +1,5 @@
 export var ACGN = {
-  A: 'Animetion',
+  A: 'Animation',
   C: 'Comic',
   G: 'Game',
   N: 'Novel'

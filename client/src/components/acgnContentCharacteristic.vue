@@ -1,7 +1,11 @@
 <template>
   <div class="acgnContentCharacteristic">
-    <h2 v-if="acgnReadData.acgnType === 'Comic' || acgnReadData.acgnType === 'Novel'">分卷信息</h2>
-    <div class="acgn-characteristic-volumes">
+    <h2 v-if="acgnReadData.acgnType === 'Comic' || acgnReadData.acgnType === 'Novel'">分卷记录</h2>
+    <h2 v-if="acgnReadData.acgnType === 'Animation'">资源记录</h2>
+    <div
+      class="acgn-characteristic-volumes"
+      v-if="acgnReadData.acgnType === 'Comic' || acgnReadData.acgnType === 'Novel'"
+    >
       <div class="volumes-left">
         <div
           class="volumes-left-item"
@@ -47,13 +51,42 @@
         </div>
       </div>
     </div>
+    <div
+      class="animation-characteristic"
+      ref="animationCharacteristic"
+      v-if="acgnReadData.acgnType === 'Animation'"
+      @mousewheel="scrollSlideSwich"
+    >
+      <div
+        class="op-ed"
+        v-for="(sourse, index) in acgnReadData.acgnCharacteristic.animationSourse"
+        :key="index"
+        :style="{
+          transform:
+            'translateX(' +
+            (translateIndex * 10 + index * 100) +
+            '%) scale(' +
+            (1 - translateIndex / 60 - index / 6) +
+            ')'
+        }"
+      >
+        <acgn-content-audio v-if="sourse.fileType === 'music'" :musicData="sourse"></acgn-content-audio>
+        <acgn-content-video v-if="sourse.fileType === 'video'" :videoData="sourse"></acgn-content-video>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+import acgnContentAudio from '@/components/acgnContentAudio'
+import acgnContentVideo from '@/components/acgnContentVideo'
 export default {
   props: {
     acgnReadData: Object
+  },
+  components: {
+    acgnContentAudio,
+    acgnContentVideo
   },
   watch: {
     activeVolumeIndex() {
@@ -63,15 +96,27 @@ export default {
           : 'translate(-' + Math.ceil(Math.random() * 100) + 'px,-' + Math.ceil(Math.random() * 100) + 'px)'
     }
   },
+  mounted() {},
   data() {
     return {
       activeVolumeIndex: 0,
-      volumesRightTranslate: 'translate(80px,0)'
+      volumesRightTranslate: 'translate(80px,0)',
+      translateIndex: 0
     }
   },
   methods: {
     clickVolumesItem(itemIndex) {
       this.activeVolumeIndex = itemIndex
+    },
+
+    scrollSlideSwich(event) {
+      let scrollEvent = event || window.event,
+        v
+      scrollEvent.wheelDelta ? (v = scrollEvent.wheelDelta) : (v = scrollEvent.detail)
+      if (v > 3 || -v > 3) v = -v
+      v > 0 ? this.translateIndex-- : this.translateIndex++
+      console.log(this.translateIndex)
+      scrollEvent.preventDefault() //阻止浏览器的默认滚动
     }
   }
 }
@@ -80,7 +125,7 @@ export default {
 <style lang="scss" scoped>
 .acgnContentCharacteristic {
   h2 {
-    font-size: 60px;
+    font-size: 45px;
     text-align: left;
     padding: 10px;
     margin: 0;
@@ -175,6 +220,28 @@ export default {
         overflow: auto;
         transition: 0.3s ease-in;
       }
+    }
+  }
+  .animation-characteristic {
+    position: relative;
+    // display: flex;
+    // justify-content: space-around;
+    // align-items: center;
+    width: 100%;
+    height: 600px;
+    overflow: hidden;
+    margin-top: 20px;
+    margin-bottom: 50px;
+    display: flex;
+    justify-content: left;
+    align-items: center;
+    .op-ed {
+      width: 500px;
+      height: 500px;
+      position: absolute;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
   }
 }

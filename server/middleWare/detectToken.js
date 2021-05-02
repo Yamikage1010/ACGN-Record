@@ -15,6 +15,7 @@ module.exports = (req, res, next) => {
     '/acgnrecord/defaultImage/',
     '/acgnrecord/fsReaderImage/',
     '/acgnrecord/GMImage',
+    '/acgnrecord/video',
     '/acgnrecord/music',
     '/acgnrecord/defaultMusic',
     '/acgnrecord/sendEmail'

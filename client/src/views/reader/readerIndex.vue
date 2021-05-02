@@ -31,6 +31,7 @@
       @clickListItem="clickListItem"
     >
     </move-window>
+    <acgn-content-image-dialog ref="acgnContentImageDialog"></acgn-content-image-dialog>
   </div>
 </template>
 
@@ -38,11 +39,13 @@
 import Bus from '@/common/bus'
 import floatBall from '@/components/floatBall'
 import moveWindow from '@/components/moveWindow.vue'
+import acgnContentImageDialog from '@/components/acgnContentImageDialog.vue'
 import { ACGN } from '@/common/acgn'
 export default {
   components: {
     floatBall,
-    moveWindow
+    moveWindow,
+    acgnContentImageDialog
   },
   data() {
     let ballWidth = window.innerWidth / 6
@@ -156,6 +159,9 @@ export default {
       } else {
         this.$message.warning('已打开该窗口')
       }
+    })
+    Bus.$on('openAcgnContentImageDialog', (imgSrc) => {
+      this.$refs.acgnContentImageDialog.openImage(imgSrc)
     })
   },
   methods: {

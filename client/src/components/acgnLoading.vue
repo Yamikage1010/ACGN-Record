@@ -1,9 +1,9 @@
 <template>
-  <div class="acgnLoading" v-if="loaded !== loadSize">
+  <div class="acgnLoading" v-if="!loadSuccess && loaded !== loadSize">
     <div class="loading-anime">
       <img :src="'http://localhost:9810/acgnrecord/defaultImage/loading.gif'" />
       <!-- <span>{{ loadingNum }}%</span> -->
-      <span>加载中...</span>
+      <span>{{ loadingText + '...' }}</span>
     </div>
   </div>
 </template>
@@ -17,7 +17,13 @@ export default {
     },
     loadSize: {
       type: Number,
-      default: 0
+      default: 1
+    },
+    loadSuccess: {
+      default: false
+    },
+    loadingText: {
+      default: '加载中'
     }
   },
   watch: {
@@ -49,9 +55,9 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 1;
-  -webkit-backdrop-filter: blur(5px);
-  backdrop-filter: blur(5px);
+  z-index: 2021;
+  -webkit-backdrop-filter: blur(7px);
+  backdrop-filter: blur(7px);
   .loading-anime {
     width: 100%;
     height: 100%;
@@ -66,10 +72,11 @@ export default {
       width: 200px;
     }
     span {
-      color: $fontColor;
-      font-size: 30px;
-      -webkit-text-stroke: 1px #000;
-      text-stroke: 1px #000;
+      color: $acgnThemeColor;
+      font-size: 25px;
+      font-weight: 800;
+      -webkit-text-stroke: 1.5px #ffffff;
+      text-stroke: 1.5px #ffffff;
     }
   }
 }

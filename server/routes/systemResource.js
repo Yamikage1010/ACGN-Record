@@ -87,6 +87,11 @@ router.get('/acgnrecord/defaultMusic/*', function (req, res) {
   res.sendFile('C://Users/Administrator/Documents/ACGNrecord/systemDefaultResource/music/' + musicName)
   // res.sendFile( '/public/images/'+path.basename(req.url) );
 })
+router.get('/acgnrecord/video/*', function (req, res) {
+  let videoName = decodeURIComponent(path.basename(req.url))
+  res.sendFile('C://Users/Administrator/Documents/ACGNrecord/userUpData/video/upload_uid' + videoName)
+  // res.sendFile( '/public/images/'+path.basename(req.url) );
+})
 // router.get('/acgnrecord/music/*',(req,res)=>{
 
 //   let mp3 = path.basename(req.url);
