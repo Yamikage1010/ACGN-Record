@@ -51,13 +51,13 @@ export default {
   height: calc(100% - 40px);
   top: 40px;
   left: 0;
-  background-color: #ffffff00;
+  // background-color: #ffffff00;
   display: flex;
   justify-content: center;
   align-items: center;
   z-index: 2021;
-  -webkit-backdrop-filter: blur(7px);
-  backdrop-filter: blur(7px);
+  // -webkit-backdrop-filter: blur(7px);
+  // backdrop-filter: blur(7px);
   .loading-anime {
     width: 100%;
     height: 100%;

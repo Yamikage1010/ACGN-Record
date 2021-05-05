@@ -117,9 +117,28 @@ async function getTomoRequestList(req) {
 
 async function getTomoAcgnContentList(req) {
   let selectData = {
-    acgnUid: req.body.acgnUid
+    acgnUid: req.body.acgnUid,
+    acgnStatus: 1
   }
-  const result = await exec(sql.table('acgn_content').field('*').where(selectData).select())
+  req.body.acgnTitle
+    ? Object.assign(selectData, { acgnTitle: { like: '%' + req.body.acgnTitle + '%', _type: 'and' } })
+    : null
+  req.body.acgnType
+    ? Object.assign(selectData, { acgnType: { like: '%' + req.body.acgnType + '%', _type: 'and' } })
+    : null
+  const result = await exec(
+    sql
+      .table('acgn_content')
+      .field('*')
+      .page(req.body.page, req.body.pageSize)
+      .where(selectData)
+      .order('createDate desc')
+      .select()
+  )
+  const result2 = await exec(sql.table('acgn_content').field('*').where(selectData).order('createDate desc').select())
+  console.log(parseInt(result2.length / req.body.pageSize), result2.length % req.body.pageSize === 0 ? 0 : 1)
+  let pageOne = result2.length % req.body.pageSize === 0 ? 0 : 1
+  let pageTotal = parseInt(result2.length / req.body.pageSize) + pageOne
   if (result.length > 0) {
     result.forEach((item) => {
       item.acgnMemoryImage = JSON.parse(item.acgnMemoryImage)
@@ -127,7 +146,11 @@ async function getTomoAcgnContentList(req) {
       item.acgnCharacteristic = JSON.parse(item.acgnCharacteristic)
     })
   }
-  return result
+  let data = {
+    acgnContentList: result,
+    pageTotal: parseInt(pageTotal)
+  }
+  return data
 }
 async function getTomoAcgnCharacters(req) {
   let selectData = {

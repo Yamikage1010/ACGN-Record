@@ -7,9 +7,9 @@ module.exports = (req, res, next) => {
     '/favicon.ico',
     '/static',
     '/public',
-    '/acgnrecord/login/',
-    '/acgnrecord/register/',
-    '/acgnrecord/getSakura/',
+    '/acgnrecord/login',
+    '/acgnrecord/register',
+    '/acgnrecord/getSakura',
     '/acgnrecord/image/',
     '/acgnrecord/masterImage/',
     '/acgnrecord/defaultImage/',
@@ -18,7 +18,7 @@ module.exports = (req, res, next) => {
     '/acgnrecord/video/',
     '/acgnrecord/music/',
     '/acgnrecord/defaultMusic/',
-    '/acgnrecord/sendEmail/'
+    '/acgnrecord/sendEmail'
   ]
   // 验证当前的api是否存在不需要验证的api的列表里面
   console.log(url)

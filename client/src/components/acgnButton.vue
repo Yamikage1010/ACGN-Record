@@ -2,7 +2,7 @@
   <button
     class="acgn-button"
     :class="{ 'acgn-button-danger': buttonType === 'danger' }"
-    :style="{ width: width + 'px', fontSize: fontSize + 'px', cursor: disabled ? 'wait' : 'pointer' }"
+    :style="{ width: width + 'px', fontSize: fontSize + 'px', cursor: disabled ? 'not-allowed' : 'pointer' }"
     @click="click"
     :disabled="disabled"
   >

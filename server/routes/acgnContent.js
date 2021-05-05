@@ -55,15 +55,13 @@ router.post('/acgnrecord/editAcgnContent', urlencodedParser, (req, res) => {
 })
 router.post('/acgnrecord/getAcgnContentList', urlencodedParser, (req, res) => {
   getAcgnContentList(req)
-    .then((result) => {
-      console.log(result)
+    .then((data) => {
+      console.log(data)
       res.send({
         status: 'success',
         code: 200,
         msg: '获取成功',
-        data: {
-          acgnContentList: result
-        }
+        data: data
       })
     })
     .catch((err) => {
