@@ -32,6 +32,8 @@
     >
     </move-window>
     <image-manage ref="imageManage"></image-manage>
+    <sourse-manage ref="sourseManage"></sourse-manage>
+    <volume-manage ref="volumeManage"></volume-manage>
   </div>
 </template>
 
@@ -41,11 +43,15 @@ import floatBall from '@/components/floatBall'
 import moveWindow from '@/components/moveWindow.vue'
 import { ACGN } from '@/common/acgn'
 import imageManage from '@/components/imageManage.vue'
+import sourseManage from '@/components/sourseManage.vue'
+import volumeManage from '@/components/volumeManage.vue'
 export default {
   components: {
     floatBall,
     moveWindow,
-    imageManage
+    imageManage,
+    sourseManage,
+    volumeManage
   },
   data() {
     let ballWidth = window.innerWidth / 6
@@ -136,6 +142,14 @@ export default {
     Bus.$on('openImageManage', (imageList) => {
       console.log(1111)
       this.$refs.imageManage.openImageManage(imageList)
+    })
+    Bus.$on('openSourseManage', (sourseList) => {
+      console.log(2222)
+      this.$refs.sourseManage.openSourseManage(sourseList)
+    })
+    Bus.$on('openVolumeManage', (volumeList) => {
+      console.log(3333)
+      this.$refs.volumeManage.openVolumeManage(volumeList)
     })
   },
   methods: {

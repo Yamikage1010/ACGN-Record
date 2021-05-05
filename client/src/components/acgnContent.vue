@@ -126,7 +126,13 @@
         </div>
       </div>
       <!--作品特性信息 -->
-      <acgn-content-characteristic v-if="acgnReadData.acgnCharacteristic.readShow" :acgnReadData="acgnReadData">
+      <acgn-content-characteristic
+        v-if="
+          acgnReadData.acgnCharacteristic.volumes.length > 0 ||
+          acgnReadData.acgnCharacteristic.animationSourse.length > 0
+        "
+        :acgnReadData="acgnReadData"
+      >
       </acgn-content-characteristic>
     </div>
     <div class="window-bottom" @click="windowBottom" :style="{ bottom: windowBottomShow ? '50px' : '0' }"></div>
@@ -205,56 +211,6 @@ export default {
     }
   },
   mounted() {
-    this.acgnCharacteristic.readShow = true
-    if (this.acgnReadData.acgnType === 'Comic' || this.acgnReadData.acgnType === 'Novel') {
-      this.acgnCharacteristic.volumes = []
-      let volumes = [
-        {
-          cover: '1_未散.jpg',
-          title: '恋爱与选举巧克力',
-          content:
-            '未散像猫一样巨萌，未散像猫一样巨萌，未散像猫一样巨萌，未散像猫一样巨萌，未散像猫一样巨萌，未散像猫一样巨萌。'
-        },
-        {
-          cover: '1_meguru.jpg',
-          title: 'サノバウイッチ',
-          content:
-            '爱瑠超级萌，爱瑠超级萌，爱瑠超级萌，爱瑠超级萌，爱瑠超级萌，爱瑠超级萌，爱瑠超级萌，爱瑠超级萌，爱瑠超级萌，爱瑠超级萌。'
-        }
-      ]
-      this.acgnCharacteristic.volumes = volumes
-    }
-    if (this.acgnReadData.acgnType === 'Animation') {
-      this.acgnCharacteristic.animationSourse = []
-      let animationSourse = [
-        {
-          fileType: 'music',
-          title: '阿比盖尔·威廉姆斯',
-          image: '1_shiruvi_to_ria.png',
-          music: '1_DracoVirgo - 清廉なるHeretics.mp3',
-          content:
-            '未散像猫一样巨萌，未散像猫一样巨萌，未散像猫一样巨萌，未散像猫一样巨萌，未散像猫一样巨萌，未散像猫一样巨萌。'
-        },
-        {
-          fileType: 'music',
-          title: '9-nine',
-          image: '1_bandicam 2020-11-29 10-10-22-542.jpg',
-          music: '1_米倉千尋 - ハルトキ～Spring Moment～.mp3',
-          content:
-            '爱瑠超级萌，爱瑠超级萌，爱瑠超级萌，爱瑠超级萌，爱瑠超级萌，爱瑠超级萌，爱瑠超级萌，爱瑠超级萌，爱瑠超级萌，爱瑠超级萌。'
-        },
-        {
-          fileType: 'video',
-          title: '9-nine',
-          // image: '1_bandicam 2020-11-29 10-10-22-542.jpg',
-          video: '1_9-nine混剪.mp4',
-          content:
-            '爱瑠超级萌，爱瑠超级萌，爱瑠超级萌，爱瑠超级萌，爱瑠超级萌，爱瑠超级萌，爱瑠超级萌，爱瑠超级萌，爱瑠超级萌，爱瑠超级萌。'
-        }
-      ]
-      this.acgnCharacteristic.animationSourse = animationSourse
-    }
-    this.acgnReadData.acgnCharacteristic = { ...this.acgnCharacteristic }
     console.log(this.acgnReadData)
   },
   methods: {

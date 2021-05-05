@@ -7,18 +7,18 @@ module.exports = (req, res, next) => {
     '/favicon.ico',
     '/static',
     '/public',
-    '/acgnrecord/login',
-    '/acgnrecord/register',
-    '/acgnrecord/getSakura',
-    '/acgnrecord/image',
+    '/acgnrecord/login/',
+    '/acgnrecord/register/',
+    '/acgnrecord/getSakura/',
+    '/acgnrecord/image/',
     '/acgnrecord/masterImage/',
     '/acgnrecord/defaultImage/',
     '/acgnrecord/fsReaderImage/',
-    '/acgnrecord/GMImage',
-    '/acgnrecord/video',
-    '/acgnrecord/music',
-    '/acgnrecord/defaultMusic',
-    '/acgnrecord/sendEmail'
+    '/acgnrecord/GMImage/',
+    '/acgnrecord/video/',
+    '/acgnrecord/music/',
+    '/acgnrecord/defaultMusic/',
+    '/acgnrecord/sendEmail/'
   ]
   // 验证当前的api是否存在不需要验证的api的列表里面
   console.log(url)
@@ -42,6 +42,7 @@ module.exports = (req, res, next) => {
       if (result[0]) {
         req.acgnUid = result[0].acgnUid
         req.acgnUserName = result[0].acgnUserName
+        console.log(result[0])
         next()
       } else {
         return res.status(401).json({

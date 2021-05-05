@@ -48,6 +48,8 @@ export default {
   position: absolute;
   img {
     width: 600px;
+    border: 4px solid #ffffff;
+    border-radius: 4px;
   }
   a {
     display: inline;

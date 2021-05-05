@@ -30,13 +30,16 @@
           v-if="acgnFormData.acgnMemoryImage.length > 0"
         >
           <el-carousel-item v-for="(item, index) in acgnFormData.acgnMemoryImage" :key="index">
-            <img :src="'http://localhost:9810/acgnrecord/image/' + item" width="200px" />
+            <img
+              :src="'http://localhost:9810/acgnrecord/GMImage/' + item"
+              style="max-width: 200px; max-height: 200px"
+            />
           </el-carousel-item>
         </el-carousel>
         <img
-          style="width: 300px"
+          style="max-width: 200px; max-height: 200px"
           v-else-if="acgnFormData.acgnMemoryImage.length === 1"
-          :src="'http://localhost:9810/acgnrecord/image/' + acgnFormData.acgnMemoryImage[0]"
+          :src="'http://localhost:9810/acgnrecord/GMImage/' + acgnFormData.acgnMemoryImage[0]"
         />
         <acgn-button @click="openImageManage('content')">图片管理</acgn-button>
       </div>
@@ -74,6 +77,50 @@
         <acgn-button @click="addAcgnAttribute">添加属性</acgn-button>
       </div>
     </div>
+    <div
+      class="acgn-form-box"
+      style="max-height: 600px"
+      v-if="acgnFormData.acgnType === ACGN.A || acgnFormData.acgnType === ACGN.G"
+    >
+      <div class="acgn-form-item">
+        <label class="acgn-form-item-label">资源记录</label>
+        <div class="acgn-characteristic">
+          <div class="acgn-characteristic-item">标题<span style="right: 0">资源类型</span></div>
+          <div
+            class="acgn-characteristic-item"
+            v-for="(sourse, index) in acgnFormData.acgnCharacteristic.animationSourse"
+            :key="index"
+          >
+            <div class="acgn-characteristic-item-title">{{ sourse.title }}</div>
+            <span style="right: 0">{{ sourse.fileType === 'music' ? '音乐' : '视频' }}</span>
+          </div>
+        </div>
+        <acgn-button @click="openSourseManage()">资源管理</acgn-button>
+      </div>
+    </div>
+    <div
+      class="acgn-form-box"
+      style="max-height: 600px"
+      v-if="acgnFormData.acgnType === ACGN.C || acgnFormData.acgnType === ACGN.N"
+    >
+      <div class="acgn-form-item">
+        <label class="acgn-form-item-label">分卷记录</label>
+        <div class="acgn-characteristic">
+          <div class="acgn-characteristic-item" style="justify-content: center">
+            <div class="acgn-characteristic-item-title">卷标题</div>
+          </div>
+          <div
+            class="acgn-characteristic-item"
+            v-for="(volume, index) in acgnFormData.acgnCharacteristic.volumes"
+            :key="index"
+            style="justify-content: center"
+          >
+            <div class="acgn-characteristic-item-title">{{ volume.title }}</div>
+          </div>
+        </div>
+        <acgn-button @click="openVolumeManage()">分卷管理</acgn-button>
+      </div>
+    </div>
     <div class="acgn-characters" v-for="(character, index) in acgnCharacters" :key="index">
       <div class="acgn-form-box">
         <div class="acgn-form-item">
@@ -96,12 +143,16 @@
             v-if="character.characterImage.length > 0"
           >
             <el-carousel-item v-for="(item, index) in character.characterImage" :key="index">
-              <img style="width: 300px" :src="'http://localhost:9810/acgnrecord/image/' + item" width="200px" />
+              <img
+                :src="'http://localhost:9810/acgnrecord/GMImage/' + item"
+                style="max-width: 200px; max-height: 200px"
+              />
             </el-carousel-item>
           </el-carousel>
           <img
             v-else-if="character.characterImage.length === 1"
-            :src="'http://localhost:9810/acgnrecord/image/' + character.characterImage[0]"
+            style="max-width: 200px; max-height: 200px"
+            :src="'http://localhost:9810/acgnrecord/GMImage/' + character.characterImage[0]"
           />
           <acgn-button @click="openImageManage(index)">图片管理</acgn-button>
         </div>
@@ -173,7 +224,10 @@ export default {
           dataValue: [100, 100, 100, 100, 100, 100]
         },
         acgnComment: '',
-        acgnCharacteristic: []
+        acgnCharacteristic: {
+          animationSourse: [],
+          volumes: []
+        }
       },
       indicator: [
         { name: '剧情', max: 100 },
@@ -192,6 +246,21 @@ export default {
         { name: 'CV', max: 100 }
       ],
       characterDataValue: [89, 98, 50, 40]
+    }
+  },
+  watch: {
+    'acgnFormData.acgnCharacteristic.animationSourse': {
+      handler() {
+        console.log('1111111')
+        this.$forceUpdate()
+      },
+      deep: true
+    },
+    'acgnFormData.acgnCharacteristic.volumes': {
+      handler() {
+        this.$forceUpdate()
+      },
+      deep: true
     }
   },
   created() {
@@ -259,8 +328,19 @@ export default {
       } else {
         imageList = this.acgnCharacters[index].characterImage
       }
-      console.log(imageList)
       Bus.$emit('openImageManage', imageList)
+    },
+    openSourseManage() {
+      let sourseList
+      sourseList = this.acgnFormData.acgnCharacteristic.animationSourse
+      console.log(sourseList)
+      Bus.$emit('openSourseManage', sourseList)
+    },
+    openVolumeManage() {
+      let volumeList
+      volumeList = this.acgnFormData.acgnCharacteristic.volumes
+      console.log(volumeList)
+      Bus.$emit('openVolumeManage', volumeList)
     },
     addAcgnAttribute() {
       this.acgnFormData.acgnAttribute.indicator.push({
@@ -343,6 +423,35 @@ input {
     }
     .attribute-value {
       font-size: 15px;
+    }
+  }
+  .acgn-characteristic {
+    width: 80%;
+    max-height: 400px;
+    overflow: auto;
+    overflow-x: visible;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    .acgn-characteristic-item {
+      position: relative;
+      width: 80%;
+      height: 40px;
+      display: flex;
+      justify-content: space-between;
+      margin-top: 15px;
+      border-bottom: 1px solid;
+      &:nth-child(1) {
+        color: #fff;
+        font-weight: 600;
+      }
+      .acgn-characteristic-item-title {
+        max-width: 70%;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
     }
   }
 }

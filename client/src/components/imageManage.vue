@@ -101,7 +101,7 @@ export default {
       console.log(imageList)
       this.imageManageVisible = true
       this.imageList = imageList
-      if (imageList.length > 0) {
+      if (imageList.length && imageList.length > 0) {
         this.imageManageList = imageList.map((item) => {
           return {
             name: item,
@@ -222,8 +222,14 @@ export default {
         justify-content: center;
         .image-box {
           font-size: 0;
+          width: 100%;
+          height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
           img {
-            width: 90%;
+            max-width: 90%;
+            max-height: 90%;
             transition: 0.2s ease;
           }
         }

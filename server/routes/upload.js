@@ -94,7 +94,11 @@ router.post('/acgnrecord/configMusicUpload', multipartMiddleware, function (req,
   fileRenameAndTurnUrl(req, res, 'music')
 })
 router.post('/acgnrecord/musicUpload', multipartMiddleware, function (req, res) {
-  // console.log(req)
+  console.log(req.acgnUid)
   fileRenameAndTurnUrl(req, res, 'music')
+})
+router.post('/acgnrecord/videoUpload', multipartMiddleware, function (req, res) {
+  // console.log(req)
+  fileRenameAndTurnUrl(req, res, 'video')
 })
 module.exports = router
