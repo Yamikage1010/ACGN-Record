@@ -5,7 +5,10 @@ async function getAcgnFileData(req) {
     ? Object.assign(searchData, { acgnUserName: { like: '%' + req.body.acgnUserName + '%', _type: 'and' } })
     : null
   req.body.acgnFileName
-    ? Object.assign(searchData, { acgnFileName: { like: '%' + req.body.acgnFileName + '%' } })
+    ? Object.assign(searchData, { acgnFileName: { like: '%' + req.body.acgnFileName + '%', _type: 'and' } })
+    : null
+  req.body.acgnFileType
+    ? Object.assign(searchData, { acgnFileType: { like: '%' + req.body.acgnFileType + '%', _type: 'and' } })
     : null
   console.log(
     sql

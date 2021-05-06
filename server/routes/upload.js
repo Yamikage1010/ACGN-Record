@@ -15,6 +15,7 @@ async function uploadData(req, extname) {
     acgnUserName: req.acgnUserName,
     acgnFileName: extname,
     acgnFileStatus: 1,
+    acgnFileType: dataType,
     createDate: new Date().getTime()
   }
   const result = await exec(sql.table('acgn_file').data(upload).insert())
@@ -52,7 +53,7 @@ function fileRenameAndTurnUrl(req, res, dataType) {
               }
             })
         }
-        uploadData(req, extname)
+        uploadData(req, extname, dataType)
           .then((result) => {
             if (result.insertId) {
               res.send({

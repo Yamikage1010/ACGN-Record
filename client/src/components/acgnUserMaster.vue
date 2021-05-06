@@ -2,8 +2,8 @@
   <div class="acgnUserMaster">
     <div class="acgn-master-header">
       <div class="search-input">
-        <input v-model="acgnUserName" @keydown.enter="searchAcgnUserData" placeholder="请输入用户名搜索" />
-        <input v-model="acgnUserEmail" @keydown.enter="searchAcgnUserData" placeholder="请输入邮箱搜索" />
+        <input v-model="acgnUserName" @keydown.enter="searchAcgnUser" placeholder="请输入用户名搜索" />
+        <input v-model="acgnUserEmail" @keydown.enter="searchAcgnUser" placeholder="请输入邮箱搜索" />
       </div>
       <div class="handle-button">
         <acgn-button :width="150" @click="changeUserStatus('more', 2)">批量封禁</acgn-button>
@@ -28,13 +28,18 @@
             <span>{{ scope.row.acgnUserStatus === 1 ? '正常' : '封禁' }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="createDate" label="创建时间"> </el-table-column>
+        <el-table-column label="创建时间">
+          <template slot-scope="scope">
+            <span>{{ getLocalTime(scope.row.createDate) }}</span>
+          </template>
+        </el-table-column>
         <el-table-column fixed="right" label="操作" width="100">
           <template slot-scope="scope">
             <acgn-button @click="changeUserStatus(scope.row, 2)" width="60" v-if="scope.row.acgnUserStatus === 1"
               >封禁</acgn-button
             >
             <acgn-button @click="changeUserStatus(scope.row, 1)" width="60" v-else>开放</acgn-button>
+            <acgn-button @click="readUserData(scope.row)" width="60">详情</acgn-button>
           </template>
         </el-table-column>
       </el-table>
@@ -52,7 +57,9 @@
 </template>
 
 <script>
+import Bus from '@/common/bus'
 import { getAcgnUserData, changeAcgnUserStatus } from '@/api/master'
+import { getLocalTime } from '@/util/acgnFunc'
 export default {
   props: {
     windowKey: {
@@ -74,6 +81,7 @@ export default {
     }
   },
   methods: {
+    getLocalTime,
     handleSelectionChange(val) {
       this.selectTableRowKey = val.map((item) => item.acgnUid)
     },
@@ -105,6 +113,10 @@ export default {
       this.page = page
       this.searchAcgnUserData()
     },
+    searchAcgnUser() {
+      this.page = 1
+      this.searchAcgnUserData()
+    },
     searchAcgnUserData() {
       getAcgnUserData({
         page: this.page,
@@ -124,6 +136,9 @@ export default {
           console.log(err)
           this.$message.error('前端出bug啦')
         })
+    },
+    readUserData(userData) {
+      Bus.$emit('readUserData', userData)
     }
   }
 }
@@ -170,7 +185,9 @@ export default {
       }
     }
   }
-  .acgn-button,
+  .acgn-button {
+    margin: 0 0 5px 10px;
+  }
   input {
     margin: 0 0 0 10px;
   }

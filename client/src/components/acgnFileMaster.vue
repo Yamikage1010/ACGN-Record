@@ -1,9 +1,16 @@
 <template>
   <div class="acgnFileMaster">
+    <acgn-loading :loaded="loadData.loaded" :loadSize="imageArray.length"></acgn-loading>
     <div class="acgn-master-header">
       <div class="search-input">
-        <input v-model="acgnFileName" @keydown.enter="searchAcgnFileData" placeholder="请输入文件名搜索" />
-        <input v-model="acgnUserName" @keydown.enter="searchAcgnFileData" placeholder="请输入用户名搜索" />
+        <input v-model="acgnFileName" @keydown.enter="fileNameSearch" placeholder="请输入文件名搜索" />
+        <input v-model="acgnUserName" @keydown.enter="acgnUserNameSearch" placeholder="请输入用户名搜索" />
+        <select v-model="acgnFileType" @change="selectChange">
+          <option :value="''">全部</option>
+          <option :value="'image'">图片</option>
+          <option :value="'music'">音乐</option>
+          <option :value="'video'">视频</option>
+        </select>
       </div>
       <div class="handle-button">
         <acgn-button :width="150" @click="changeFileStatus('more', 2)">批量封禁</acgn-button>
@@ -16,9 +23,29 @@
         <el-table-column prop="acgnFileId" label="文件ID" width="100"> </el-table-column>
         <el-table-column prop="acgnUserName" label="用户名" width="150"> </el-table-column>
         <el-table-column prop="acgnFileName" label="文件名" width="150"> </el-table-column>
-        <el-table-column label="图片" width="180">
+        <el-table-column label="文件" width="300">
           <template slot-scope="scope">
-            <img style="width: 150px" :src="'http://localhost:9810/acgnrecord/masterImage/' + scope.row.acgnFileName" />
+            <img
+              v-if="scope.row.acgnFileType === 'image'"
+              :src="'http://localhost:9810/acgnrecord/masterImage/' + scope.row.acgnFileName"
+            />
+            <audio
+              v-if="scope.row.acgnFileType === 'music'"
+              ref="audioDom"
+              :src="'http://localhost:9810/acgnrecord/music/' + scope.row.acgnFileName"
+              controls
+            >
+              您的浏览器不支持该音乐播放组件。
+            </audio>
+            <video
+              v-if="scope.row.acgnFileType === 'video'"
+              :src="'http://localhost:9810/acgnrecord/video/' + scope.row.acgnFileName"
+              controls
+              controlslist="nodownload noremoteplayback"
+              disablePictureInPicture
+            >
+              您的浏览器不支持该视频播放组件。
+            </video>
           </template>
         </el-table-column>
         <el-table-column prop="acgnFileStatus" label="状态" width="50">
@@ -26,7 +53,11 @@
             <span>{{ scope.row.acgnFileStatus === 1 ? '正常' : '违规' }}</span>
           </template>
         </el-table-column>
-        <el-table-column prop="createDate" label="上传时间"> </el-table-column>
+        <el-table-column label="上传时间">
+          <template slot-scope="scope">
+            <span>{{ getLocalTime(scope.row.createDate) }}</span>
+          </template>
+        </el-table-column>
         <el-table-column fixed="right" label="操作" width="100">
           <template slot-scope="scope">
             <acgn-button @click="changeFileStatus(scope.row, 2)" width="60" v-if="scope.row.acgnFileStatus === 1"
@@ -51,6 +82,7 @@
 
 <script>
 import { getAcgnFileData, changeAcgnFileStatus } from '@/api/master'
+import { getLocalTime } from '@/util/acgnFunc'
 export default {
   props: {
     windowKey: {
@@ -69,12 +101,19 @@ export default {
       selectTableRowKey: [],
       acgnUserName: '',
       acgnFileName: '',
+      acgnFileType: '',
       page: 1,
       pageSize: 10,
-      pageTotal: 10
+      pageTotal: 10,
+      imageArray: [],
+      loadData: {
+        apiSrc: 'http://localhost:9810/acgnrecord/image/',
+        loaded: 0
+      }
     }
   },
   methods: {
+    getLocalTime,
     handleSelectionChange(val) {
       this.selectTableRowKey = val.map((item) => item.acgnFileId)
     },
@@ -106,17 +145,38 @@ export default {
       this.page = page
       this.searchAcgnFileData()
     },
+    selectChange() {
+      this.page = 1
+      this.searchAcgnFileData()
+    },
+    fileNameSearch() {
+      this.page = 1
+      this.searchAcgnFileData()
+    },
+    acgnUserNameSearch() {
+      this.page = 1
+      this.searchAcgnFileData()
+    },
     searchAcgnFileData() {
       getAcgnFileData({
         page: this.page,
         pageSize: this.pageSize,
         acgnUserName: this.acgnUserName,
-        acgnFileName: this.acgnFileName
+        acgnFileName: this.acgnFileName,
+        acgnFileType: this.acgnFileType
       })
         .then((res) => {
           if (res.code === 200) {
             this.tableData = res.data.tableData
             this.pageTotal = res.data.pageTotal
+            this.imageArray = this.tableData.map((item) => {
+              if (item.acgnFileType === 'image') {
+                return item.acgnFileName
+              }
+            })
+            this.imageArray = this.imageArray.filter((item) => item)
+            this.loadData.loaded = 0
+            this.loadAcgnImage(this.imageArray, this.loadData)
           } else {
             this.$message.warning(res.msg)
           }
@@ -154,6 +214,11 @@ export default {
         width: 200px;
         padding: 5px;
       }
+      select {
+        font-size: 15px;
+        width: 80px;
+        padding: 5px;
+      }
     }
   }
   .acgn-master-main {
@@ -163,6 +228,17 @@ export default {
     height: 85%;
     margin-top: 50px;
     margin-bottom: 20px;
+    &::v-deep {
+      img {
+        max-width: 200px;
+        max-height: 200px;
+      }
+      audio,
+      video {
+        max-width: 250px;
+        max-height: 250px;
+      }
+    }
   }
   .acgn-master-footer {
     &::v-deep {
@@ -172,7 +248,8 @@ export default {
     }
   }
   .acgn-button,
-  input {
+  input,
+  select {
     margin: 0 0 0 10px;
   }
 }

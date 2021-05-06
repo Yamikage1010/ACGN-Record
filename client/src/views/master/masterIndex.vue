@@ -31,7 +31,7 @@
       @clickListItem="clickListItem"
     >
     </move-window>
-    <image-manage ref="imageManage"></image-manage>
+    <master-user-data ref="masterUserData"></master-user-data>
   </div>
 </template>
 
@@ -40,12 +40,12 @@ import Bus from '@/common/bus'
 import floatBall from '@/components/floatBall'
 import moveWindow from '@/components/moveWindow.vue'
 import { ACGN } from '@/common/acgn'
-import imageManage from '@/components/imageManage.vue'
+import masterUserData from '@/components/masterUserData'
 export default {
   components: {
     floatBall,
     moveWindow,
-    imageManage
+    masterUserData
   },
   data() {
     let ballWidth = window.innerWidth / 6
@@ -57,8 +57,8 @@ export default {
       ballData: [
         {
           ballKey: 'file',
-          title: 'image',
-          subTitle: '图片管理',
+          title: 'file',
+          subTitle: '文件管理',
           top: ballTop * 1.5,
           left: ballWidth,
           width: ballTop,
@@ -88,7 +88,7 @@ export default {
       ],
       fileBallData: {
         ballKey: 'file',
-        title: 'image',
+        title: 'file',
         subTitle: '图片管理',
         top: ballTop,
         left: ballWidth,
@@ -122,9 +122,9 @@ export default {
     }
   },
   mounted() {
-    Bus.$on('openImageManage', (imageList) => {
+    Bus.$on('readUserData', (userData) => {
       console.log(1111)
-      this.$refs.imageManage.openImageManage(imageList)
+      this.$refs.masterUserData.openUserDataDialog(userData)
     })
   },
   methods: {
