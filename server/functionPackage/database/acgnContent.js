@@ -2,6 +2,7 @@ const { init, exec, sql, transaction } = require('../../config/mysqlConfig')
 async function addAcgnContent(req) {
   let acgnContent = JSON.parse(req.body.acgnContent)
   acgnContent.acgnUid = req.acgnUid
+  acgnContent.acgnUserName = req.acgnUserName
   acgnContent.acgnStatus = 1
   acgnContent.acgnMemoryImage = JSON.stringify(acgnContent.acgnMemoryImage)
   acgnContent.acgnAttribute = JSON.stringify(acgnContent.acgnAttribute)
@@ -95,7 +96,6 @@ async function getAcgnContentList(req) {
 }
 async function getAcgnCharacters(req) {
   let selectData = {
-    acgnUid: req.acgnUid,
     acgnId: req.body.acgnId
   }
   const result = await exec(sql.table('acgn_characters').field('*').where(selectData).select())

@@ -161,11 +161,13 @@ export default {
           min-width: 60%;
         }
       }
-      .userData-config-image {
+      .userData-config-image,
+      .userData-config-music {
         flex-direction: row;
         flex-wrap: wrap;
         font-size: 15px;
         justify-content: space-around;
+        align-items: flex-start;
         width: 90%;
         max-height: 500px;
         overflow: auto;
@@ -178,15 +180,6 @@ export default {
           max-width: 100%;
           max-height: 200px;
         }
-      }
-      .userData-config-music {
-        flex-direction: row;
-        flex-wrap: wrap;
-        font-size: 15px;
-        justify-content: space-around;
-        width: 90%;
-        max-height: 500px;
-        overflow: auto;
         .config-music {
           width: 80%;
           border: 1px solid #e4e4e4;

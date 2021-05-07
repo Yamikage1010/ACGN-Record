@@ -31,15 +31,14 @@
             />
             <audio
               v-if="scope.row.acgnFileType === 'music'"
-              ref="audioDom"
-              :src="'http://localhost:9810/acgnrecord/music/' + scope.row.acgnFileName"
+              :src="'http://localhost:9810/acgnrecord/masterMusic/' + scope.row.acgnFileName"
               controls
             >
               您的浏览器不支持该音乐播放组件。
             </audio>
             <video
               v-if="scope.row.acgnFileType === 'video'"
-              :src="'http://localhost:9810/acgnrecord/video/' + scope.row.acgnFileName"
+              :src="'http://localhost:9810/acgnrecord/masterVideo/' + scope.row.acgnFileName"
               controls
               controlslist="nodownload noremoteplayback"
               disablePictureInPicture
@@ -89,12 +88,6 @@ export default {
       default: 'acgn'
     }
   },
-  created() {
-    if (this.windowKey === 'acgn') {
-    } else {
-      this.searchAcgnFileData()
-    }
-  },
   data() {
     return {
       tableData: [],
@@ -112,6 +105,9 @@ export default {
       }
     }
   },
+  mounted() {
+    this.searchAcgnFileData()
+  },
   methods: {
     getLocalTime,
     handleSelectionChange(val) {
@@ -120,6 +116,10 @@ export default {
     changeFileStatus(data, status) {
       let acgnFileId
       if (data === 'more') {
+        if (this.selectTableRowKey.length === 0) {
+          this.$message.warning('请选择数据')
+          return
+        }
         acgnFileId = this.selectTableRowKey.toString()
       } else {
         acgnFileId = data.acgnFileId.toString()
@@ -166,9 +166,9 @@ export default {
         acgnFileType: this.acgnFileType
       })
         .then((res) => {
+          this.tableData = res.data.tableData
+          this.pageTotal = res.data.pageTotal
           if (res.code === 200) {
-            this.tableData = res.data.tableData
-            this.pageTotal = res.data.pageTotal
             this.imageArray = this.tableData.map((item) => {
               if (item.acgnFileType === 'image') {
                 return item.acgnFileName

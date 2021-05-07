@@ -43,11 +43,11 @@ router.get('/acgnrecord/image/*', function (req, res) {
   //     }
   //   })
   //   .catch((err) => {
+  //      res.send(400)
   //     console.log(imageName + '图片状态查询出错\n')
   //     console.log(err)
   //   })
   res.sendFile('C://Users/Administrator/Documents/ACGNrecord/userUpData/image/upload_uid' + imageName)
-  // res.sendFile( '/public/images/'+path.basename(req.url) );
 })
 
 router.get('/acgnrecord/GMImage/*', function (req, res) {
@@ -71,35 +71,31 @@ router.get('/acgnrecord/fsReaderImage/*', function (req, res) {
   }
   // res.sendFile( '/public/images/'+path.basename(req.url) );
 })
-router.get('/acgnrecord/masterImage/*', function (req, res) {
-  let imageName = decodeURIComponent(path.basename(req.url))
-  res.sendFile('C://Users/Administrator/Documents/ACGNrecord/userUpData/image/upload_uid' + imageName)
-})
 
 // const option = {}
 router.get('/acgnrecord/music/*', function (req, res) {
   let musicName = decodeURIComponent(path.basename(req.url))
   res.sendFile('C://Users/Administrator/Documents/ACGNrecord/userUpData/music/upload_uid' + musicName)
-  // res.sendFile( '/public/images/'+path.basename(req.url) );
 })
 router.get('/acgnrecord/defaultMusic/*', function (req, res) {
   let musicName = decodeURIComponent(path.basename(req.url))
   res.sendFile('C://Users/Administrator/Documents/ACGNrecord/systemDefaultResource/music/' + musicName)
-  // res.sendFile( '/public/images/'+path.basename(req.url) );
 })
 router.get('/acgnrecord/video/*', function (req, res) {
   let videoName = decodeURIComponent(path.basename(req.url))
   res.sendFile('C://Users/Administrator/Documents/ACGNrecord/userUpData/video/upload_uid' + videoName)
-  // res.sendFile( '/public/images/'+path.basename(req.url) );
 })
-// router.get('/acgnrecord/music/*',(req,res)=>{
 
-//   let mp3 = path.basename(req.url);
-//   let stat = fs.statSync(mp3);
-
-//   res.writeHead(200,{    'Content-Type':'audio/mpeg',    'Content-Length':stat.size
-//   });
-
-//   fs.createReadStream(mp3).pipe(res);
-//   })
+router.get('/acgnrecord/masterImage/*', function (req, res) {
+  let imageName = decodeURIComponent(path.basename(req.url))
+  res.sendFile('C://Users/Administrator/Documents/ACGNrecord/userUpData/image/upload_uid' + imageName)
+})
+router.get('/acgnrecord/masterMusic/*', function (req, res) {
+  let musicName = decodeURIComponent(path.basename(req.url))
+  res.sendFile('C://Users/Administrator/Documents/ACGNrecord/userUpData/music/upload_uid' + musicName)
+})
+router.get('/acgnrecord/masterVideo/*', function (req, res) {
+  let videoName = decodeURIComponent(path.basename(req.url))
+  res.sendFile('C://Users/Administrator/Documents/ACGNrecord/userUpData/video/upload_uid' + videoName)
+})
 module.exports = router

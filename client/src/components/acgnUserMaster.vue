@@ -66,9 +66,6 @@ export default {
       default: 'acgn'
     }
   },
-  created() {
-    this.searchAcgnUserData()
-  },
   data() {
     return {
       tableData: [],
@@ -80,6 +77,9 @@ export default {
       pageTotal: 10
     }
   },
+  mounted() {
+    this.searchAcgnUserData()
+  },
   methods: {
     getLocalTime,
     handleSelectionChange(val) {
@@ -88,6 +88,10 @@ export default {
     changeUserStatus(data, status) {
       let acgnUid
       if (data === 'more') {
+        if (this.selectTableRowKey.length === 0) {
+          this.$message.warning('请选择数据')
+          return
+        }
         acgnUid = this.selectTableRowKey.toString()
       } else {
         acgnUid = data.acgnUid.toString()
@@ -125,9 +129,9 @@ export default {
         acgnUserEmail: this.acgnUserEmail
       })
         .then((res) => {
+          this.tableData = res.data.tableData
+          this.pageTotal = res.data.pageTotal
           if (res.code === 200) {
-            this.tableData = res.data.tableData
-            this.pageTotal = res.data.pageTotal
           } else {
             this.$message.warning(res.msg)
           }

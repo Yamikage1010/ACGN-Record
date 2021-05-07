@@ -77,6 +77,9 @@ export default {
       this.$emit('click', e)
     },
 
+    close() {
+      this.windowShow = false
+    },
     closeMessage() {
       this.windowShow = false
       this.$emit('closeMessage')
