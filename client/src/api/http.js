@@ -44,6 +44,7 @@ axios.interceptors.response.use(
       return Promise.resolve(response)
     } else {
       console.log(response.status)
+      return Promise.resolve(response)
     }
   },
   error => {

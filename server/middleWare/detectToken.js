@@ -39,7 +39,21 @@ module.exports = (req, res, next) => {
   }
   exec(sql.table('user').field('acgnUid,acgnUserName,acgnUserStatus').where({ token: token }).select())
     .then((result) => {
-      if (result[0].acgnUserStatus === 2) {
+      if (url === '/acgnrecord/token') {
+        if (result[0].acgnUserStatus === 1) {
+          return res.status(200).json({
+            role: 'user'
+          })
+        } else if (result[0].acgnUserStatus === 3) {
+          return res.status(200).json({
+            role: 'master'
+          })
+        } else {
+          return res.status(505).json({
+            msg: '账号状态异常'
+          })
+        }
+      } else if (result[0].acgnUserStatus === 2) {
         res.send({
           status: 'error',
           code: 505,

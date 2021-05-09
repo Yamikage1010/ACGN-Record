@@ -17,16 +17,7 @@ export const constantRoutes = [
   {
     path: '/masterIndex',
     name: 'masterIndex',
-    component: () => import('@/views/master/masterIndex.vue'),
-    beforeEnter: (to, from, next) => {
-      if (from.name === 'login') {
-        next()
-      } else if (from.name) {
-        next({ name: from.name })
-      } else {
-        next({ name: 'login' })
-      }
-    }
+    component: () => import('@/views/master/masterIndex.vue')
   },
   {
     path: '/login',
