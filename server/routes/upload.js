@@ -9,7 +9,7 @@ var multipart = require('connect-multiparty')
 var gm = require('gm')
 var multipartMiddleware = multipart({ maxFieldsSize: '10MB' })
 
-async function uploadData(req, extname) {
+async function uploadData(req, extname, dataType) {
   let upload = {
     acgnUid: req.acgnUid,
     acgnUserName: req.acgnUserName,
@@ -26,7 +26,6 @@ function fileRenameAndTurnUrl(req, res, dataType) {
   let characterIndex = req.body.characterIndex || null
   let extname = req.acgnUid + '_' + file.name
   let fileName = 'upload_uid' + extname
-  console.log(file)
   fs.rename(
     file.path,
     'C://Users/Administrator/Documents/ACGNrecord/userUpData/' + dataType + '/' + fileName,
@@ -75,8 +74,8 @@ function fileRenameAndTurnUrl(req, res, dataType) {
               })
             }
           })
-          .catch(() => {
-            console.log('上传出bug了')
+          .catch((err) => {
+            console.log(err, '上传出bug了')
           })
       }
     }
@@ -84,10 +83,6 @@ function fileRenameAndTurnUrl(req, res, dataType) {
 }
 router.post('/acgnrecord/picUpload', multipartMiddleware, function (req, res) {
   // console.log(req)
-  fileRenameAndTurnUrl(req, res, 'image')
-})
-router.post('/acgnrecord/configPicUpload', multipartMiddleware, function (req, res, next) {
-  console.log(req)
   fileRenameAndTurnUrl(req, res, 'image')
 })
 router.post('/acgnrecord/configMusicUpload', multipartMiddleware, function (req, res) {

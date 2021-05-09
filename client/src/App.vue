@@ -78,6 +78,7 @@
       v-dialogDrag
       :windowKey="'config'"
       :windowType="'config'"
+      :title="'系统设置'"
       :zIndex="999"
       v-if="configShow"
       @closeWindow="configWindow"
@@ -103,6 +104,7 @@
     <transition name="router-anime">
       <router-view style="position: fixed"></router-view>
     </transition>
+    <config-manage ref="configManage"></config-manage>
   </div>
 </template>
 
@@ -114,20 +116,15 @@ import moveWindow from '@/components/moveWindow.vue'
 import Aplayer from 'vue-aplayer'
 import { changeTheme, musicDataHandle } from '@/util/systemStyle'
 import { stopSakura, startSakura } from './util/sakuraDrop'
-import {
-  searchTomo,
-  addTomo,
-  requestHandle,
-  getTomoList,
-  getTomoRequestList,
-  getTomoAcgnContentList,
-  getTomoAcgnCharacters
-} from './api/tomo'
+import { createBackgroundAnimetion } from './util/acgnFunc'
+import configManage from './components/acgnConfigFileManage'
+import { searchTomo, addTomo, requestHandle, getTomoList, getTomoRequestList } from './api/tomo'
 export default {
   name: 'App',
   components: {
     moveMenu,
     moveWindow,
+    configManage,
     Aplayer
   },
   data() {
@@ -225,6 +222,9 @@ export default {
         this.musicList = this.defaultMusicList
       }
       this.loadSystemStyle()
+    })
+    Bus.$on('openConfigManage', (dataList, type) => {
+      this.$refs.configManage.openConfigManage(dataList, type)
     })
     this.acgnConfig = this.$localStorage.get('acgnConfig') || this.defaultAcgnConfig
     this.createBackgroundStlye()
@@ -438,8 +438,12 @@ export default {
         this.$nextTick(() => {
           let background1 = this.$refs.background1
           let background2 = this.$refs.background2
+          //添加动画一轮的时间
+          let animationDuration = this.backgroundImages.length > 20 ? 20 * 4 : this.backgroundImages.length * 4
+          background1.style.animationDuration = animationDuration + 's'
+          background2.style.animationDuration = animationDuration + 's'
           background1.style.backgroundImage = 'url("' + this.apiSrc + this.backgroundImages[0] + '")'
-          background2.style.backgroundImage = 'url("' + this.apiSrc + this.backgroundImages[2] + '")'
+          background2.style.backgroundImage = 'url("' + this.apiSrc + this.backgroundImages[1] + '")'
         })
       } else {
         this.$nextTick(() => {
@@ -451,72 +455,65 @@ export default {
     getBackgroundAnimetion() {
       let backgroundImages = this.backgroundImages
       const apiSrc = this.apiSrc
-      const backgroundKeyframes = `
-        @keyframes changeBG1 {
-          0% {
-            transform: scale(1.03);
-            background-image: url('${apiSrc}${backgroundImages[0]}');
-          }
-          20% {
-            background-image: url('${apiSrc}${backgroundImages[0]}');
-            opacity: 1;
-          }
-          25% {
-            transform: scale(1.1);
-            background-image: url('${apiSrc}${backgroundImages[0]}');
-            opacity: 0;
-          }
-          45% {
-            transform: scale(1);
-            background-image: url('${apiSrc}${backgroundImages[1]}');
-            opacity: 0;
-          }
-          50% {
-            background-image: url('${apiSrc}${backgroundImages[1]}');
-            opacity: 1;
-          }
-          70% {
-            background-image: url('${apiSrc}${backgroundImages[1]}');
-            opacity: 1;
-          }
-          75% {
-            transform: scale(1.1);
-            background-image: url('${apiSrc}${backgroundImages[1]}');
-            opacity: 0;
-          }
-          95% {
-            transform: scale(1);
-            background-image: url('${apiSrc}${backgroundImages[0]}');
-            opacity: 0;
-          }
-          100% {
-            transform: scale(1.03);
-            background-image: url('${apiSrc}${backgroundImages[0]}');
-            opacity: 1;
-          }
-        }
-        @keyframes changeBG2 {
-          0% {
-            transform: scale(1);
-            background-image: url('${apiSrc}${backgroundImages[2]}');
-          }
-          20% {
-            transform: scale(1);
-            background-image: url('${apiSrc}${backgroundImages[2]}');
-          }
-          50% {
-            transform: scale(1.1);
-            background-image: url('${apiSrc}${backgroundImages[2]}');
-          }
-          70% {
-            transform: scale(1);
-            background-image: url('${apiSrc}${backgroundImages[3]}');
-          }
-          100% {
-            transform: scale(1.1);
-            background-image: url('${apiSrc}${backgroundImages[3]}');
-          }
-        }`
+      const backgroundKeyframes = createBackgroundAnimetion(backgroundImages, apiSrc)
+      // const backgroundKeyframes = `
+      //   @keyframes changeBG1 {
+      //     0% {
+      //       transform: scale(1.03);
+      //       background-image: url('${apiSrc}${backgroundImages[0]}');
+      //     }
+      //     20% {
+      //       opacity: 1;
+      //     }
+      //     25% {
+      //       transform: scale(1.1);
+      //       background-image: url('${apiSrc}${backgroundImages[0]}');
+      //       opacity: 0;
+      //     }
+      //     45% {
+      //       transform: scale(1);
+      //       background-image: url('${apiSrc}${backgroundImages[1]}');
+      //       opacity: 0;
+      //     }
+      //     50% {
+      //       opacity: 1;
+      //     }
+      //     70% {
+      //       opacity: 1;
+      //     }
+      //     75% {
+      //       transform: scale(1.1);
+      //       background-image: url('${apiSrc}${backgroundImages[1]}');
+      //       opacity: 0;
+      //     }
+      //     95% {
+      //       transform: scale(1);
+      //       background-image: url('${apiSrc}${backgroundImages[0]}');
+      //       opacity: 0;
+      //     }
+      //     100% {
+      //       transform: scale(1.03);
+      //       opacity: 1;
+      //     }
+      //   }
+      //   @keyframes changeBG2 {
+      //     20% {
+      //       transform: scale(1);
+      //       background-image: url('${apiSrc}${backgroundImages[2]}');
+      //     }
+      //     50% {
+      //       transform: scale(1.1);
+      //       background-image: url('${apiSrc}${backgroundImages[2]}');
+      //     }
+      //     70% {
+      //       transform: scale(1);
+      //       background-image: url('${apiSrc}${backgroundImages[3]}');
+      //     }
+      //     100% {
+      //       transform: scale(1.1);
+      //       background-image: url('${apiSrc}${backgroundImages[3]}');
+      //     }
+      //   }`
       if (this.backgroundCssAnime) {
         this.backgroundCssAnime.appendChild(document.createTextNode(backgroundKeyframes))
       } else {
@@ -607,7 +604,7 @@ export default {
   background-repeat: no-repeat;
   background-position: 0px 0px;
   background-attachment: fixed;
-  animation: changeBG1 linear infinite 14s;
+  animation: changeBG1 linear infinite;
   z-index: -1;
 }
 .bg2 {
@@ -620,7 +617,7 @@ export default {
   background-repeat: no-repeat;
   background-position: 0px 0px;
   background-attachment: fixed;
-  animation: changeBG2 linear infinite 14s;
+  animation: changeBG2 linear infinite;
   z-index: -2;
 }
 .router-anime-enter-active {
@@ -641,7 +638,7 @@ export default {
 .aplayer {
   position: fixed !important;
   border-radius: 15px;
-  background-color: transparent;
+  background-color: rgba(255, 255, 255, 0.2);
   ::v-deep {
     .aplayer-pic {
       background-image: none !important;
@@ -686,69 +683,4 @@ export default {
     opacity: 1;
   }
 }
-// @keyframes changeBG1 {
-//   0% {
-//     transform: scale(1.03);
-//     background-image: url('http://localhost:9810/acgnrecord/image/fgo-bg2.png');
-//   }
-//   20% {
-//     background-image: url('http://localhost:9810/acgnrecord/image/fgo-bg2.png');
-//     opacity: 1;
-//   }
-//   25% {
-//     transform: scale(1.1);
-//     background-image: url('http://localhost:9810/acgnrecord/image/fgo-bg2.png');
-//     opacity: 0;
-//   }
-//   45% {
-//     transform: scale(1);
-//     background-image: url('http://localhost:9810/acgnrecord/image/fgo-bg.png');
-//     opacity: 0;
-//   }
-//   50% {
-//     background-image: url('http://localhost:9810/acgnrecord/image/fgo-bg.png');
-//     opacity: 1;
-//   }
-//   70% {
-//     background-image: url('http://localhost:9810/acgnrecord/image/fgo-bg.png');
-//     opacity: 1;
-//   }
-//   75% {
-//     transform: scale(1.1);
-//     background-image: url('http://localhost:9810/acgnrecord/image/fgo-bg.png');
-//     opacity: 0;
-//   }
-//   95% {
-//     transform: scale(1);
-//     background-image: url('http://localhost:9810/acgnrecord/image/fgo-bg2.png');
-//     opacity: 0;
-//   }
-//   100% {
-//     transform: scale(1.03);
-//     background-image: url('http://localhost:9810/acgnrecord/image/fgo-bg2.png');
-//     opacity: 1;
-//   }
-// }
-// @keyframes changeBG2 {
-//   0% {
-//     transform: scale(1);
-//     background-image: url('http://localhost:9810/acgnrecord/image/arisu-bg.png');
-//   }
-//   20% {
-//     transform: scale(1);
-//     background-image: url('http://localhost:9810/acgnrecord/image/arisu-bg.png');
-//   }
-//   50% {
-//     transform: scale(1.1);
-//     background-image: url('http://localhost:9810/acgnrecord/image/arisu-bg.png');
-//   }
-//   70% {
-//     transform: scale(1);
-//     background-image: url('http://localhost:9810/acgnrecord/image/jk-bg.png');
-//   }
-//   100% {
-//     transform: scale(1.1);
-//     background-image: url('http://localhost:9810/acgnrecord/image/jk-bg.png');
-//   }
-// }
 </style>
