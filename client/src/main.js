@@ -3,6 +3,8 @@ import App from './App.vue'
 import router from './router'
 import localStorageStore from 'store'
 import store from '@/store'
+//路由拦截
+import './permission'
 //加载全局函数
 import { loadAcgnImage } from './util/onLoadSystemResource'
 import './util/sakuraDrop'

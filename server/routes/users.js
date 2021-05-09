@@ -43,15 +43,17 @@ router.post('/acgnrecord/login', urlencodedParser, (req, res) => {
   }
   login(user)
     .then((result) => {
-      if (result.length > 0) {
-        console.log(result[0])
-        result[0].acgnConfig = JSON.parse(result[0].acgnConfig)
+      if (result.acgnUid) {
+        console.log(result)
+        result.acgnConfig = JSON.parse(result.acgnConfig)
         res.send({
           status: 'success',
           code: 200,
           msg: '登录成功',
-          data: result[0]
+          data: result
         })
+      } else if (result.code === 505) {
+        res.send(result)
       } else {
         res.send({
           status: 'warning',

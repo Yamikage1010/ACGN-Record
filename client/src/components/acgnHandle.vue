@@ -67,14 +67,11 @@
           <div class="attributeList" v-for="(item, index) in acgnFormData.acgnAttribute.indicator" :key="index">
             <div class="attribute-name" v-if="index < 3">{{ item.name }}</div>
             <input class="attribute-name" v-else v-model="item.name" />：
-            <input
-              class="attribute-value"
-              @change="AcgnAttributeChange"
-              v-model="acgnFormData.acgnAttribute.dataValue[index]"
-            />
+            <input class="attribute-value" v-model="acgnFormData.acgnAttribute.dataValue[index]" />
           </div>
         </div>
         <acgn-button @click="addAcgnAttribute">添加属性</acgn-button>
+        <acgn-button @click="reduceAcgnAttribute">减少属性</acgn-button>
       </div>
     </div>
     <div
@@ -173,10 +170,18 @@
             </div>
           </div>
           <acgn-button @click="addCharacterAttribute(index)">添加属性</acgn-button>
+          <acgn-button @click="reduceCharacterAttribute(index)">减少属性</acgn-button>
         </div>
       </div>
     </div>
     <div class="acgn-form-box" style="max-height: 200px">
+      <div class="acgn-form-item">
+        <label>好友可见</label>
+        <el-radio-group v-model="acgnFormData.acgnToTomo">
+          <el-radio :label="1">是</el-radio>
+          <el-radio :label="0">否</el-radio>
+        </el-radio-group>
+      </div>
       <div class="acgn-form-item">
         <acgn-button @click="addCharacters">添加人物</acgn-button>
       </div>
@@ -212,6 +217,7 @@ export default {
         acgnType: ACGN.A,
         acgnMemoryImage: [],
         acgnScore: 10,
+        acgnToTomo: 1,
         acgnAttribute: {
           indicator: [
             { name: '剧情', max: 100 },
@@ -287,38 +293,51 @@ export default {
     addAcgnContent() {
       console.log(this.acgnFormData)
       console.log(this.acgnCharacters)
-      addAcgnContent({
-        acgnContent: JSON.stringify(this.acgnFormData),
-        acgnCharacters: JSON.stringify(this.acgnCharacters)
-      })
-        .then((res) => {
-          if (res.code == 200) {
-            this.$message.success(res.msg)
-            this.$emit('closeWindow')
-          } else {
-            this.$message.warning(res.msg)
-          }
+      console.log(this.acgnFormData.acgnTitle)
+      if (!this.acgnFormData.acgnTitle) {
+        this.$message.warning('作品名字为必填，作品信息中只有评分和属性有默认值，其它为非必填')
+      } else if (this.acgnCharacters.find((item) => !item.characterName)) {
+        this.$message.warning('作品人物名字为必填，人物信息中只有属性有默认值，其它为非必填')
+      } else {
+        addAcgnContent({
+          acgnContent: JSON.stringify(this.acgnFormData),
+          acgnCharacters: JSON.stringify(this.acgnCharacters)
         })
-        .catch((err) => {
-          console.log(err)
-        })
+          .then((res) => {
+            if (res.code == 200) {
+              this.$message.success(res.msg)
+              this.$emit('closeWindow')
+            } else {
+              this.$message.warning(res.msg)
+            }
+          })
+          .catch((err) => {
+            console.log(err)
+          })
+      }
       // this.$refs.acgnContentImage.submit()
     },
     editAcgnContent() {
-      editAcgnContent({
-        acgnContent: JSON.stringify(this.acgnFormData),
-        acgnCharacters: JSON.stringify(this.acgnCharacters)
-      })
-        .then((res) => {
-          if (res.code == 200) {
-            this.$message.success(res.msg)
-          } else {
-            this.$message.warning(res.msg)
-          }
+      if (!this.acgnFormData.acgnTitle) {
+        this.$message.warning('作品名字为必填，作品信息中只有评分和属性有默认值，其它为非必填')
+      } else if (this.acgnCharacters.find((item) => !item.characterName)) {
+        this.$message.warning('作品人物名字为必填，人物信息中只有属性有默认值，其它为非必填')
+      } else {
+        editAcgnContent({
+          acgnContent: JSON.stringify(this.acgnFormData),
+          acgnCharacters: JSON.stringify(this.acgnCharacters)
         })
-        .catch((err) => {
-          console.log(err)
-        })
+          .then((res) => {
+            if (res.code == 200) {
+              this.$message.success(res.msg)
+            } else {
+              this.$message.warning(res.msg)
+            }
+          })
+          .catch((err) => {
+            console.log(err)
+          })
+      }
     },
     openImageManage(index) {
       let imageList
@@ -349,6 +368,10 @@ export default {
       })
       this.acgnFormData.acgnAttribute.dataValue.push(100)
     },
+    reduceAcgnAttribute() {
+      this.acgnFormData.acgnAttribute.indicator.pop()
+      this.acgnFormData.acgnAttribute.dataValue.pop()
+    },
     addCharacterAttribute(index) {
       this.acgnCharacters[index].characterAttribute.indicator.push({
         name: '属性名',
@@ -356,7 +379,10 @@ export default {
       })
       this.acgnCharacters[index].characterAttribute.dataValue.push(100)
     },
-    AcgnAttributeChange() {},
+    reduceCharacterAttribute() {
+      this.acgnCharacters[index].characterAttribute.indicator.pop()
+      this.acgnCharacters[index].characterAttribute.dataValue.pop()
+    },
     addCharacters() {
       this.acgnCharacters.push({
         characterName: '',

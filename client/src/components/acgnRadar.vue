@@ -1,5 +1,5 @@
 <template>
-  <div ref="acgnRadar" :style="{ width: width + 'px', height: height + 'px' }"></div>
+  <div ref="acgnRadar" class="acgnRadar" :style="{ width: width + 'px', height: height + 'px' }"></div>
 </template>
 
 <script>
@@ -66,12 +66,22 @@ export default {
           axisName: {},
           indicator: []
         },
+        textStyle: {
+          fontSize: 15
+        },
         series: [
           {
             name: '战斗力数值 ~ ！！！',
             type: 'radar',
             // areaStyle: {normal: {}},
-            data: []
+            data: [],
+            areaStyle: {
+              color: '#04a5f59c'
+            },
+            symbolSize: 0,
+            lineStyle: {
+              color: '#ffffffdd'
+            }
           }
         ]
       }
@@ -94,4 +104,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.acgnRadar {
+  overflow: visible;
+  color: #ff66ccdd;
+}
 </style>

@@ -5,12 +5,8 @@ Vue.use(VueRouter)
 
 export const constantRoutes = [
   {
-    path: '/',
-    name: 'readerIndex',
-    component: () => import('@/views/reader/readerIndex.vue')
-  },
-  {
     path: '/readerIndex',
+    name: 'readerIndex',
     component: () => import('@/views/reader/readerIndex.vue')
   },
   {
@@ -21,7 +17,16 @@ export const constantRoutes = [
   {
     path: '/masterIndex',
     name: 'masterIndex',
-    component: () => import('@/views/master/masterIndex.vue')
+    component: () => import('@/views/master/masterIndex.vue'),
+    beforeEnter: (to, from, next) => {
+      if (from.name === 'login') {
+        next()
+      } else if (from.name) {
+        next({ name: from.name })
+      } else {
+        next({ name: 'login' })
+      }
+    }
   },
   {
     path: '/login',

@@ -18,6 +18,7 @@
       <div class="acgn-title">{{ item.acgnTitle }}</div>
       <!-- <div class="acgn-subTitle">{{ item.acgnSubTitle }}</div> -->
       <div class="acgn-comment">{{ item.acgnComment }}</div>
+      <div class="acgn-ban" v-if="item.acgnStatus === 2">封禁中{{ item.banReason ? '：' + item.banReason : '' }}</div>
       <img
         class="acgn-image"
         v-if="item.acgnMemoryImage.length > 0"
@@ -133,6 +134,9 @@ export default {
       .delete-acgn {
         opacity: 1;
       }
+      .acgn-ban {
+        opacity: 0.5;
+      }
       .acgn-image {
         margin-top: 0px;
       }
@@ -184,6 +188,23 @@ export default {
       z-index: 2;
       left: 20px;
       top: 120px;
+    }
+    .acgn-ban {
+      height: 100px;
+      width: 90%;
+      position: absolute;
+      overflow-y: hidden;
+      opacity: 0;
+      display: inline-block;
+      transition: 0.4s ease-in-out;
+      z-index: 2;
+      top: 20%;
+      left: 20px;
+      font-size: 40px;
+      font-weight: 700;
+      -webkit-text-stroke: 1.5px #ffffff;
+      text-stroke: 1.5px #ffffff;
+      color: #fa0202;
     }
     .acgn-subTitle {
       position: absolute;

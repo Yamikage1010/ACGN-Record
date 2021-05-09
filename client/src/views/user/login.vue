@@ -41,13 +41,22 @@ export default {
         if (res.code == 200) {
           this.loginRes = res.data.acgnUserName
           this.$message.success(res.msg)
-          this.$localStorage.set('Token', res.data.token)
-          this.$localStorage.set('acgnConfig', res.data.acgnConfig)
-          this.$localStorage.set('userData', res.data)
-          Bus.$emit('loadAcgnConfig')
-          this.$router.push({
-            name: 'readerIndex'
-          })
+          if (res.data.acgnUserStatus === 3) {
+            this.$localStorage.set('Token', res.data.token)
+            this.$localStorage.set('acgnConfig', res.data.acgnConfig)
+            Bus.$emit('loadAcgnConfig')
+            this.$router.push({
+              name: 'masterIndex'
+            })
+          } else {
+            this.$localStorage.set('Token', res.data.token)
+            this.$localStorage.set('acgnConfig', res.data.acgnConfig)
+            this.$localStorage.set('userData', res.data)
+            Bus.$emit('loadAcgnConfig')
+            this.$router.push({
+              name: 'readerIndex'
+            })
+          }
         } else {
           this.$message.warning(res.msg)
         }

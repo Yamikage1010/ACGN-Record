@@ -118,7 +118,8 @@ async function getTomoRequestList(req) {
 async function getTomoAcgnContentList(req) {
   let selectData = {
     acgnUid: req.body.acgnUid,
-    acgnStatus: 1
+    acgnStatus: 1,
+    acgnToTomo: 1
   }
   req.body.acgnTitle
     ? Object.assign(selectData, { acgnTitle: { like: '%' + req.body.acgnTitle + '%', _type: 'and' } })

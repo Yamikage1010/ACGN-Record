@@ -1,7 +1,7 @@
 <template>
   <div class="acgnContentCharacteristic">
     <h2 v-if="acgnReadData.acgnType === 'Comic' || acgnReadData.acgnType === 'Novel'">分卷记录</h2>
-    <h2 v-if="acgnReadData.acgnType === 'Animation'">资源记录</h2>
+    <h2 v-if="acgnReadData.acgnType === 'Animation' || acgnReadData.acgnType === 'Game'">资源记录</h2>
     <div
       class="acgn-characteristic-volumes"
       v-if="acgnReadData.acgnType === 'Comic' || acgnReadData.acgnType === 'Novel'"
@@ -54,7 +54,7 @@
     <div
       class="animation-characteristic"
       ref="animationCharacteristic"
-      v-if="acgnReadData.acgnType === 'Animation'"
+      v-if="acgnReadData.acgnType === 'Animation' || acgnReadData.acgnType === 'Game'"
       @mousewheel="scrollSlideSwich"
     >
       <div

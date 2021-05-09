@@ -1,8 +1,8 @@
 <template>
   <div class="acgnContent" ref="acgnContent">
     <acgn-loading :loadSuccess="getImage" :loadingText="'生成中'"></acgn-loading>
-    <div class="acgn-content-header">
-      <div class="acgn-slide" v-if="acgnReadData.acgnMemoryImage.length > 0">
+    <div class="acgn-content-header" v-if="acgnReadData.acgnMemoryImage.length > 0">
+      <div class="acgn-slide">
         <div
           class="slide-item"
           :class="activeIndex === index ? 'slide-item-active' : 'slide-item-hidden'"
@@ -13,12 +13,6 @@
           <img :src="'http://localhost:9810/acgnrecord/image/' + item" />
         </div>
       </div>
-      <img
-        class="acgn-image"
-        style="max-width: 100%; max-height: 600px"
-        v-else
-        :src="'http://localhost:9810/acgnrecord/defaultImage/sora.png'"
-      />
       <div class="slide-switch" ref="slideSwitch" @mousewheel="scrollSlideSwich">
         <div
           class="slide-switch-item"
@@ -43,7 +37,7 @@
         ></span>
       </h2>
       <div class="acgn-content-body-main">
-        <div class="acgn-content-comment">
+        <div class="acgn-content-comment" v-if="acgnReadData.acgnComment">
           <h3>作品评析：</h3>
           <div class="acgn-content-comment-main">{{ acgnReadData.acgnComment }}</div>
         </div>
@@ -57,8 +51,8 @@
           ></acgn-radar>
         </div>
       </div>
-      <h2 style="font-size: 45px">作品人物</h2>
-      <div class="acgn-content-characters" ref="acgnContentCharacters">
+      <h2 style="font-size: 45px" v-if="acgnCharacters.length > 0">作品人物</h2>
+      <div class="acgn-content-characters" ref="acgnContentCharacters" v-if="acgnCharacters.length > 0">
         <div class="characters-left"><span @click="charactersSlideLeft">←</span></div>
         <div class="characters-right"><span @click="charactersSlideRight">→</span></div>
         <div class="acgn-content-characters-slide">
@@ -135,9 +129,8 @@
       >
       </acgn-content-characteristic>
     </div>
-    <div class="window-bottom" @click="windowBottom" :style="{ bottom: windowBottomShow ? '50px' : '0' }"></div>
-    <div class="window-handle" :style="{ height: windowBottomShow ? '50px' : '0' }">
-      <acgn-button v-show="windowBottomShow" @click="getAcgnContentImage">生成图片</acgn-button>
+    <div class="window-bottom">
+      <acgn-button @click="getAcgnContentImage">生成图片</acgn-button>
     </div>
   </div>
 </template>
@@ -625,34 +618,23 @@ export default {
     }
   }
   .window-bottom {
-    z-index: 999;
-    border-top: 1px solid;
-    border-left: 1px solid;
-    border-right: 1px solid;
-    border-bottom: 1px solid $bgColor;
-    border-top-left-radius: 1px;
-    border-top-right-radius: 1px;
     position: fixed;
-    width: 30px;
-    height: 20px;
-    right: 20px;
-    cursor: pointer;
-    background-color: $bgColor;
-  }
-  .window-handle {
-    position: fixed;
+    max-width: 200px;
+    height: 50px;
+    top: 40px;
+    right: 0;
+    opacity: 0;
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
-    width: 200px;
-    height: 0;
-    right: 0px;
-    bottom: 0;
-    border-top-left-radius: 1px;
-    border-top: 1px solid;
-    border-left: 1px solid;
-    border-right: 1px solid;
+    transition: 0.3s;
+    z-index: 428;
     background-color: $bgColor;
+    overflow: auto;
+    padding: 0 30px;
+    &:hover {
+      opacity: 1;
+    }
     .acgn-button {
       margin-top: 0;
     }

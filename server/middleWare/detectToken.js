@@ -33,20 +33,28 @@ module.exports = (req, res, next) => {
   switch (true) {
     case token === '':
       return res.status(402).json({
-        msg: '不是你 token 呢'
+        msg: '不是，你 token 呢'
       })
     default:
   }
-  exec(sql.table('user').field('acgnUid,acgnUserName').where({ token: token }).select())
+  exec(sql.table('user').field('acgnUid,acgnUserName,acgnUserStatus').where({ token: token }).select())
     .then((result) => {
-      if (result[0]) {
+      if (result[0].acgnUserStatus === 2) {
+        res.send({
+          status: 'error',
+          code: 505,
+          msg: '该账号已被封禁'
+        })
+      } else if (result[0]) {
         req.acgnUid = result[0].acgnUid
         req.acgnUserName = result[0].acgnUserName
         console.log(result[0])
         next()
       } else {
-        return res.status(401).json({
-          msg: 'wdnmd先登录啊'
+        res.send({
+          status: 'error',
+          code: 401,
+          msg: '先登录啊喂'
         })
       }
       console.log(result)

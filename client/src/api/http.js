@@ -1,6 +1,7 @@
 import axios from 'axios'
 import qs from 'qs'
 import store from 'store'
+import router from '../router'
 // post请求头的设置
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'
 axios.defaults.baseURL = 'http://localhost:9810'
@@ -29,21 +30,28 @@ axios.interceptors.request.use(
 // );
 
 // 响应拦截器
-// axios.interceptors.response.use(response => {
-//   if (response.status === 200) {
-//     if (response.data.code === 601) {
-//     } else if (response.data.code === 602) {
-//     } else {
-//       return Promise.resolve(response)
-//     }
-//   } else {
-//     return Promise.reject(response)
-//   }
-// }, error => {
-//   if (error.response.status) {
-//     return Promise.reject(error.response)
-//   }
-// })
+axios.interceptors.response.use(
+  response => {
+    if (response.status === 200) {
+      if (response.data.code === 505) {
+        store.remove('userData')
+        store.remove('Token')
+        store.remove('acgnConfig')
+        router.push({
+          name: 'login'
+        })
+      }
+      return Promise.resolve(response)
+    } else {
+      console.log(response.status)
+    }
+  },
+  error => {
+    if (error.response.status) {
+      return Promise.reject(error.response)
+    }
+  }
+)
 
 // get 请求
 export function get(url, params) {
