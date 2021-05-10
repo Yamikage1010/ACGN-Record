@@ -145,7 +145,17 @@ async function changeAcgnContentStatus(req) {
   )
   return result
 }
+async function masterRegister(req) {
+  const masterData = {
+    acgnUserPassword: req.body.acgnUserPassword,
+    acgnUserName: req.body.acgnUserName,
+    acgnUserStatus: 3
+  }
+  const result = await exec(sql.table('user').data(masterData).insert())
+  return result
+}
 module.exports = {
+  masterRegister,
   getAcgnFileData,
   changeAcgnFileStatus,
   getAcgnUserData,

@@ -17,7 +17,7 @@
         <div class="window-close" @click.stop="closeMessage">X</div>
       </div>
     </div>
-    <div class="move-message-main" :style="{ top: windowHFHeight + 'px' }">
+    <div class="move-message-main">
       <slot></slot>
       <div class="message-btnGroup">
         <acgn-button :buttonType="'danger'" @click="closeMessage">取消</acgn-button>

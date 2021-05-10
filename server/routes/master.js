@@ -1,5 +1,6 @@
 var express = require('express')
 const {
+  masterRegister,
   getAcgnFileData,
   changeAcgnFileStatus,
   getAcgnUserData,
@@ -10,7 +11,38 @@ const {
 var bodyParser = require('body-parser')
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 var router = express.Router()
+//管理员注册
 
+//注册接口
+router.post('/acgnrecord/masterRegister', urlencodedParser, (req, res) => {
+  masterRegister(req)
+    .then((result) => {
+      if (result.insertId) {
+        res.send({
+          status: 'success',
+          code: 200,
+          msg: '注册成功',
+          data: user
+        })
+      } else {
+        res.send({
+          status: 'warning',
+          code: 400,
+          msg: '注册失败',
+          data: user
+        })
+      }
+    })
+    .catch((err) => {
+      console.log(err)
+      res.send({
+        status: 'warning',
+        code: 400,
+        msg: '注册失败',
+        data: err
+      })
+    })
+})
 //获取文件数据
 router.post('/acgnrecord/getAcgnFileData', function (req, res) {
   getAcgnFileData(req)

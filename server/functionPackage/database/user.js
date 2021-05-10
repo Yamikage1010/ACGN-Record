@@ -25,4 +25,29 @@ async function register(user) {
   const result = await exec(sql.table('user').data(user).insert())
   return result
 }
-module.exports = { login, register }
+async function modifyPassword(req) {
+  let detectionData = {
+    acgnUid: req.acgnUid,
+    acgnUserPassword: req.body.password
+  }
+  const result = await exec(sql.table('user').field('*').where(detectionData).select())
+  if (result.length > 0) {
+    const result2 = await exec(
+      sql.table('user').where({ acgnUid: req.acgnUid }).data({ acgnUserPassword: req.body.newPassword }).update()
+    )
+    return result2
+  } else {
+    return result
+  }
+}
+async function forgetPassword(req) {
+  let detectionData = {
+    acgnUid: req.acgnUid,
+    acgnUserEmail: req.body.acgnUserEmail
+  }
+  const result = await exec(
+    sql.table('user').where(detectionData).data({ acgnUserPassword: req.body.newPassword }).update()
+  )
+  return result
+}
+module.exports = { login, register, modifyPassword, forgetPassword }

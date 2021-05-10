@@ -11,6 +11,7 @@
       <div class="db-menu" v-if="routerName !== 'login' && routerName !== 'register'" @click="configWindow">
         系统设置
       </div>
+      <div class="db-menu" v-if="routerName !== 'login' && routerName !== 'register'" @click="openModify">修改密码</div>
       <div class="db-menu" v-if="routerName !== 'login' && routerName !== 'register'" @click="logout">退出登录</div>
     </move-menu>
     <move-menu
@@ -48,7 +49,9 @@
         </div>
       </template>
       <acgn-button @click="openAddTomo">添加好友</acgn-button>
-      <acgn-button @click="openTomoRequest">{{ tomoListType === 'tomoList' ? '好友请求' : '好友列表' }}</acgn-button>
+      <acgn-button @click="openTomoRequest" style="margin-left: 10px">{{
+        tomoListType === 'tomoList' ? '好友请求' : '好友列表'
+      }}</acgn-button>
     </move-menu>
     <move-message
       v-moveMessage
@@ -56,21 +59,37 @@
       :top="item.top"
       :left="item.left"
       :title="item.title"
+      :height="item.height"
+      ref="moveMessage"
       v-for="(item, index) in messageData"
       :key="index"
       @closeMessage="closeMessage(index)"
       @confirmMessage="confirmMessage(index)"
     >
-      <div style="margin-top: 10px" v-if="item.messageType === 'addTomo'">
+      <div style="margin-top: 40px" v-if="item.messageType === 'addTomo'">
         <div class="acgn-form-item">
           <label class="acgn-form-item-label">请输入用户昵称（必须完整）</label>
           <input v-model="addTomoUserName" />
         </div>
       </div>
-      <div style="margin-top: 10px" v-if="item.messageType === 'tomoAcgnTitle'">
+      <div style="margin-top: 40px" v-if="item.messageType === 'tomoAcgnTitle'">
         <div class="acgn-form-item">
           <label class="acgn-form-item-label">请输入用户记录的其中一部作品名字</label>
           <input v-model="addTomoAcgnTitle" />
+        </div>
+      </div>
+      <div style="margin-top: 20px" v-if="item.messageType === 'modify'">
+        <div class="acgn-form-item">
+          <label class="acgn-form-item-label">原密码</label>
+          <input v-model="motoPassword" />
+        </div>
+        <div class="acgn-form-item">
+          <label class="acgn-form-item-label">新密码</label>
+          <input v-model="newPassword" />
+        </div>
+        <div class="acgn-form-item">
+          <label class="acgn-form-item-label">再来一次</label>
+          <input v-model="againPassword" />
         </div>
       </div>
     </move-message>
@@ -119,6 +138,7 @@ import { stopSakura, startSakura } from './util/sakuraDrop'
 import { createBackgroundAnimetion } from './util/acgnFunc'
 import configManage from './components/acgnConfigFileManage'
 import { searchTomo, addTomo, requestHandle, getTomoList, getTomoRequestList } from './api/tomo'
+import { modifyPassword } from './api/user'
 export default {
   name: 'App',
   components: {
@@ -142,6 +162,9 @@ export default {
       addTomoUid: null,
       addTomoUserName: '',
       addTomoAcgnTitle: '',
+      motoPassword: '',
+      newPassword: '',
+      againPassword: '',
       tomoList: [],
       requestTomoList: [],
       // sakuraShow: true,
@@ -275,7 +298,7 @@ export default {
             }
           })
           .catch(() => {
-            this.$message.error('出bug了！！')
+            this.$message.error('前端出bug了！！')
           })
       }
     },
@@ -291,7 +314,7 @@ export default {
             this.tomoListType = 'requestTomoList'
           })
           .catch(() => {
-            this.$message.error('出bug了！！')
+            this.$message.error('前端出bug了！！')
           })
       } else if (this.tomoListType === 'requestTomoList') {
         getTomoList()
@@ -304,7 +327,7 @@ export default {
             this.tomoListType = 'tomoList'
           })
           .catch(() => {
-            this.$message.error('出bug了！！')
+            this.$message.error('前端出bug了！！')
           })
       }
     },
@@ -330,7 +353,7 @@ export default {
           }
         })
         .catch(() => {
-          this.$message.error('出bug了！！')
+          this.$message.error('前端出bug了！！')
         })
     },
     confirmMessage(dataIndex) {
@@ -347,9 +370,10 @@ export default {
             }
           })
           .catch(() => {
-            this.$message.error('出bug了！！')
+            this.$message.error('前端出bug了！！')
           })
-      } else {
+      }
+      if (this.messageData[dataIndex].messageType === 'tomoAcgnTitle') {
         addTomo({
           acgnUid: this.addTomoUid,
           acgnUserName: this.addTomoUserName,
@@ -358,13 +382,35 @@ export default {
           .then((res) => {
             if (res.code === 200) {
               this.$message.success(res.msg)
+              this.$refs.moveMessage[dataIndex].closeMessage()
             } else {
               this.$message.warning(res.msg)
             }
           })
           .catch(() => {
-            this.$message.warning('出bug了！！')
+            this.$message.warning('前端出bug了！！')
           })
+      }
+      if (this.messageData[dataIndex].messageType === 'modify') {
+        if (this.newPassword === this.againPassword) {
+          modifyPassword({
+            password: this.motoPassword,
+            newPassword: this.newPassword
+          })
+            .then((res) => {
+              if (res.code === 200) {
+                this.$message.success(res.msg)
+                this.$refs.moveMessage[dataIndex].closeMessage()
+              } else {
+                this.$message.warning(res.msg)
+              }
+            })
+            .catch(() => {
+              this.$message.warning('前端出bug了！！')
+            })
+        } else {
+          this.$message.warning('两次密码不同')
+        }
       }
     },
     openAddTomo(event) {
@@ -372,10 +418,23 @@ export default {
         this.$message.warning('已打开该窗口')
       } else {
         this.messageData.push({
-          top: event.clientY,
-          left: event.clientX,
+          top: event.clientY - 50,
+          left: event.clientX - 200,
           title: '添加好友',
           messageType: 'addTomo'
+        })
+      }
+    },
+    openModify(event) {
+      if (this.messageData.find((item) => item.messageType === 'modify')) {
+        this.$message.warning('已打开该窗口')
+      } else {
+        this.messageData.push({
+          top: event.clientY - 100,
+          left: event.clientX - 200,
+          height: 450,
+          title: '修改密码',
+          messageType: 'modify'
         })
       }
     },
@@ -456,64 +515,6 @@ export default {
       let backgroundImages = this.backgroundImages
       const apiSrc = this.apiSrc
       const backgroundKeyframes = createBackgroundAnimetion(backgroundImages, apiSrc)
-      // const backgroundKeyframes = `
-      //   @keyframes changeBG1 {
-      //     0% {
-      //       transform: scale(1.03);
-      //       background-image: url('${apiSrc}${backgroundImages[0]}');
-      //     }
-      //     20% {
-      //       opacity: 1;
-      //     }
-      //     25% {
-      //       transform: scale(1.1);
-      //       background-image: url('${apiSrc}${backgroundImages[0]}');
-      //       opacity: 0;
-      //     }
-      //     45% {
-      //       transform: scale(1);
-      //       background-image: url('${apiSrc}${backgroundImages[1]}');
-      //       opacity: 0;
-      //     }
-      //     50% {
-      //       opacity: 1;
-      //     }
-      //     70% {
-      //       opacity: 1;
-      //     }
-      //     75% {
-      //       transform: scale(1.1);
-      //       background-image: url('${apiSrc}${backgroundImages[1]}');
-      //       opacity: 0;
-      //     }
-      //     95% {
-      //       transform: scale(1);
-      //       background-image: url('${apiSrc}${backgroundImages[0]}');
-      //       opacity: 0;
-      //     }
-      //     100% {
-      //       transform: scale(1.03);
-      //       opacity: 1;
-      //     }
-      //   }
-      //   @keyframes changeBG2 {
-      //     20% {
-      //       transform: scale(1);
-      //       background-image: url('${apiSrc}${backgroundImages[2]}');
-      //     }
-      //     50% {
-      //       transform: scale(1.1);
-      //       background-image: url('${apiSrc}${backgroundImages[2]}');
-      //     }
-      //     70% {
-      //       transform: scale(1);
-      //       background-image: url('${apiSrc}${backgroundImages[3]}');
-      //     }
-      //     100% {
-      //       transform: scale(1.1);
-      //       background-image: url('${apiSrc}${backgroundImages[3]}');
-      //     }
-      //   }`
       if (this.backgroundCssAnime) {
         this.backgroundCssAnime.appendChild(document.createTextNode(backgroundKeyframes))
       } else {
