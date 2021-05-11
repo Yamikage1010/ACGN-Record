@@ -1,7 +1,7 @@
 const User = require('../object/user')
 var express = require('express')
 const { init, exec, sql, transaction } = require('../config/mysqlConfig')
-const { login, register, modifyPassword, forgetPassword } = require('../functionPackage/database/user')
+const { login, register, modifyPassword, forgetPassword, searchUser } = require('../functionPackage/database/user')
 var bodyParser = require('body-parser')
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 var router = express.Router()
@@ -15,24 +15,42 @@ router.post('/acgnrecord/sendEmail', function (req, res, next) {
   if (!mail) {
     return res.send('参数错误')
   } //email出错时或者为空时
-  const code = parseInt(Math.random(0, 1) * 10000) //生成随机验证码
-  check[mail] = code
-  //发送邮件
-  sendMail(mail, code, (state) => {
-    if (state) {
+  searchUser(req)
+    .then((result) => {
+      if (result.length > 0) {
+        return res.send({
+          status: 'warning',
+          code: 400,
+          msg: '该用户邮箱已注册'
+        })
+      } else {
+        const code = parseInt(Math.random(0, 1) * 10000) //生成随机验证码
+        check[mail] = code
+        //发送邮件
+        sendMail(mail, code, (state) => {
+          if (state) {
+            return res.send({
+              status: 'success',
+              code: 200,
+              msg: '发送成功'
+            })
+          } else {
+            return res.send({
+              status: 'warning',
+              code: 400,
+              msg: '发送失败'
+            })
+          }
+        })
+      }
+    })
+    .catch((err) => {
       return res.send({
-        status: 'success',
-        code: 200,
-        msg: '发送成功'
+        status: 'error',
+        code: 404,
+        msg: '系统出错'
       })
-    } else {
-      return res.send({
-        status: 'warning',
-        code: 400,
-        msg: '发送失败'
-      })
-    }
-  })
+    })
 })
 //发送邮件接口
 router.post('/acgnrecord/sendEmail2', function (req, res, next) {
@@ -40,33 +58,47 @@ router.post('/acgnrecord/sendEmail2', function (req, res, next) {
   if (!mail) {
     return res.send('参数错误')
   } //email出错时或者为空时
-  const code = parseInt(Math.random(0, 1) * 10000) //生成随机验证码
-  check[mail] = code
-  //发送邮件
-  sendMail2(mail, code, (state) => {
-    if (state) {
+  searchUser(req)
+    .then((result) => {
+      if (result.length > 0) {
+        const code = parseInt(Math.random(0, 1) * 10000) //生成随机验证码
+        check[mail] = code
+        //发送邮件
+        sendMail2(mail, code, result[0].acgnUserName, (state) => {
+          if (state) {
+            return res.send({
+              status: 'success',
+              code: 200,
+              msg: '发送成功'
+            })
+          } else {
+            return res.send({
+              status: 'warning',
+              code: 400,
+              msg: '发送失败'
+            })
+          }
+        })
+      } else {
+        return res.send({
+          status: 'warning',
+          code: 400,
+          msg: '该用户邮箱不存在'
+        })
+      }
+    })
+    .catch((err) => {
       return res.send({
-        status: 'success',
-        code: 200,
-        msg: '发送成功'
+        status: 'error',
+        code: 404,
+        msg: '系统出错'
       })
-    } else {
-      return res.send({
-        status: 'warning',
-        code: 400,
-        msg: '发送失败'
-      })
-    }
-  })
+    })
 })
 
 //登录接口
 router.post('/acgnrecord/login', urlencodedParser, (req, res) => {
-  let user = {
-    acgnUserName: req.body.acgnUserName,
-    acgnUserPassword: req.body.acgnUserPassword
-  }
-  login(user)
+  login(req)
     .then((result) => {
       if (result.acgnUid) {
         console.log(result)
@@ -104,13 +136,27 @@ router.post('/acgnrecord/register', urlencodedParser, (req, res) => {
   if (req.body.code == check[user.acgnUserEmail]) {
     register(user)
       .then((result) => {
-        console.log(result)
-        res.send({
-          status: 'success',
-          code: 200,
-          msg: '注册成功',
-          data: user
-        })
+        if (result.insertId) {
+          res.send({
+            status: 'success',
+            code: 200,
+            msg: '注册成功',
+            data: result
+          })
+        } else if (result.msg) {
+          res.send({
+            status: 'warning',
+            code: 400,
+            msg: result.msg
+          })
+        } else {
+          res.send({
+            status: 'warning',
+            code: 400,
+            msg: '数据出错，注册失败',
+            data: result
+          })
+        }
       })
       .catch((err) => {
         console.log(err)

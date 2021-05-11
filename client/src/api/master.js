@@ -1,5 +1,6 @@
 import { post } from './http'
 
+export const masterRegister = p => post('/acgnrecord/masterRegister', p)
 export const getAcgnFileData = p => post('/acgnrecord/getAcgnFileData', p)
 export const changeAcgnFileStatus = p => post('/acgnrecord/changeAcgnFileStatus', p)
 export const getAcgnUserData = p => post('/acgnrecord/getAcgnUserData', p)

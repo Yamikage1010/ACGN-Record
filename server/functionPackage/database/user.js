@@ -1,8 +1,22 @@
 const { init, exec, sql, transaction } = require('../../config/mysqlConfig')
 const md5 = require('md5-node')
-async function login(user) {
+async function login(req) {
+  let userData = {
+    acgnUserName: req.body.acgnUserName,
+    acgnUserEmail: req.body.acgnUserName,
+    _type: 'or'
+  }
   const result = await exec(
-    sql.table('user').field('acgnUid,acgnUserName,acgnUserEmail,acgnConfig,acgnUserStatus').where(user).select()
+    sql
+      .table('user')
+      .field('acgnUid,acgnUserName,acgnUserEmail,acgnConfig,acgnUserStatus')
+      .where([
+        userData,
+        {
+          acgnUserPassword: req.body.acgnUserPassword
+        }
+      ])
+      .select()
   )
   if (result.length > 0) {
     // 生成token
@@ -13,7 +27,18 @@ async function login(user) {
       }
     }
     const token = md5(result[0].id + result[0].acgnUserName + new Date().getTime())
-    await exec(sql.table('user').where(user).data({ token: token }).update())
+    await exec(
+      sql
+        .table('user')
+        .where([
+          userData,
+          {
+            acgnUserPassword: req.body.acgnUserPassword
+          }
+        ])
+        .data({ token: token })
+        .update()
+    )
     result[0].token = token
     return result[0]
   } else {
@@ -22,8 +47,13 @@ async function login(user) {
 }
 async function register(user) {
   user.acgnUserStatus = 1
-  const result = await exec(sql.table('user').data(user).insert())
-  return result
+  const result = await exec(sql.table('user').field('*').where({ acgnUserName: user.acgnUserName }).select())
+  if (result.length > 0) {
+    return { msg: '该用户名已存在' }
+  } else {
+    const result2 = await exec(sql.table('user').data(user).insert())
+    return result2
+  }
 }
 async function modifyPassword(req) {
   let detectionData = {
@@ -40,9 +70,15 @@ async function modifyPassword(req) {
     return result
   }
 }
+async function searchUser(req) {
+  let searchData = {
+    acgnUserEmail: req.body.acgnUserEmail
+  }
+  const result = await exec(sql.table('user').field('acgnUserName').where(searchData).select())
+  return result
+}
 async function forgetPassword(req) {
   let detectionData = {
-    acgnUid: req.acgnUid,
     acgnUserEmail: req.body.acgnUserEmail
   }
   const result = await exec(
@@ -50,4 +86,4 @@ async function forgetPassword(req) {
   )
   return result
 }
-module.exports = { login, register, modifyPassword, forgetPassword }
+module.exports = { login, register, modifyPassword, forgetPassword, searchUser }

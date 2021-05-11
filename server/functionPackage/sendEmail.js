@@ -41,14 +41,14 @@ function sendMail(mail, code, call) {
   })
 }
 
-function sendMail2(mail, code, call) {
+function sendMail2(mail, code, acgnUserName, call) {
   // 发送的配置项
   let mailOptions = {
     from: '"ACGN Record" <281099349@qq.com>', // 发送方
     to: mail, //接收者邮箱，多个邮箱用逗号间隔
     subject: 'ACGN Record忘记密码', // 标题
     text: '', // 文本内容
-    html: '<p>验证码为' + code + '</p>' //页面内容
+    html: '<p>用户' + acgnUserName + '你好</p>' + '<p>忘记密码的验证码为' + code + '</p>' //页面内容
     // attachments: [{//发送文件
     //      filename: 'index.html', //文件名字
     //      path: './index.html' //文件路径

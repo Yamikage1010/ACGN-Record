@@ -3,6 +3,7 @@ class User {
     this.acgnUserName = user.acgnUserName
     this.acgnUserPassword = user.acgnUserPassword
     this.acgnUserEmail = user.acgnUserEmail
+    this.acgnUserStatus = user.acgnUserStatus || 1
     this.acgnConfig = this.getInitConfig()
     this.createDate = new Date().getTime()
   }
@@ -11,7 +12,9 @@ class User {
       sakuraShow: true,
       autoplay: true,
       slidesOrOnly: true,
-      acgnTheme: 1001
+      acgnTheme: 1001,
+      backgroundImages: [],
+      backgroundMusic: []
     }
     return JSON.stringify(config)
   }

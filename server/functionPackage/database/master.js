@@ -1,4 +1,5 @@
 const { init, exec, sql, transaction } = require('../../config/mysqlConfig')
+const User = require('../../object/user')
 async function getAcgnFileData(req) {
   let searchData = {}
   req.body.acgnUserName
@@ -50,7 +51,9 @@ async function changeAcgnFileStatus(req) {
   return result
 }
 async function getAcgnUserData(req) {
-  let searchData = {}
+  let searchData = {
+    acgnUserStatus: { in: '1,2', _type: 'and' }
+  }
   req.body.acgnUserName
     ? Object.assign(searchData, { acgnUserName: { like: '%' + req.body.acgnUserName + '%', _type: 'and' } })
     : null
@@ -146,13 +149,18 @@ async function changeAcgnContentStatus(req) {
   return result
 }
 async function masterRegister(req) {
-  const masterData = {
+  let masterData = new User({
     acgnUserPassword: req.body.acgnUserPassword,
     acgnUserName: req.body.acgnUserName,
     acgnUserStatus: 3
+  })
+  const result = await exec(sql.table('user').field('*').where({ acgnUserName: req.body.acgnUserName }).select())
+  if (result.length > 0) {
+    return { msg: '已存在该用户名' }
+  } else {
+    const result2 = await exec(sql.table('user').data(masterData).insert())
+    return result2
   }
-  const result = await exec(sql.table('user').data(masterData).insert())
-  return result
 }
 module.exports = {
   masterRegister,

@@ -12,6 +12,7 @@
         系统设置
       </div>
       <div class="db-menu" v-if="routerName !== 'login' && routerName !== 'register'" @click="openModify">修改密码</div>
+      <div class="db-menu" v-if="routerName === 'masterIndex'" @click="openMasterRegister">管理员注册</div>
       <div class="db-menu" v-if="routerName !== 'login' && routerName !== 'register'" @click="logout">退出登录</div>
     </move-menu>
     <move-menu
@@ -92,6 +93,20 @@
           <input v-model="againPassword" />
         </div>
       </div>
+      <div style="margin-top: 20px" v-if="item.messageType === 'masterRegister'">
+        <div class="acgn-form-item">
+          <label class="acgn-form-item-label">管理员用户名</label>
+          <input v-model="masterUserName" />
+        </div>
+        <div class="acgn-form-item">
+          <label class="acgn-form-item-label">密码</label>
+          <input v-model="masterPassword" />
+        </div>
+        <div class="acgn-form-item">
+          <label class="acgn-form-item-label">再来一次</label>
+          <input v-model="againPassword" />
+        </div>
+      </div>
     </move-message>
     <move-window
       v-dialogDrag
@@ -139,6 +154,7 @@ import { createBackgroundAnimetion } from './util/acgnFunc'
 import configManage from './components/acgnConfigFileManage'
 import { searchTomo, addTomo, requestHandle, getTomoList, getTomoRequestList } from './api/tomo'
 import { modifyPassword } from './api/user'
+import { masterRegister } from './api/master'
 export default {
   name: 'App',
   components: {
@@ -165,6 +181,8 @@ export default {
       motoPassword: '',
       newPassword: '',
       againPassword: '',
+      masterUserName: '',
+      masterPassword: '',
       tomoList: [],
       requestTomoList: [],
       // sakuraShow: true,
@@ -401,6 +419,33 @@ export default {
               if (res.code === 200) {
                 this.$message.success(res.msg)
                 this.$refs.moveMessage[dataIndex].closeMessage()
+                this.motoPassword = ''
+                this.newPassword = ''
+                this.againPassword = ''
+              } else {
+                this.$message.warning(res.msg)
+              }
+            })
+            .catch(() => {
+              this.$message.warning('前端出bug了！！')
+            })
+        } else {
+          this.$message.warning('两次密码不同')
+        }
+      }
+      if (this.messageData[dataIndex].messageType === 'masterRegister') {
+        if (this.masterPassword === this.againPassword) {
+          masterRegister({
+            acgnUserName: this.masterUserName,
+            acgnUserPassword: this.masterPassword
+          })
+            .then((res) => {
+              if (res.code === 200) {
+                this.$message.success(res.msg)
+                this.$refs.moveMessage[dataIndex].closeMessage()
+                this.masterUserName = ''
+                this.masterPassword = ''
+                this.againPassword = ''
               } else {
                 this.$message.warning(res.msg)
               }
@@ -435,6 +480,19 @@ export default {
           height: 450,
           title: '修改密码',
           messageType: 'modify'
+        })
+      }
+    },
+    openMasterRegister(event) {
+      if (this.messageData.find((item) => item.messageType === 'masterRegister')) {
+        this.$message.warning('已打开该窗口')
+      } else {
+        this.messageData.push({
+          top: event.clientY - 100,
+          left: event.clientX - 200,
+          height: 450,
+          title: '管理员注册',
+          messageType: 'masterRegister'
         })
       }
     },
@@ -629,11 +687,11 @@ export default {
 }
 .router-anime-enter 
 /* .slide-fade-leave-active for below version 2.1.8 */ {
-  transform: scale(0.5);
+  transform: scale(2);
   opacity: 0;
 }
 .router-anime-leave-to {
-  transform: scale(2);
+  transform: scale(0.5);
   opacity: 0;
 }
 .aplayer {

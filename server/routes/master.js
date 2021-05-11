@@ -22,14 +22,20 @@ router.post('/acgnrecord/masterRegister', urlencodedParser, (req, res) => {
           status: 'success',
           code: 200,
           msg: '注册成功',
-          data: user
+          data: result
+        })
+      } else if (result.msg) {
+        res.send({
+          status: 'warning',
+          code: 400,
+          msg: result.msg
         })
       } else {
         res.send({
           status: 'warning',
           code: 400,
-          msg: '注册失败',
-          data: user
+          msg: '数据出错，注册失败',
+          data: result
         })
       }
     })

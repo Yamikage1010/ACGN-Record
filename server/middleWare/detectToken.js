@@ -9,6 +9,7 @@ module.exports = (req, res, next) => {
     '/public',
     '/acgnrecord/login',
     '/acgnrecord/register',
+    '/acgnrecord/forgetPassword',
     '/acgnrecord/getSakura',
     '/acgnrecord/image/',
     '/acgnrecord/masterImage/',

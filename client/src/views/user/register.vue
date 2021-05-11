@@ -18,11 +18,12 @@
         <label>验证码：</label>
         <input type="text" v-model="user.code" style="width: 110px" />
         <acgn-button
+          :disabled="!canGetCode"
           @click="getCode"
           :fontSize="17"
           :width="120"
           style="display: inline; margin-left: 20px; margin-top: 0px"
-          >获取验证码</acgn-button
+          >{{ canGetCode ? '获取验证码' : codeDownCount + '(s)' }}</acgn-button
         >
       </div>
       <div class="login-register-from-item">
@@ -46,6 +47,8 @@ export default {
         acgnUserEmail: '',
         code: ''
       },
+      canGetCode: true,
+      codeDownCount: 60,
       loginRes: null
     }
   },
@@ -58,7 +61,6 @@ export default {
     userRegister() {
       register(this.user).then((res) => {
         if (res.code == 200) {
-          this.loginRes = res.data
           this.$message.success(res.msg)
           this.$router.push({
             name: 'login'
@@ -69,15 +71,39 @@ export default {
       })
     },
     getCode() {
-      sendEmail({
-        acgnUserEmail: this.user.acgnUserEmail
-      }).then((res) => {
-        if (res.code == 200) {
-          this.$message.success(res.msg)
-        } else {
-          this.$message.warning(res.msg)
+      if (this.isEmailAvailable()) {
+        sendEmail({
+          acgnUserEmail: this.user.acgnUserEmail
+        }).then((res) => {
+          if (res.code == 200) {
+            this.$message.success(res.msg)
+            this.canGetCode = false
+            this.downCount()
+          } else {
+            this.$message.warning(res.msg)
+          }
+        })
+      } else {
+        this.$message.warning('邮箱格式错误')
+      }
+    },
+    isEmailAvailable() {
+      let myreg = /^([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+@([a-zA-Z0-9]+[_|\_|\.]?)*[a-zA-Z0-9]+\.[a-zA-Z]{2,3}$/
+      if (!myreg.test(this.user.acgnUserEmail)) {
+        return false
+      } else {
+        return true
+      }
+    },
+    downCount() {
+      let downCount = setInterval(() => {
+        this.codeDownCount--
+        if (this.codeDownCount === 0) {
+          this.canGetCode = true
+          this.codeDownCount = 60
+          clearInterval(downCount)
         }
-      })
+      }, 1000)
     },
     toLogin() {
       this.$router.push({
