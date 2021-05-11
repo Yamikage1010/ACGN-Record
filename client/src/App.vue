@@ -82,15 +82,15 @@
       <div style="margin-top: 20px" v-if="item.messageType === 'modify'">
         <div class="acgn-form-item">
           <label class="acgn-form-item-label">原密码</label>
-          <input v-model="motoPassword" />
+          <input type="password" v-model="motoPassword" />
         </div>
         <div class="acgn-form-item">
           <label class="acgn-form-item-label">新密码</label>
-          <input v-model="newPassword" />
+          <input type="password" v-model="newPassword" />
         </div>
         <div class="acgn-form-item">
           <label class="acgn-form-item-label">再来一次</label>
-          <input v-model="againPassword" />
+          <input type="password" v-model="againPassword" />
         </div>
       </div>
       <div style="margin-top: 20px" v-if="item.messageType === 'masterRegister'">
@@ -100,11 +100,11 @@
         </div>
         <div class="acgn-form-item">
           <label class="acgn-form-item-label">密码</label>
-          <input v-model="masterPassword" />
+          <input type="password" v-model="masterPassword" />
         </div>
         <div class="acgn-form-item">
           <label class="acgn-form-item-label">再来一次</label>
-          <input v-model="againPassword" />
+          <input type="password" v-model="againPassword" />
         </div>
       </div>
     </move-message>

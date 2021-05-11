@@ -8,7 +8,7 @@
       </div>
       <div class="login-register-from-item">
         <label>密<span style="opacity: 0">—</span>码：</label>
-        <input type="text" v-model="user.acgnUserPassword" />
+        <input type="password" v-model="user.acgnUserPassword" />
       </div>
       <div class="login-register-from-item">
         <label>邮<span style="opacity: 0">—</span>箱：</label>

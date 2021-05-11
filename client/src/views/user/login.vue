@@ -12,7 +12,7 @@
         </div>
         <div class="login-register-from-item">
           <label>密<span style="opacity: 0">—</span>码：</label>
-          <input type="text" v-model="user.acgnUserPassword" @keyup.enter="userLogin" />
+          <input type="password" v-model="user.acgnUserPassword" @keyup.enter="userLogin" />
         </div>
         <!-- <button @click="userLogin">登录</button> -->
         <div class="login-register-from-item">
@@ -39,11 +39,11 @@
         </div>
         <div class="login-register-from-item" v-if="showPass">
           <label>重设密码：</label>
-          <input type="text" v-model="forgetData.newPassword" />
+          <input type="password" v-model="forgetData.newPassword" />
         </div>
         <div class="login-register-from-item" v-if="showPass">
           <label>再来一次：</label>
-          <input type="text" v-model="againPassword" />
+          <input type="password" v-model="againPassword" />
         </div>
         <div class="login-register-from-item">
           <acgn-button @click="userForgetPassword" :fontSize="20">确定</acgn-button>
