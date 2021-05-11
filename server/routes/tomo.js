@@ -6,7 +6,8 @@ const {
   requestHandle,
   getTomoRequestList,
   getTomoAcgnContentList,
-  getTomoAcgnCharacters
+  getTomoAcgnCharacters,
+  delectTomoList
 } = require('../functionPackage/database/tomo')
 var bodyParser = require('body-parser')
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
@@ -169,7 +170,6 @@ router.post('/acgnrecord/getTomoList', urlencodedParser, (req, res) => {
       })
     })
 })
-
 router.post('/acgnrecord/getTomoAcgnContentList', urlencodedParser, (req, res) => {
   getTomoAcgnContentList(req)
     .then((data) => {
@@ -211,6 +211,34 @@ router.post('/acgnrecord/getTomoAcgnCharacters', urlencodedParser, (req, res) =>
         status: 'warning',
         code: 400,
         msg: '获取失败',
+        data: err
+      })
+    })
+})
+//好友列表
+router.post('/acgnrecord/delectTomoList', urlencodedParser, (req, res) => {
+  delectTomoList(req)
+    .then((result) => {
+      if (result.changedRows !== 0) {
+        res.send({
+          status: 'success',
+          code: 200,
+          msg: '删除成功'
+        })
+      } else {
+        res.send({
+          status: 'warning',
+          code: 400,
+          msg: '删除失败',
+          data: result
+        })
+      }
+    })
+    .catch((err) => {
+      res.send({
+        status: 'error',
+        code: 404,
+        msg: '系统出错',
         data: err
       })
     })

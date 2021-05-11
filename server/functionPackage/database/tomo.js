@@ -12,7 +12,7 @@ async function addTomo(req) {
       sql
         .table('acgn_tomo_request')
         .field('requestId')
-        .data({ acgnUid: req.acgnUid, requestUid: req.body.acgnUid })
+        .where({ acgnUid: req.acgnUid, requestUid: req.body.acgnUid, requestStatus: { in: '1,2' } })
         .select()
     )
     if (result2.length > 0) {
@@ -168,6 +168,27 @@ async function getTomoAcgnCharacters(req) {
   }
   return result
 }
+async function delectTomoList(req) {
+  let result = await exec(
+    sql.table('user').where({ acgnUid: req.acgnUid }).data({ acgnTomo: req.body.acgnTomo }).update()
+  )
+  if (result.changedRows !== 0) {
+    result = await exec(sql.table('user').field('acgnTomo').where({ acgnUid: req.body.acgnTomoUid }).select())
+    let tomoAcgnTomo = JSON.parse(result[0].acgnTomo)
+    tomoAcgnTomo.splice(
+      tomoAcgnTomo.findIndex((item) => item.acgnUid === req.acgnUid),
+      1
+    )
+    result = await exec(
+      sql
+        .table('user')
+        .where({ acgnUid: req.body.acgnTomoUid })
+        .data({ acgnTomo: JSON.stringify(tomoAcgnTomo) })
+        .update()
+    )
+  }
+  return result
+}
 module.exports = {
   searchTomo,
   addTomo,
@@ -175,5 +196,6 @@ module.exports = {
   requestHandle,
   getTomoRequestList,
   getTomoAcgnContentList,
-  getTomoAcgnCharacters
+  getTomoAcgnCharacters,
+  delectTomoList
 }

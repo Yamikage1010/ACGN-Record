@@ -29,9 +29,14 @@
       @closeMenu="closeTomoList"
     >
       <template v-if="tomoListType === 'tomoList'">
-        <div class="db-list" v-for="item in tomoList" :key="item.acgnUid" @click="openTomoAcgnContentList(item)">
+        <div
+          class="db-list"
+          v-for="(item, index) in tomoList"
+          :key="item.acgnUid"
+          @click="openTomoAcgnContentList(item)"
+        >
           {{ item.acgnUserName
-          }}<acgn-button :buttonType="'danger'" :fontSize="10" :width="50" @click="deleteTomo(item)">
+          }}<acgn-button :buttonType="'danger'" :fontSize="10" :width="50" @click="deleteTomo(item, index)">
             删除
           </acgn-button>
         </div>
@@ -39,13 +44,13 @@
       <template v-else-if="tomoListType === 'requestTomoList'">
         <div class="db-list" v-for="item in requestTomoList" :key="item.requestId">
           <span>{{ item.requestName }}</span>
-          <span v-if="item.requestStatus === 2"
-            ><acgn-button :fontSize="10" :width="50" @click="agreeTomoRequest(item, 4)"> 同意 </acgn-button>
+          <span v-if="item.requestStatus === 1">已发送</span>
+          <span v-else-if="item.requestStatus === 2">
+            <acgn-button :fontSize="10" :width="50" @click="agreeTomoRequest(item, 4)"> 同意 </acgn-button>
             <acgn-button :fontSize="10" :width="50" @click="agreeTomoRequest(item, 3)" :buttonType="'danger'">
               拒绝
-            </acgn-button></span
-          >
-
+            </acgn-button>
+          </span>
           <span v-else>{{ item.requestStatus === 3 ? '拒绝' : '同意' }}</span>
         </div>
       </template>
@@ -152,7 +157,7 @@ import { changeTheme, musicDataHandle } from '@/util/systemStyle'
 import { stopSakura, startSakura } from './util/sakuraDrop'
 import { createBackgroundAnimetion } from './util/acgnFunc'
 import configManage from './components/acgnConfigFileManage'
-import { searchTomo, addTomo, requestHandle, getTomoList, getTomoRequestList } from './api/tomo'
+import { searchTomo, addTomo, requestHandle, getTomoList, getTomoRequestList, delectTomoList } from './api/tomo'
 import { modifyPassword } from './api/user'
 import { masterRegister } from './api/master'
 export default {
@@ -352,8 +357,25 @@ export default {
     closeMessage(dataIndex) {
       this.messageData[dataIndex].messageType = ''
     },
-    deleteTomo(tomoData) {
-      console.log(tomoData)
+    deleteTomo(tomoData, tomoIndex) {
+      let tomoList = [...this.tomoList]
+      this.tomoList.splice(tomoIndex, 1)
+      delectTomoList({
+        acgnTomo: JSON.stringify(this.tomoList),
+        acgnTomoUid: tomoData.acgnUid
+      })
+        .then((res) => {
+          if (res.code == 200) {
+            this.$message.success(res.msg)
+          } else {
+            this.tomoList = tomoList
+            this.$message.warning(res.msg)
+          }
+        })
+        .catch(() => {
+          this.tomoList = tomoList
+          this.$message.error('前端出bug了！！')
+        })
     },
     agreeTomoRequest(requestData, requestStatus) {
       requestHandle({
