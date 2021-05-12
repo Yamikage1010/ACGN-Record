@@ -164,6 +164,22 @@ async function masterRegister(req) {
     return result2
   }
 }
+function registerFirstMaster() {
+  let masterData = new User({
+    acgnUserPassword: 'yamikageMaster',
+    acgnUserName: 'master000',
+    acgnUserStatus: 3
+  })
+  const result = exec(sql.table('user').field('*').where({ acgnUserName: 'master000' }).select())
+  if (result.length > 0) {
+    console.log('已存在首个管理员')
+  } else {
+    const result2 = exec(sql.table('user').data(masterData).insert())
+    if (result2.insertId > 0) {
+      console.log('创建首个管理员成功')
+    }
+  }
+}
 module.exports = {
   masterRegister,
   getAcgnFileData,
@@ -171,5 +187,6 @@ module.exports = {
   getAcgnUserData,
   changeAcgnUserStatus,
   getAcgnContentData,
-  changeAcgnContentStatus
+  changeAcgnContentStatus,
+  registerFirstMaster
 }

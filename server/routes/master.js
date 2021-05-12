@@ -1,5 +1,6 @@
 var express = require('express')
 const {
+  registerFirstMaster,
   masterRegister,
   getAcgnFileData,
   changeAcgnFileStatus,
@@ -11,8 +12,8 @@ const {
 var bodyParser = require('body-parser')
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
 var router = express.Router()
-//管理员注册
-
+//注册首个管理员
+registerFirstMaster()
 //注册接口
 router.post('/acgnrecord/masterRegister', urlencodedParser, (req, res) => {
   masterRegister(req)

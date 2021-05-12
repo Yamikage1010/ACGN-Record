@@ -19,11 +19,16 @@ function loadImage(src) {
 async function loadAcgnImage(imageNameArray, loadData) {
   let arr = []
   for (let i = 0; i < imageNameArray.length; i++) {
-    await loadImage(loadData.apiSrc + imageNameArray[i]).then(img => {
-      arr.push(img)
-      loadData.loaded++
-      console.log(loadData.loaded)
-    })
+    await loadImage(loadData.apiSrc + imageNameArray[i])
+      .then(img => {
+        arr.push(img)
+        loadData.loaded++
+        console.log(loadData.loaded)
+      })
+      .catch(src => {
+        loadData.loaded++
+        console.log(src)
+      })
   }
   return arr
 }

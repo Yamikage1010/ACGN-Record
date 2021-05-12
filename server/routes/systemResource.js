@@ -34,24 +34,26 @@ router.post('/acgnrecord/getSakura', urlencodedParser, (req, res) => {
 })
 router.get('/acgnrecord/image/*', function (req, res) {
   let imageName = decodeURIComponent(path.basename(req.url))
-  // detectionFile(req, imageName)
-  //   .then((result) => {
-  //     if (result[0].acgnFileStatus === 1) {
-  //       res.sendFile('C://Users/Administrator/Documents/ACGNrecord/userUpData/image/upload_uid' + imageName)
-  //     } else {
-  //       res.sendFile('C://Users/Administrator/Documents/ACGNrecord/systemDefaultResource/image/' + 'nene_era.png')
-  //     }
-  //   })
-  //   .catch((err) => {
-  //      res.send(400)
-  //     console.log(imageName + '图片状态查询出错\n')
-  //     console.log(err)
-  //   })
-  res.sendFile('C://Users/Administrator/Documents/ACGNrecord/userUpData/image/upload_uid' + imageName)
+  console.log(imageName)
+  detectionFile(req, imageName)
+    .then((result) => {
+      if (result[0].acgnFileStatus === 1) {
+        res.sendFile('C://Users/Administrator/Documents/ACGNrecord/userUpData/image/upload_uid' + imageName)
+      } else {
+        res.sendFile('C://Users/Administrator/Documents/ACGNrecord/systemDefaultResource/image/' + 'nene_era.jpg')
+      }
+    })
+    .catch((err) => {
+      res.send(400)
+      console.log(imageName + '图片状态查询出错\n')
+      console.log(err)
+    })
+  // res.sendFile('C://Users/Administrator/Documents/ACGNrecord/userUpData/image/upload_uid' + imageName)
 })
 
 router.get('/acgnrecord/GMImage/*', function (req, res) {
   let imageName = decodeURIComponent(path.basename(req.url))
+  console.log(imageName)
   res.sendFile('C://Users/Administrator/Documents/ACGNrecord/userUpData/GMImage/gm_upload_uid' + imageName)
   // res.sendFile( '/public/images/'+path.basename(req.url) );
 })
@@ -75,7 +77,19 @@ router.get('/acgnrecord/fsReaderImage/*', function (req, res) {
 // const option = {}
 router.get('/acgnrecord/music/*', function (req, res) {
   let musicName = decodeURIComponent(path.basename(req.url))
-  res.sendFile('C://Users/Administrator/Documents/ACGNrecord/userUpData/music/upload_uid' + musicName)
+  detectionFile(req, musicName)
+    .then((result) => {
+      if (result[0].acgnFileStatus === 1) {
+        res.sendFile('C://Users/Administrator/Documents/ACGNrecord/userUpData/music/upload_uid' + musicName)
+      } else {
+        res.sendFile('C://Users/Administrator/Documents/ACGNrecord/systemDefaultResource/music/' + 'nene_era.mp3')
+      }
+    })
+    .catch((err) => {
+      res.send(400)
+      console.log(musicName + '音乐状态查询出错\n')
+      console.log(err)
+    })
 })
 router.get('/acgnrecord/defaultMusic/*', function (req, res) {
   let musicName = decodeURIComponent(path.basename(req.url))
@@ -83,7 +97,20 @@ router.get('/acgnrecord/defaultMusic/*', function (req, res) {
 })
 router.get('/acgnrecord/video/*', function (req, res) {
   let videoName = decodeURIComponent(path.basename(req.url))
-  res.sendFile('C://Users/Administrator/Documents/ACGNrecord/userUpData/video/upload_uid' + videoName)
+  detectionFile(req, videoName)
+    .then((result) => {
+      if (result[0].acgnFileStatus === 1) {
+        res.sendFile('C://Users/Administrator/Documents/ACGNrecord/userUpData/video/upload_uid' + videoName)
+      } else {
+        res.sendFile('C://Users/Administrator/Documents/ACGNrecord/systemDefaultResource/video/' + 'nene_era.mp4')
+      }
+    })
+    .catch((err) => {
+      res.send(400)
+      console.log(videoName + '视频状态查询出错\n')
+      console.log(err)
+    })
+  // res.sendFile('C://Users/Administrator/Documents/ACGNrecord/userUpData/video/upload_uid' + videoName)
 })
 
 router.get('/acgnrecord/masterImage/*', function (req, res) {

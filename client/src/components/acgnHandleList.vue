@@ -32,6 +32,10 @@
       <!-- <div class="acgn-subTitle">{{ item.acgnSubTitle }}</div> -->
       <!-- <div class="acgn-score">{{ item.acgnScore }}</div> -->
     </div>
+    <div class="list-no-data" v-if="acgnContentList.length === 0">
+      <img style="width: 200px" :src="'http://localhost:9810/acgnrecord/defaultImage/noData.png'" />
+      <div class="list-no-data-text">无作品记录</div>
+    </div>
   </div>
 </template>
 
@@ -286,6 +290,21 @@ export default {
           margin-top: 0;
         }
       }
+    }
+  }
+  .list-no-data {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    .list-no-data-text {
+      color: $acgnThemeColor;
+      font-size: 25px;
+      font-weight: 800;
+      -webkit-text-stroke: 1px #ffffff;
+      text-stroke: 1px #ffffff;
     }
   }
 }

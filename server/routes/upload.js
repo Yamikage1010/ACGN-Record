@@ -7,7 +7,7 @@ var urlencodedParser = bodyParser.urlencoded({ extended: false })
 var router = express.Router()
 var multipart = require('connect-multiparty')
 var gm = require('gm')
-var multipartMiddleware = multipart({ maxFieldsSize: '10MB' })
+var multipartMiddleware = multipart({ maxFieldsSize: '1000MB' })
 
 async function uploadData(req, extname, dataType) {
   let upload = {
@@ -24,7 +24,7 @@ async function uploadData(req, extname, dataType) {
 function fileRenameAndTurnUrl(req, res, dataType) {
   let file = req.files.file
   let characterIndex = req.body.characterIndex || null
-  let extname = req.acgnUid + '_' + file.name
+  let extname = req.acgnUid + '_' + new Date().getTime() + '_' + file.name
   let fileName = 'upload_uid' + extname
   fs.rename(
     file.path,
@@ -62,7 +62,7 @@ function fileRenameAndTurnUrl(req, res, dataType) {
                 data: {
                   acgnUid: req.acgnUid,
                   file: file,
-                  index: characterIndex
+                  extname: extname
                 }
               })
             } else {

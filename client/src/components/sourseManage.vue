@@ -246,21 +246,18 @@ export default {
         } catch (err) {
           console.error('[Element Error][Upload]', err)
         }
-        let exName = this.userData.acgnUid + '_' + file.name
-        this.addSourseData.image = exName
+        this.addSourseData.image = 'exName'
         this.addSourseData.imageSrc = fileUrl
       } else if (this.addSourseData.fileType === 'music') {
         if (file.type.includes('audio/')) {
-          let exName = this.userData.acgnUid + '_' + file.name
-          this.addSourseData.music = exName
+          this.addSourseData.music = 'exName'
         } else {
           this.$message.warning('选择的文件类型错误')
           return false
         }
       } else {
         if (file.type.includes('video/')) {
-          let exName = this.userData.acgnUid + '_' + file.name
-          this.addSourseData.video = exName
+          this.addSourseData.video = 'exName'
         } else {
           this.$message.warning('选择的文件类型错误')
           return false
@@ -271,6 +268,13 @@ export default {
     uploadSuccess(response, file, fileList) {
       console.log(fileList)
       console.log(file)
+      if (this.addSourseData.image === 'exName') {
+        this.addSourseData.image = response.data.extname
+      } else if (this.addSourseData.music === 'exName') {
+        this.addSourseData.music = response.data.extname
+      } else if (this.addSourseData.video === 'exName') {
+        this.addSourseData.video = response.data.extname
+      }
       this.addSourseData.loaded = 100
       this.addSourseData.status = 'noNowUpData'
     },

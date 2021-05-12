@@ -54,7 +54,7 @@
             drag
             multiple
           >
-            <img src="http://localhost:9810/acgnrecord/defaultImage/sora.png" />
+            <img src="http://localhost:9810/acgnrecord/defaultImage/sora.jpg" />
           </el-upload>
         </div>
       </div>
@@ -147,10 +147,10 @@ export default {
         } catch (err) {
           console.error('[Element Error][Upload]', err)
         }
-        let exName = this.userData.acgnUid + '_' + file.name
+        // let exName = this.userData.acgnUid + '_' + file.name
         this.imageManageList.push({
           fileName: file.name,
-          name: exName,
+          name: '',
           status: null,
           loaded: 0,
           url: fileUrl
@@ -165,6 +165,7 @@ export default {
       console.log(fileList)
       console.log(file)
       let successFile = this.imageManageList.find((item) => item.fileName === file.name)
+      successFile.name = response.data.extname
       successFile.loaded = 100
       successFile.status = 'success'
       // successFile.url = 'http://localhost:9810/acgnrecord/image/' + successFile.name

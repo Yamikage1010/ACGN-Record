@@ -65,7 +65,7 @@
             :before-upload="beforeUpload"
             :on-success="uploadSuccess"
             :on-progress="uploadProgress"
-            v-if="!addVolumeData.cover"
+            v-if="!addVolumeData.imageSrc"
           >
             <acgn-button :noStop="true">上传封面</acgn-button>
           </el-upload>
@@ -195,8 +195,6 @@ export default {
         } catch (err) {
           console.error('[Element Error][Upload]', err)
         }
-        let exName = this.userData.acgnUid + '_' + file.name
-        this.addVolumeData.cover = exName
         this.addVolumeData.imageSrc = fileUrl
       } else {
         this.$message.warning('选择的文件类型错误')
@@ -207,8 +205,11 @@ export default {
     uploadSuccess(response, file, fileList) {
       console.log(fileList)
       console.log(file)
+      console.log(response)
+      this.addVolumeData.cover = response.data.extname
       this.addVolumeData.loaded = 100
       this.addVolumeData.status = 'noNowUpData'
+      console.log(this.addVolumeData)
     },
     uploadProgress(event, file, fileList) {
       this.addVolumeData.loaded = Math.floor((event.loaded / file.size) * 100)

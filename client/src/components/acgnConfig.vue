@@ -60,7 +60,7 @@
         <label class="acgn-form-item-label">系统音乐</label>
         <div class="acgn-config-music" v-if="acgnConfig.backgroundMusic.length > 0">
           <div class="acgn-config-music-item" v-for="(sourse, index) in acgnConfig.backgroundMusic" :key="index">
-            {{ sourse.split('_')[1] }}
+            {{ sourse.split('_')[2] }}
           </div>
         </div>
         <acgn-button @click="openConfigManage('music')">音乐管理</acgn-button>

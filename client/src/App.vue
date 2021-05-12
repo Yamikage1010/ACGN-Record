@@ -270,6 +270,7 @@ export default {
         }
       ],
       systemImage: [
+        'sakuraBg001.jpg',
         'ACGNRecord-logo.png',
         'acgn.jpg',
         'add.jpg',
@@ -280,7 +281,6 @@ export default {
         'Comic.jpg',
         'Game.jpg',
         'Novel.jpg',
-        'sakuraBg001.jpg',
         'noImage.jpg',
         'nene_era.jpg',
         'acgnBg001.jpg',
