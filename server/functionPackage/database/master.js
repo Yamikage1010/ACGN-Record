@@ -101,7 +101,9 @@ async function changeAcgnUserStatus(req) {
 }
 
 async function getAcgnContentData(req) {
-  let searchData = {}
+  let searchData = {
+    deleteDate: ''
+  }
   req.body.acgnUserName
     ? Object.assign(searchData, { acgnUserName: { like: '%' + req.body.acgnUserName + '%', _type: 'and' } })
     : null

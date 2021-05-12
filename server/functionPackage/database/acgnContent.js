@@ -8,6 +8,7 @@ async function addAcgnContent(req) {
   acgnContent.acgnAttribute = JSON.stringify(acgnContent.acgnAttribute)
   acgnContent.acgnCharacteristic = JSON.stringify(acgnContent.acgnCharacteristic)
   acgnContent.createDate = new Date().getTime()
+  acgnContent.deleteDate = ''
   const result = await exec(sql.table('acgn_content').data(acgnContent).insert())
   if (result.insertId || result.insertId === 0) {
     let acgnCharacters = JSON.parse(req.body.acgnCharacters)
@@ -19,6 +20,7 @@ async function addAcgnContent(req) {
       acgnCharacter.characterAttribute = JSON.stringify(acgnCharacter.characterAttribute)
       acgnCharacter.characterVoice = JSON.stringify(acgnCharacter.characterVoice)
       acgnCharacter.createDate = new Date().getTime()
+      acgnCharacter.deleteDate = ''
       let result2 = await exec(sql.table('acgn_characters').data(acgnCharacter).insert())
       console.log(result2)
       if (!(result2.insertId || result2.insertId === 0)) {
@@ -62,7 +64,8 @@ async function editAcgnContent(req) {
 async function getAcgnContentList(req) {
   let selectData = {
     acgnUid: req.acgnUid,
-    acgnType: req.body.acgnType
+    acgnType: req.body.acgnType,
+    deleteDate: ''
   }
   req.body.acgnTitle
     ? Object.assign(selectData, { acgnTitle: { like: '%' + req.body.acgnTitle + '%', _type: 'and' } })
@@ -108,4 +111,13 @@ async function getAcgnCharacters(req) {
   }
   return result
 }
-module.exports = { addAcgnContent, editAcgnContent, getAcgnContentList, getAcgnCharacters }
+async function delectAcgnContent(req) {
+  let selectData = {
+    acgnId: req.body.acgnId
+  }
+  const result = await exec(
+    sql.table('acgn_content').where(selectData).data({ deleteDate: new Date().getTime() }).update()
+  )
+  return result
+}
+module.exports = { addAcgnContent, editAcgnContent, getAcgnContentList, getAcgnCharacters, delectAcgnContent }

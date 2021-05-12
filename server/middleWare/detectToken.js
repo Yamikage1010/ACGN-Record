@@ -13,6 +13,8 @@ module.exports = (req, res, next) => {
     '/acgnrecord/getSakura',
     '/acgnrecord/image/',
     '/acgnrecord/masterImage/',
+    '/acgnrecord/masterMusic/',
+    '/acgnrecord/masterVideo/',
     '/acgnrecord/defaultImage/',
     '/acgnrecord/fsReaderImage/',
     '/acgnrecord/GMImage/',

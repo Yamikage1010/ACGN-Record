@@ -11,7 +11,8 @@ import {
   CarouselItem,
   Table,
   TableColumn,
-  Pagination
+  Pagination,
+  Popconfirm
 } from 'element-ui'
 import acgnButton from '@/components/acgnButton'
 import moveMessage from '@/components/moveMessage'
@@ -28,6 +29,7 @@ import 'element-ui/lib/theme-chalk/carousel-item.css'
 import 'element-ui/lib/theme-chalk/table.css'
 import 'element-ui/lib/theme-chalk/table-column.css'
 import 'element-ui/lib/theme-chalk/pagination.css'
+import 'element-ui/lib/theme-chalk/popconfirm.css'
 Vue.prototype.$message = Message
 Vue.use(Upload)
 Vue.use(Dialog)
@@ -40,6 +42,7 @@ Vue.use(CarouselItem)
 Vue.use(Table)
 Vue.use(TableColumn)
 Vue.use(Pagination)
+Vue.use(Popconfirm)
 Vue.component('acgn-button', acgnButton)
 Vue.component('move-message', moveMessage)
 Vue.component('acgn-loading', acgnLoading)

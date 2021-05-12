@@ -119,6 +119,7 @@ async function getTomoAcgnContentList(req) {
   let selectData = {
     acgnUid: req.body.acgnUid,
     acgnStatus: 1,
+    deleteDate: '',
     acgnToTomo: 1
   }
   req.body.acgnTitle

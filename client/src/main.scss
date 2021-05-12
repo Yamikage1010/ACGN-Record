@@ -147,6 +147,7 @@ textarea:disabled {
   margin-bottom: 25px;
 
   ::v-deep {
+
     .el-radio__input.is-checked+.el-radio__label {
       color: $acgnThemeColor;
     }
@@ -182,6 +183,54 @@ textarea:disabled {
 .el-rate__item {
   .el-rate__icon {
     color: $acgnThemeColor !important;
+  }
+}
+
+.el-popover__reference-wrapper {
+  .el-popover__reference {
+    border-radius: 20px;
+  }
+}
+
+.el-popover,
+.el-popper {
+  background-color: $bgColor;
+  border: 1px #fff solid;
+  border-radius: 4px;
+  padding: 5px;
+}
+
+.el-popconfirm__main {
+  color: $fontColor;
+}
+
+.el-popconfirm__action {
+  display: flex;
+  justify-content: space-around;
+
+  .el-button,
+  .el-button--mini,
+  .el-button--primary {
+    background-color: $acgnThemeBGColor;
+    outline: none;
+    border: none;
+    color: #fff;
+    border-radius: 3px;
+    transition: 0.2s ease-in-out;
+
+    &:hover {
+      background-color: $acgnThemeBGColorHover;
+      transform: scale(1.03);
+      cursor: pointer;
+    }
+  }
+
+  .el-button--text {
+    background-color: #ffaaee;
+
+    &:hover {
+      background-color: #ff88cc;
+    }
   }
 }
 

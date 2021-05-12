@@ -36,9 +36,9 @@
           @click="openTomoAcgnContentList(item)"
         >
           {{ item.acgnUserName
-          }}<acgn-button :buttonType="'danger'" :fontSize="10" :width="50" @click="deleteTomo(item, index)">
-            删除
-          </acgn-button>
+          }}<el-popconfirm title="是否要删除该好友" @confirm="deleteTomo(item, index)" hide-icon>
+            <acgn-button slot="reference" :buttonType="'danger'" :fontSize="10" :width="50"> 删除 </acgn-button>
+          </el-popconfirm>
         </div>
       </template>
       <template v-else-if="tomoListType === 'requestTomoList'">

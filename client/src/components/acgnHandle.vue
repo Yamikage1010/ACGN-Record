@@ -119,6 +119,9 @@
       </div>
     </div>
     <div class="acgn-characters" v-for="(character, index) in acgnCharacters" :key="index">
+      <el-popconfirm title="是否要删除该人物" @confirm="deleteCharacter(index)" hide-icon>
+        <div class="delete-character" slot="reference">X</div>
+      </el-popconfirm>
       <div class="acgn-form-box">
         <div class="acgn-form-item">
           <label class="acgn-form-item-label">人物名字</label>
@@ -174,7 +177,7 @@
         </div>
       </div>
     </div>
-    <div class="acgn-form-box" style="max-height: 200px">
+    <div class="acgn-form-box" style="max-height: 300px">
       <div class="acgn-form-item">
         <label>好友可见</label>
         <el-radio-group v-model="acgnFormData.acgnToTomo">
@@ -307,6 +310,7 @@ export default {
             if (res.code == 200) {
               this.$message.success(res.msg)
               this.$emit('closeWindow')
+              Bus.$emit('refreshList')
             } else {
               this.$message.warning(res.msg)
             }
@@ -330,6 +334,7 @@ export default {
           .then((res) => {
             if (res.code == 200) {
               this.$message.success(res.msg)
+              Bus.$emit('refreshList')
             } else {
               this.$message.warning(res.msg)
             }
@@ -398,6 +403,9 @@ export default {
         },
         characterVoice: []
       })
+    },
+    deleteCharacter(characterIndex) {
+      this.acgnCharacters.splice(characterIndex, 1)
     }
   }
 }
@@ -419,6 +427,25 @@ input {
   }
 }
 .acgn-characters {
+  position: relative;
+  .delete-character {
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background-color: $bgColor;
+    color: $fontColor;
+    border-radius: 20px;
+    transition: 0.3s ease;
+    z-index: 3;
+    &:hover {
+      cursor: pointer;
+      background-color: $acgnThemeBGColorHover;
+      transform: rotate(180deg);
+    }
+  }
 }
 .acgn-form-item {
   .acgn-attribute {

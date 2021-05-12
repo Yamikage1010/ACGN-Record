@@ -26,7 +26,9 @@
       />
       <img class="acgn-image" v-else :src="'http://localhost:9810/acgnrecord/defaultImage/noImage.jpg'" />
       <div class="acgn-image-mask"></div>
-      <div class="delete-acgn">X</div>
+      <el-popconfirm title="是否要删除该作品" @confirm="deleteAcgn(item.acgnId)" hide-icon>
+        <div class="delete-acgn" slot="reference" @click="clickDelete">X</div>
+      </el-popconfirm>
       <!-- <div class="acgn-subTitle">{{ item.acgnSubTitle }}</div> -->
       <!-- <div class="acgn-score">{{ item.acgnScore }}</div> -->
     </div>
@@ -34,8 +36,9 @@
 </template>
 
 <script>
+import Bus from '@/common/bus'
 import { ACGN } from '@/common/acgn'
-import { getAcgnContentList } from '@/api/acgnContent'
+import { getAcgnContentList, delectAcgnContent } from '@/api/acgnContent'
 export default {
   props: {
     windowKey: {
@@ -58,6 +61,9 @@ export default {
   },
   mounted() {
     this.userData = this.$localStorage.get('userData') || { acgnUid: null }
+    Bus.$on('refreshList', () => {
+      this.getAcgnContent()
+    })
     this.getAcgnContent()
   },
   methods: {
@@ -92,11 +98,28 @@ export default {
           this.imageArray = this.imageArray.filter((item) => item)
           this.loadData.loaded = 0
           this.loadAcgnImage(this.imageArray, this.loadData)
-          this.$message.success(res.msg)
         } else {
           this.$message.warning(res.msg)
         }
       })
+    },
+    deleteAcgn(acgnId) {
+      delectAcgnContent({ acgnId: acgnId })
+        .then((res) => {
+          if (res.code === 200) {
+            this.$message.success(res.msg)
+            this.getAcgnContent()
+          } else {
+            this.$message.warning(res.msg)
+          }
+        })
+        .catch((err) => {
+          console.log(err)
+          this.$message.error('前端出bug了')
+        })
+    },
+    clickDelete(e) {
+      e.stopPropagation()
     }
   }
 }

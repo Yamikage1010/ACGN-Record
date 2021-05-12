@@ -5,7 +5,8 @@ const {
   addAcgnContent,
   editAcgnContent,
   getAcgnContentList,
-  getAcgnCharacters
+  getAcgnCharacters,
+  delectAcgnContent
 } = require('../functionPackage/database/acgnContent')
 var bodyParser = require('body-parser')
 var urlencodedParser = bodyParser.urlencoded({ extended: false })
@@ -28,6 +29,36 @@ router.post('/acgnrecord/addAcgnContent', urlencodedParser, (req, res) => {
         status: 'warning',
         code: 400,
         msg: '新增失败',
+        data: err
+      })
+    })
+})
+router.post('/acgnrecord/delectAcgnContent', urlencodedParser, (req, res) => {
+  delectAcgnContent(req)
+    .then((result) => {
+      console.log(result)
+      if (result.changedRows > 0) {
+        res.send({
+          status: 'success',
+          code: 200,
+          msg: '删除成功',
+          data: result
+        })
+      } else {
+        res.send({
+          status: 'warning',
+          code: 400,
+          msg: '删除失败',
+          data: result
+        })
+      }
+    })
+    .catch((err) => {
+      console.log(err)
+      res.send({
+        status: 'warning',
+        code: 400,
+        msg: '系统出错',
         data: err
       })
     })
