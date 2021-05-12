@@ -1,7 +1,9 @@
 <template>
   <div class="acgn-login">
     <div class="acgn-login-form" ref="acgnLogin">
-      <div class="acgn-logo">ACGN Record</div>
+      <div class="acgn-logo">
+        <img src="http://localhost:9810/acgnrecord/defaultImage/ACGNRecord-logo.png" />
+      </div>
       <template v-if="!forgetPasswordshow">
         <div class="login-register-from-button" @click="toForgetPassword">
           <div class="login-register-from-button-font">忘记密码</div>
@@ -224,6 +226,9 @@ export default {
       font-size: 30px;
       font-weight: 700;
       color: $acgnThemeColor;
+      img {
+        width: 250px;
+      }
     }
     .login-register-from-item {
       margin-top: 10px;

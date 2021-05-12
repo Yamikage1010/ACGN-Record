@@ -1,6 +1,7 @@
 <template>
   <div id="app" @contextmenu.prevent="rightClick">
-    <!-- <acgn-loading :loaded="loadData.loaded" :loadSize="backgroundImages.length"></acgn-loading> -->
+    <acgn-loading :loaded="loadData.loaded" :loadSize="backgroundImages.length" :showBackground="true"></acgn-loading>
+    <acgn-loading :loaded="systemLoadData.loaded" :loadSize="systemImage.length" :showBackground="true"></acgn-loading>
     <move-menu v-moveMenu v-if="hasMenu" :zIndex="998" :top="mouseTop" :left="mouseLeft" :title="'系统菜单'">
       <div class="db-menu" v-if="routerName === 'readerIndex' || routerName === 'creatorIndex'" @click="changeMode">
         {{ routerName == 'readerIndex' ? '管理模式' : '浏览模式' }}
@@ -141,7 +142,7 @@
     >
     </aplayer>
     <transition name="router-anime">
-      <router-view style="position: fixed"></router-view>
+      <router-view style="position: fixed" v-if="loadData.loaded === backgroundImages.length"></router-view>
     </transition>
     <config-manage ref="configManage"></config-manage>
   </div>
@@ -198,36 +199,108 @@ export default {
       configShow: false,
       backgroundCssAnime: null,
       apiSrc: 'http://localhost:9810/acgnrecord/defaultImage/',
-      backgroundImages: ['fgo-bg2.png', 'fgo-bg.png', 'arisu-bg.png', 'jk-bg.png'],
+      backgroundImages: [
+        'acgnBg001.jpg',
+        'acgnBg002.jpg',
+        'acgnBg003.jpg',
+        'acgnBg004.png',
+        'acgnBg005.jpg',
+        'acgnBg006.jpg',
+        'acgnBg007.jpg',
+        'acgnBg008.jpg',
+        'acgnBg009.jpg',
+        'acgnBg010.jpg'
+      ],
       defaultApiSrc: 'http://localhost:9810/acgnrecord/defaultImage/',
-      defaultBackgroundImages: ['fgo-bg2.png', 'fgo-bg.png', 'arisu-bg.png', 'jk-bg.png'],
+      defaultBackgroundImages: [
+        'acgnBg001.jpg',
+        'acgnBg002.jpg',
+        'acgnBg003.jpg',
+        'acgnBg004.png',
+        'acgnBg005.jpg',
+        'acgnBg006.jpg',
+        'acgnBg007.jpg',
+        'acgnBg008.jpg',
+        'acgnBg009.jpg',
+        'acgnBg010.jpg'
+      ],
       mini: true,
       musicList: [
         {
-          title: 'ここにある空',
-          artist: '米倉千尋',
-          src: 'http://localhost:9810/acgnrecord/defaultMusic/米倉千尋 - ここにある空.mp3'
+          title: '夢と葉桜',
+          artist: '初音ミク,青木月光',
+          src: 'http://localhost:9810/acgnrecord/defaultMusic/初音ミク,青木月光 - 夢と葉桜.mp3'
         },
         {
-          title: 'ふたり',
-          artist: '米倉千尋',
-          src: 'http://localhost:9810/acgnrecord/defaultMusic/米倉千尋 - ふたり.mp3'
+          title: '輪廻',
+          artist: '山本美禰子',
+          src: 'http://localhost:9810/acgnrecord/defaultMusic/山本美禰子 - 輪廻.mp3'
+        },
+        {
+          title: '桜日和',
+          artist: '星村麻衣',
+          src: 'http://localhost:9810/acgnrecord/defaultMusic/星村麻衣 - 桜日和.mp3'
+        },
+        {
+          title: '悠遠抄',
+          artist: 'Airots',
+          src: 'http://localhost:9810/acgnrecord/defaultMusic/Airots - 悠遠抄.mp3'
         }
       ],
       defaultMusicList: [
         {
-          title: 'ここにある空',
-          artist: '米倉千尋',
-          src: 'http://localhost:9810/acgnrecord/defaultMusic/米倉千尋 - ここにある空.mp3'
+          title: '夢と葉桜',
+          artist: '初音ミク,青木月光',
+          src: 'http://localhost:9810/acgnrecord/defaultMusic/初音ミク,青木月光 - 夢と葉桜.mp3'
         },
         {
-          title: 'ふたり',
-          artist: '米倉千尋',
-          src: 'http://localhost:9810/acgnrecord/defaultMusic/米倉千尋 - ふたり.mp3'
+          title: '輪廻',
+          artist: '山本美禰子',
+          src: 'http://localhost:9810/acgnrecord/defaultMusic/山本美禰子 - 輪廻.mp3'
+        },
+        {
+          title: '桜日和',
+          artist: '星村麻衣',
+          src: 'http://localhost:9810/acgnrecord/defaultMusic/星村麻衣 - 桜日和.mp3'
+        },
+        {
+          title: '悠遠抄',
+          artist: 'Airots',
+          src: 'http://localhost:9810/acgnrecord/defaultMusic/Airots - 悠遠抄.mp3'
         }
+      ],
+      systemImage: [
+        'ACGNRecord-logo.png',
+        'acgn.jpg',
+        'add.jpg',
+        'file.jpg',
+        'manage.jpg',
+        'user.jpg',
+        'Animation.jpg',
+        'Comic.jpg',
+        'Game.jpg',
+        'Novel.jpg',
+        'sakuraBg001.jpg',
+        'noImage.jpg',
+        'nene_era.jpg',
+        'acgnBg001.jpg',
+        'acgnBg002.jpg',
+        'acgnBg003.jpg',
+        'acgnBg004.png',
+        'acgnBg005.jpg',
+        'acgnBg006.jpg',
+        'acgnBg007.jpg',
+        'acgnBg008.jpg',
+        'acgnBg009.jpg',
+        'acgnBg010.jpg',
+        'menuBg001.jpg'
       ],
       loadData: {
         apiSrc: '',
+        loaded: 0
+      },
+      systemLoadData: {
+        apiSrc: 'http://localhost:9810/acgnrecord/defaultImage/',
         loaded: 0
       }
     }
@@ -238,6 +311,9 @@ export default {
     }
   },
   created() {
+    this.loadAcgnImage([...this.systemImage], this.systemLoadData).then((imgArr) => {
+      console.log(imgArr)
+    })
     Bus.$on('loadAcgnConfig', () => {
       console.log(111111)
       this.acgnConfig = this.$localStorage.get('acgnConfig') || this.defaultAcgnConfig
@@ -541,6 +617,11 @@ export default {
       this.$localStorage.remove('Token')
       this.$localStorage.remove('acgnConfig')
       this.$localStorage.remove('userData')
+      this.configShow = false
+      this.hasMenu = false
+      this.messageData = []
+      this.closeTomoList()
+      Bus.$emit('loadAcgnConfig')
       this.$router.push({
         name: 'login'
       })
@@ -668,7 +749,6 @@ export default {
   height: 100vh;
   position: fixed;
   margin: 0;
-  // background-image: url('./assets/fgo-bg2.png');
   background-size: cover;
   background-repeat: no-repeat;
   background-position: 0px 0px;
@@ -680,7 +760,6 @@ export default {
   height: 100vh;
   position: fixed;
   margin: 0;
-  // background-image: url('http://localhost:9810/acgnrecord/image/fgo-bg2.png');
   background-size: cover;
   background-repeat: no-repeat;
   background-position: 0px 0px;
@@ -693,7 +772,6 @@ export default {
   height: 100vh;
   position: fixed;
   margin: 0;
-  // background-image: url('http://localhost:9810/acgnrecord/image/arisu-bg.png');
   background-size: cover;
   background-repeat: no-repeat;
   background-position: 0px 0px;

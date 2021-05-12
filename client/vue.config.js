@@ -1,5 +1,6 @@
 // Vue.config.js 配置选项
 const path = require('path')
+const { title } = require('process')
 function resolve(dir) {
   return path.join(__dirname, dir)
 }

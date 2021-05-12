@@ -54,7 +54,7 @@ export default {
       default: false
     },
     imgSrc: {
-      default: 'http://localhost:9810/acgnrecord/defaultImage/noa.jpg'
+      default: 'http://localhost:9810/acgnrecord/defaultImage/menuBg001.jpg'
     }
   },
   created() {},

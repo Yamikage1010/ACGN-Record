@@ -1,7 +1,9 @@
 <template>
   <div class="acgn-register">
     <div class="acgn-register-form" ref="acgnRegister">
-      <div class="acgn-logo">ACGN Record</div>
+      <div class="acgn-logo">
+        <img src="http://localhost:9810/acgnrecord/defaultImage/ACGNRecord-logo.png" />
+      </div>
       <div class="login-register-from-item">
         <label>用户名：</label>
         <input type="text" v-model="user.acgnUserName" />
@@ -139,6 +141,9 @@ export default {
       font-size: 30px;
       font-weight: 700;
       color: $acgnThemeColor;
+      img {
+        width: 250px;
+      }
     }
     .login-register-from-item {
       margin-top: 10px;
