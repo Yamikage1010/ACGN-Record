@@ -5,6 +5,7 @@ module.exports = (req, res, next) => {
   // 不需要进行验证的api
   var urlArr = [
     '/favicon.ico',
+'/ACGNRecord-mini-logo.ico',
     '/static',
     '/public',
     '/acgnrecord/login',

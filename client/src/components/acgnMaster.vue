@@ -11,6 +11,11 @@
           <option :value="ACGN.G">{{ ACGN.G }}</option>
           <option :value="ACGN.N">{{ ACGN.N }}</option>
         </select>
+        <select v-model="acgnStatus" @change="searchAcgn">
+          <option :value="''">全部</option>
+          <option :value="1">开放</option>
+          <option :value="2">封禁</option>
+        </select>
       </div>
       <div class="handle-button">
         <acgn-button :width="150" @click="changeAcgnStatus($event, 'more', 2)">批量封禁</acgn-button>
@@ -77,6 +82,7 @@ export default {
       acgnUserName: '',
       acgnTitle: '',
       acgnType: '',
+      acgnStatus: '',
       page: 1,
       pageSize: 10,
       pageTotal: 10
@@ -144,7 +150,8 @@ export default {
         pageSize: this.pageSize,
         acgnUserName: this.acgnUserName,
         acgnTitle: this.acgnTitle,
-        acgnType: this.acgnType
+        acgnType: this.acgnType,
+        acgnStatus: this.acgnStatus
       })
         .then((res) => {
           this.tableData = res.data.tableData

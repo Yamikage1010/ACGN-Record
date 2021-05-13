@@ -191,7 +191,7 @@ export default {
     },
     beforeUpload(file) {
       //file是File对象
-      if (file.type === 'image/jpeg' || file.type === 'image/png' || file.type === 'image/gif') {
+      if (file.type.includes('image/') && this.manageType === 'image') {
         let fileUrl
         try {
           fileUrl = URL.createObjectURL(file)
@@ -206,8 +206,17 @@ export default {
           loaded: 0,
           url: fileUrl
         })
+      } else if (file.type.includes('audio/') && this.manageType === 'music') {
+        // let exName = this.userData.acgnUid + '_' + file.name
+        this.configManageList.push({
+          fileName: file.name,
+          name: '',
+          status: null,
+          loaded: 0,
+          url: ''
+        })
       } else {
-        this.$message.warning('选择的文件中存在非图片文件，请上传图片文件')
+        this.$message.warning('选择的文件中存在格式错误，请重新选择')
         return false
       }
     },
@@ -216,6 +225,9 @@ export default {
       console.log(fileList)
       console.log(file)
       let successFile = this.configManageList.find((item) => item.fileName === file.name)
+      if (this.manageType === 'music') {
+        successFile.url = 'http://localhost:9810/acgnrecord/music/' + response.data.extname
+      }
       successFile.name = response.data.extname
       successFile.loaded = 100
       successFile.status = 'success'

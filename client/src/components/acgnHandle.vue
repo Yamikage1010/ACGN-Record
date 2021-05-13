@@ -384,7 +384,7 @@ export default {
       })
       this.acgnCharacters[index].characterAttribute.dataValue.push(100)
     },
-    reduceCharacterAttribute() {
+    reduceCharacterAttribute(index) {
       this.acgnCharacters[index].characterAttribute.indicator.pop()
       this.acgnCharacters[index].characterAttribute.dataValue.pop()
     },

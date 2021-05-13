@@ -15,7 +15,7 @@ router.post('/acgnrecord/saveAcgnConfig', function (req, res, next) {
         res.send({
           status: 'success',
           code: 200,
-          msg: '保存成功',
+          msg: '保存成功,请刷新浏览器获取资源',
           data: results
         })
       } else {

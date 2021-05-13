@@ -13,6 +13,7 @@ try {
 } catch (err) {
   console.error('读取文件出错: ' + err.message)
 }
+console.log(__dirname.split(':')[0])
 //检查文件状态
 async function detectionFile(req, fileName) {
   let fileData = {

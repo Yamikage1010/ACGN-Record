@@ -4,6 +4,11 @@
       <div class="search-input">
         <input v-model="acgnUserName" @keydown.enter="searchAcgnUser" placeholder="请输入用户名搜索" />
         <input v-model="acgnUserEmail" @keydown.enter="searchAcgnUser" placeholder="请输入邮箱搜索" />
+        <select v-model="acgnUserStatus" @change="searchAcgnUser">
+          <option :value="''">全部</option>
+          <option :value="1">开放</option>
+          <option :value="2">封禁</option>
+        </select>
       </div>
       <div class="handle-button">
         <acgn-button :width="150" @click="changeUserStatus('more', 2)">批量封禁</acgn-button>
@@ -72,6 +77,7 @@ export default {
       selectTableRowKey: [],
       acgnUserName: '',
       acgnUserEmail: '',
+      acgnUserStatus: '',
       page: 1,
       pageSize: 10,
       pageTotal: 10
@@ -126,7 +132,8 @@ export default {
         page: this.page,
         pageSize: this.pageSize,
         acgnUserName: this.acgnUserName,
-        acgnUserEmail: this.acgnUserEmail
+        acgnUserEmail: this.acgnUserEmail,
+        acgnUserStatus: this.acgnUserStatus
       })
         .then((res) => {
           this.tableData = res.data.tableData
@@ -172,6 +179,11 @@ export default {
         width: 200px;
         padding: 5px;
       }
+      select {
+        font-size: 15px;
+        width: 100px;
+        padding: 5px;
+      }
     }
   }
   .acgn-master-main {
@@ -192,7 +204,8 @@ export default {
   .acgn-button {
     margin: 0 0 5px 10px;
   }
-  input {
+  input,
+  select {
     margin: 0 0 0 10px;
   }
 }

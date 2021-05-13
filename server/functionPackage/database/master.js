@@ -11,15 +11,8 @@ async function getAcgnFileData(req) {
   req.body.acgnFileType
     ? Object.assign(searchData, { acgnFileType: { like: '%' + req.body.acgnFileType + '%', _type: 'and' } })
     : null
-  console.log(
-    sql
-      .table('acgn_file')
-      .field('*')
-      .page(req.body.page, req.body.pageSize)
-      .where(searchData)
-      .order('createDate desc')
-      .select()
-  )
+  req.body.acgnFileStatus ? Object.assign(searchData, { acgnFileStatus: req.body.acgnFileStatus }) : null
+  console.log(searchData)
   const result = await exec(
     sql
       .table('acgn_file')
@@ -60,6 +53,7 @@ async function getAcgnUserData(req) {
   req.body.acgnUserEmail
     ? Object.assign(searchData, { acgnUserEmail: { like: '%' + req.body.acgnUserEmail + '%' } })
     : null
+  req.body.acgnUserStatus ? Object.assign(searchData, { acgnUserStatus: req.body.acgnUserStatus }) : null
   console.log(
     sql
       .table('user')
@@ -110,6 +104,7 @@ async function getAcgnContentData(req) {
   req.body.acgnTitle
     ? Object.assign(searchData, { acgnTitle: { like: '%' + req.body.acgnTitle + '%', _type: 'and' } })
     : null
+  req.body.acgnStatus ? Object.assign(searchData, { acgnStatus: req.body.acgnStatus }) : null
   req.body.acgnType ? Object.assign(searchData, { acgnType: req.body.acgnType }) : null
   console.log(
     sql
@@ -170,15 +165,18 @@ function registerFirstMaster() {
     acgnUserName: 'master000',
     acgnUserStatus: 3
   })
-  const result = exec(sql.table('user').field('*').where({ acgnUserName: 'master000' }).select())
-  if (result.length > 0) {
-    console.log('已存在首个管理员')
-  } else {
-    const result2 = exec(sql.table('user').data(masterData).insert())
-    if (result2.insertId > 0) {
-      console.log('创建首个管理员成功')
+  exec(sql.table('user').field('*').where({ acgnUserName: 'master000' }).select()).then((res) => {
+    const result = res
+    if (result.length > 0) {
+      console.log('已存在首个管理员')
+    } else {
+      exec(sql.table('user').data(masterData).insert()).then((res2) => {
+        if (res2.insertId > 0) {
+          console.log('创建首个管理员成功')
+        }
+      })
     }
-  }
+  })
 }
 module.exports = {
   masterRegister,

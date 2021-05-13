@@ -33,7 +33,7 @@
         {{ acgnReadData.acgnTitle }}<span>{{ acgnReadData.acgnSubTitle }}</span>
         <span style="float: right">
           <label class="acgn-form-item-label">综合评价：{{ acgnReadData.acgnScore }}分</label>
-          <el-rate v-model="acgnReadData.acgnScore" :max="10" :disabled="true"></el-rate
+          <el-rate v-model="acgnReadData.acgnScore" :max="10"></el-rate
         ></span>
       </h2>
       <div class="acgn-content-body-main">

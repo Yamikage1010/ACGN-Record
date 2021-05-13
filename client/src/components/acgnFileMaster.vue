@@ -11,6 +11,11 @@
           <option :value="'music'">音乐</option>
           <option :value="'video'">视频</option>
         </select>
+        <select v-model="acgnFileStatus" @change="fileNameSearch">
+          <option :value="''">全部</option>
+          <option :value="1">开放</option>
+          <option :value="2">封禁</option>
+        </select>
       </div>
       <div class="handle-button">
         <acgn-button :width="150" @click="changeFileStatus('more', 2)">批量封禁</acgn-button>
@@ -95,6 +100,7 @@ export default {
       acgnUserName: '',
       acgnFileName: '',
       acgnFileType: '',
+      acgnFileStatus: '',
       page: 1,
       pageSize: 10,
       pageTotal: 10,
@@ -163,7 +169,8 @@ export default {
         pageSize: this.pageSize,
         acgnUserName: this.acgnUserName,
         acgnFileName: this.acgnFileName,
-        acgnFileType: this.acgnFileType
+        acgnFileType: this.acgnFileType,
+        acgnFileStatus: this.acgnFileStatus
       })
         .then((res) => {
           this.tableData = res.data.tableData

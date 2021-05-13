@@ -38,23 +38,24 @@ async function editAcgnContent(req) {
   acgnContent.acgnAttribute = JSON.stringify(acgnContent.acgnAttribute)
   acgnContent.acgnCharacteristic = JSON.stringify(acgnContent.acgnCharacteristic)
   const result = await exec(sql.table('acgn_content').where({ acgnId: acgnContent.acgnId }).data(acgnContent).update())
-  if (result.affectedRows || result.affectedRows > 0) {
-    let acgnCharacters = JSON.parse(req.body.acgnCharacters)
+  let acgnCharacters = JSON.parse(req.body.acgnCharacters)
+  if (acgnCharacters.length > 0) {
     for (let i = 0; i < acgnCharacters.length; i++) {
       let acgnCharacter = { ...acgnCharacters[i] }
       acgnCharacter.characterImage = JSON.stringify(acgnCharacter.characterImage)
       acgnCharacter.characterAttribute = JSON.stringify(acgnCharacter.characterAttribute)
       acgnCharacter.characterVoice = JSON.stringify(acgnCharacter.characterVoice)
-      let result2 = await exec(
-        sql.table('acgn_characters').where({ characterId: acgnCharacter.characterId }).data(acgnCharacter).update()
-      )
-      console.log(2, result2)
-      if (result2.affectedRows === 0) {
+      let result2
+      if (acgnCharacter.characterId) {
+        result2 = await exec(
+          sql.table('acgn_characters').where({ characterId: acgnCharacter.characterId }).data(acgnCharacter).update()
+        )
+      } else {
         acgnCharacter.acgnUid = req.acgnUid
         acgnCharacter.acgnId = acgnContent.acgnId
-        let result3 = await exec(sql.table('acgn_characters').data(acgnCharacter).insert())
-        console.log(3, result3)
+        result2 = await exec(sql.table('acgn_characters').data(acgnCharacter).insert())
       }
+      console.log(2, result2)
     }
     return result
   }

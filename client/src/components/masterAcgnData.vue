@@ -282,7 +282,8 @@ export default {
             margin: 5px 0;
           }
         }
-        audio {
+        audio,
+        video {
           width: 100%;
         }
         .character {

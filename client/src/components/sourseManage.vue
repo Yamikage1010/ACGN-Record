@@ -64,7 +64,7 @@
             :before-upload="beforeUpload"
             :on-success="uploadSuccess"
             :on-progress="uploadProgress"
-            v-if="!addSourseData.image"
+            v-if="addSourseData.fileType === 'music' && !addSourseData.image"
           >
             <acgn-button :noStop="true">上传封面</acgn-button>
           </el-upload>

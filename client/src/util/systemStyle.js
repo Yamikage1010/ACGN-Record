@@ -14,7 +14,7 @@ export function changeTheme(acgnTheme) {
 }
 export function musicDataHandle(bgm) {
   return bgm.map(item => {
-    let musicData = item.slice(item.indexOf('_') + 1).split('-')
+    let musicData = item.split('_')[2].split('-')
     return {
       title: musicData[1],
       artist: musicData[0],

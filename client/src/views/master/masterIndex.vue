@@ -41,7 +41,7 @@
       :top="item.top"
       :left="item.left"
       :title="item.title"
-      :ref="'banReason' + index"
+      ref="banReason"
       v-for="(item, index) in messageData"
       :key="'banReason' + index"
       @closeMessage="closeMessage(index)"
@@ -238,7 +238,7 @@ export default {
         .then((res) => {
           if (res.code === 200) {
             Bus.$emit('refreshAcgnTable')
-            this.$refs['banReason' + dataIndex][0].close()
+            this.$refs.banReason[dataIndex].closeMessage()
             this.$message.success(res.msg)
           } else {
             this.$message.warning(res.msg)
