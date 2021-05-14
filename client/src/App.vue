@@ -198,7 +198,7 @@ export default {
       mouseLeft: 0,
       configShow: false,
       backgroundCssAnime: null,
-      apiSrc: 'http://localhost:9810/acgnrecord/defaultImage/',
+      apiSrc: 'http://192.168.43.82:9810/acgnrecord/defaultImage/',
       backgroundImages: [
         'acgnBg001.jpg',
         'acgnBg002.jpg',
@@ -211,7 +211,7 @@ export default {
         'acgnBg009.jpg',
         'acgnBg010.jpg'
       ],
-      defaultApiSrc: 'http://localhost:9810/acgnrecord/defaultImage/',
+      defaultApiSrc: 'http://192.168.43.82:9810/acgnrecord/defaultImage/',
       defaultBackgroundImages: [
         'acgnBg001.jpg',
         'acgnBg002.jpg',
@@ -229,44 +229,44 @@ export default {
         {
           title: '夢と葉桜',
           artist: '初音ミク,青木月光',
-          src: 'http://localhost:9810/acgnrecord/defaultMusic/初音ミク,青木月光 - 夢と葉桜.mp3'
+          src: 'http://192.168.43.82:9810/acgnrecord/defaultMusic/初音ミク,青木月光 - 夢と葉桜.mp3'
         },
         {
           title: '輪廻',
           artist: '山本美禰子',
-          src: 'http://localhost:9810/acgnrecord/defaultMusic/山本美禰子 - 輪廻.mp3'
+          src: 'http://192.168.43.82:9810/acgnrecord/defaultMusic/山本美禰子 - 輪廻.mp3'
         },
         {
           title: '桜日和',
           artist: '星村麻衣',
-          src: 'http://localhost:9810/acgnrecord/defaultMusic/星村麻衣 - 桜日和.mp3'
+          src: 'http://192.168.43.82:9810/acgnrecord/defaultMusic/星村麻衣 - 桜日和.mp3'
         },
         {
           title: '悠遠抄',
           artist: 'Airots',
-          src: 'http://localhost:9810/acgnrecord/defaultMusic/Airots - 悠遠抄.mp3'
+          src: 'http://192.168.43.82:9810/acgnrecord/defaultMusic/Airots - 悠遠抄.mp3'
         }
       ],
       defaultMusicList: [
         {
           title: '夢と葉桜',
           artist: '初音ミク,青木月光',
-          src: 'http://localhost:9810/acgnrecord/defaultMusic/初音ミク,青木月光 - 夢と葉桜.mp3'
+          src: 'http://192.168.43.82:9810/acgnrecord/defaultMusic/初音ミク,青木月光 - 夢と葉桜.mp3'
         },
         {
           title: '輪廻',
           artist: '山本美禰子',
-          src: 'http://localhost:9810/acgnrecord/defaultMusic/山本美禰子 - 輪廻.mp3'
+          src: 'http://192.168.43.82:9810/acgnrecord/defaultMusic/山本美禰子 - 輪廻.mp3'
         },
         {
           title: '桜日和',
           artist: '星村麻衣',
-          src: 'http://localhost:9810/acgnrecord/defaultMusic/星村麻衣 - 桜日和.mp3'
+          src: 'http://192.168.43.82:9810/acgnrecord/defaultMusic/星村麻衣 - 桜日和.mp3'
         },
         {
           title: '悠遠抄',
           artist: 'Airots',
-          src: 'http://localhost:9810/acgnrecord/defaultMusic/Airots - 悠遠抄.mp3'
+          src: 'http://192.168.43.82:9810/acgnrecord/defaultMusic/Airots - 悠遠抄.mp3'
         }
       ],
       systemImage: [
@@ -300,7 +300,7 @@ export default {
         loaded: 0
       },
       systemLoadData: {
-        apiSrc: 'http://localhost:9810/acgnrecord/defaultImage/',
+        apiSrc: 'http://192.168.43.82:9810/acgnrecord/defaultImage/',
         loaded: 0
       }
     }
@@ -318,7 +318,7 @@ export default {
       console.log(111111)
       this.acgnConfig = this.$localStorage.get('acgnConfig') || this.defaultAcgnConfig
       if (this.acgnConfig.backgroundImages && this.acgnConfig.backgroundImages.length != 0) {
-        this.apiSrc = 'http://localhost:9810/acgnrecord/image/'
+        this.apiSrc = 'http://192.168.43.82:9810/acgnrecord/image/'
         this.backgroundImages = this.acgnConfig.backgroundImages
         this.loadData.apiSrc = this.apiSrc
         this.loadData.loaded = 0

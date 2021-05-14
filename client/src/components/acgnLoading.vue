@@ -3,13 +3,13 @@
     <div class="loading-anime">
       <template v-if="showBackground">
         <div class="loading-anime-bg">
-          <img :src="'http://localhost:9810/acgnrecord/defaultImage/loading.gif'" />
+          <img :src="'http://192.168.43.82:9810/acgnrecord/defaultImage/loading.gif'" />
           <!-- <span>{{ loadingNum }}%</span> -->
           <span>{{ loadingText + '...' }}</span>
         </div>
       </template>
       <template v-else>
-        <img :src="'http://localhost:9810/acgnrecord/defaultImage/loading.gif'" />
+        <img :src="'http://192.168.43.82:9810/acgnrecord/defaultImage/loading.gif'" />
         <!-- <span>{{ loadingNum }}%</span> -->
         <span>{{ loadingText + '...' }}</span>
       </template>
@@ -18,7 +18,7 @@
     <img
       style="width: 100%"
       v-if="showBackground"
-      src="http://localhost:9810/acgnrecord/defaultImage/sakuraBg001.jpg"
+      src="http://192.168.43.82:9810/acgnrecord/defaultImage/sakuraBg001.jpg"
     />
   </div>
 </template>

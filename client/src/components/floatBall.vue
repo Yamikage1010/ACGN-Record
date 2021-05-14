@@ -48,7 +48,7 @@ export default {
   },
   created() {
     this.ref = 'floatBall' + this.ballKey
-    this.ballImage = 'http://localhost:9810/acgnrecord/defaultImage/' + this.ballKey + '.jpg'
+    this.ballImage = 'http://192.168.43.82:9810/acgnrecord/defaultImage/' + this.ballKey + '.jpg'
     this.createStlye()
   },
   mounted() {
@@ -136,7 +136,7 @@ export default {
   // -webkit-backdrop-filter: blur(5px);
   // backdrop-filter: blur(5px);
   transition: 0.3s ease;
-  border-radius: 150px;
+  border-radius: 50%;
   background-color: transparent;
   color: $fontColor;
   display: flex;

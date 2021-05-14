@@ -102,6 +102,7 @@ async function requestHandle(req) {
 }
 async function getTomoList(req) {
   const result = await exec(sql.table('user').field('acgnTomo').where({ acgnUid: req.acgnUid }).select())
+  console.log(result)
   return result
 }
 async function getTomoRequestList(req) {
@@ -125,9 +126,7 @@ async function getTomoAcgnContentList(req) {
   req.body.acgnTitle
     ? Object.assign(selectData, { acgnTitle: { like: '%' + req.body.acgnTitle + '%', _type: 'and' } })
     : null
-  req.body.acgnType
-    ? Object.assign(selectData, { acgnType: { like: '%' + req.body.acgnType + '%', _type: 'and' } })
-    : null
+  req.body.acgnType ? Object.assign(selectData, { acgnType: req.body.acgnType }) : null
   const result = await exec(
     sql
       .table('acgn_content')

@@ -25,13 +25,13 @@
               opacity: index === activeVolumeIndex ? 1 : 0,
               transform: index === activeVolumeIndex ? 'translate(0,0)' : volumesRightTranslate
             }"
-            :src="'http://localhost:9810/acgnrecord/image/' + volume.cover"
+            :src="'http://192.168.43.82:9810/acgnrecord/image/' + volume.cover"
             :key="index"
           />
           <img
             v-else
             :style="{ opacity: index === activeVolumeIndex ? 1 : 0 }"
-            :src="'http://localhost:9810/acgnrecord/defaultImage/noImage.jpg'"
+            :src="'http://192.168.43.82:9810/acgnrecord/defaultImage/noImage.jpg'"
             :key="index"
           />
         </template>

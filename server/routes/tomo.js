@@ -149,7 +149,7 @@ router.post('/acgnrecord/getTomoList', urlencodedParser, (req, res) => {
           code: 200,
           msg: '查询成功',
           data: {
-            acgnTomo: JSON.parse(result[0].acgnTomo || [])
+            acgnTomo: JSON.parse(result[0].acgnTomo || '[]')
           }
         })
       } else {
@@ -162,6 +162,7 @@ router.post('/acgnrecord/getTomoList', urlencodedParser, (req, res) => {
       }
     })
     .catch((err) => {
+      console.log(err)
       res.send({
         status: 'error',
         code: 404,

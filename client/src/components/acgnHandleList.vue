@@ -22,9 +22,9 @@
       <img
         class="acgn-image"
         v-if="item.acgnMemoryImage.length > 0"
-        :src="'http://localhost:9810/acgnrecord/image/' + item.acgnMemoryImage[0]"
+        :src="'http://192.168.43.82:9810/acgnrecord/image/' + item.acgnMemoryImage[0]"
       />
-      <img class="acgn-image" v-else :src="'http://localhost:9810/acgnrecord/defaultImage/noImage.jpg'" />
+      <img class="acgn-image" v-else :src="'http://192.168.43.82:9810/acgnrecord/defaultImage/noImage.jpg'" />
       <div class="acgn-image-mask"></div>
       <el-popconfirm title="是否要删除该作品" @confirm="deleteAcgn(item.acgnId)" hide-icon>
         <div class="delete-acgn" slot="reference" @click="clickDelete">X</div>
@@ -33,7 +33,7 @@
       <!-- <div class="acgn-score">{{ item.acgnScore }}</div> -->
     </div>
     <div class="list-no-data" v-if="acgnContentList.length === 0">
-      <img style="width: 200px" :src="'http://localhost:9810/acgnrecord/defaultImage/noData.png'" />
+      <img style="width: 200px" :src="'http://192.168.43.82:9810/acgnrecord/defaultImage/noData.png'" />
       <div class="list-no-data-text">无作品记录</div>
     </div>
   </div>
@@ -57,7 +57,7 @@ export default {
       pageTotal: 0,
       acgnTitle: '',
       loadData: {
-        apiSrc: 'http://localhost:9810/acgnrecord/image/',
+        apiSrc: 'http://192.168.43.82:9810/acgnrecord/image/',
         loaded: 0
       },
       imageArray: []

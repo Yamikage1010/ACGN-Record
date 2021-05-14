@@ -18,7 +18,7 @@ export function musicDataHandle(bgm) {
     return {
       title: musicData[1],
       artist: musicData[0],
-      src: 'http://localhost:9810/acgnrecord/music/' + item
+      src: 'http://192.168.43.82:9810/acgnrecord/music/' + item
     }
   })
 }

@@ -31,7 +31,7 @@
         >
           <el-carousel-item v-for="(item, index) in acgnFormData.acgnMemoryImage" :key="index">
             <img
-              :src="'http://localhost:9810/acgnrecord/GMImage/' + item"
+              :src="'http://192.168.43.82:9810/acgnrecord/GMImage/' + item"
               style="max-width: 200px; max-height: 200px"
             />
           </el-carousel-item>
@@ -39,7 +39,7 @@
         <img
           style="max-width: 200px; max-height: 200px"
           v-else-if="acgnFormData.acgnMemoryImage.length === 1"
-          :src="'http://localhost:9810/acgnrecord/GMImage/' + acgnFormData.acgnMemoryImage[0]"
+          :src="'http://192.168.43.82:9810/acgnrecord/GMImage/' + acgnFormData.acgnMemoryImage[0]"
         />
         <acgn-button @click="openImageManage('content')">图片管理</acgn-button>
       </div>
@@ -144,7 +144,7 @@
           >
             <el-carousel-item v-for="(item, index) in character.characterImage" :key="index">
               <img
-                :src="'http://localhost:9810/acgnrecord/GMImage/' + item"
+                :src="'http://192.168.43.82:9810/acgnrecord/GMImage/' + item"
                 style="max-width: 200px; max-height: 200px"
               />
             </el-carousel-item>
@@ -152,7 +152,7 @@
           <img
             v-else-if="character.characterImage.length === 1"
             style="max-width: 200px; max-height: 200px"
-            :src="'http://localhost:9810/acgnrecord/GMImage/' + character.characterImage[0]"
+            :src="'http://192.168.43.82:9810/acgnrecord/GMImage/' + character.characterImage[0]"
           />
           <acgn-button @click="openImageManage(index)">图片管理</acgn-button>
         </div>

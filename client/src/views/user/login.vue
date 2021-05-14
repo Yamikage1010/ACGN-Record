@@ -2,7 +2,7 @@
   <div class="acgn-login">
     <div class="acgn-login-form" ref="acgnLogin">
       <div class="acgn-logo">
-        <img src="http://localhost:9810/acgnrecord/defaultImage/ACGNRecord-logo.png" />
+        <img src="http://192.168.43.82:9810/acgnrecord/defaultImage/ACGNRecord-logo.png" />
       </div>
       <template v-if="!forgetPasswordshow">
         <div class="login-register-from-button" @click="toForgetPassword">

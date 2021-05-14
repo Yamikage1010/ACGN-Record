@@ -60,7 +60,7 @@
         </div>
         <div class="image-box" v-if="configManageList.length <= 20 && manageType === 'image'">
           <el-upload
-            :action="'http://localhost:9810/acgnrecord/picUpload'"
+            :action="'http://192.168.43.82:9810/acgnrecord/picUpload'"
             :show-file-list="false"
             :auto-upload="true"
             :headers="requesHeaders"
@@ -70,7 +70,7 @@
             drag
             multiple
           >
-            <img src="http://localhost:9810/acgnrecord/defaultImage/sora.jpg" />
+            <img src="http://192.168.43.82:9810/acgnrecord/defaultImage/sora.jpg" />
           </el-upload>
         </div>
         <div
@@ -86,8 +86,8 @@
           class="upload-pic"
           :action="
             manageType === 'image'
-              ? 'http://localhost:9810/acgnrecord/picUpload'
-              : 'http://localhost:9810/acgnrecord/musicUpload'
+              ? 'http://192.168.43.82:9810/acgnrecord/picUpload'
+              : 'http://192.168.43.82:9810/acgnrecord/musicUpload'
           "
           multiple
           :show-file-list="false"
@@ -138,7 +138,7 @@ export default {
             return {
               name: item,
               status: 'noNowUpData',
-              url: 'http://localhost:9810/acgnrecord/image/' + item
+              url: 'http://192.168.43.82:9810/acgnrecord/image/' + item
             }
           })
           this.leftImage = this.configManageList[0].url
@@ -152,7 +152,7 @@ export default {
             return {
               name: item,
               status: 'noNowUpData',
-              url: 'http://localhost:9810/acgnrecord/music/' + item
+              url: 'http://192.168.43.82:9810/acgnrecord/music/' + item
             }
           })
           this.leftImage = this.configManageList[0].url
@@ -226,12 +226,12 @@ export default {
       console.log(file)
       let successFile = this.configManageList.find((item) => item.fileName === file.name)
       if (this.manageType === 'music') {
-        successFile.url = 'http://localhost:9810/acgnrecord/music/' + response.data.extname
+        successFile.url = 'http://192.168.43.82:9810/acgnrecord/music/' + response.data.extname
       }
       successFile.name = response.data.extname
       successFile.loaded = 100
       successFile.status = 'success'
-      // successFile.url = 'http://localhost:9810/acgnrecord/image/' + successFile.name
+      // successFile.url = 'http://192.168.43.82:9810/acgnrecord/image/' + successFile.name
       // this.configManageList.find((item) => item.fileName === file.name).url = 'success'
     },
     uploadProgress(event, file, fileList) {

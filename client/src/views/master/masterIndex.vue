@@ -118,7 +118,7 @@ export default {
       fileBallData: {
         ballKey: 'file',
         title: 'file',
-        subTitle: '图片管理',
+        subTitle: '文件管理',
         top: ballTop,
         left: ballWidth,
         width: ballTop,

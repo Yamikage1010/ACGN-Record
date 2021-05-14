@@ -14,8 +14,8 @@
         <div class="volume-box" v-if="leftVolume.title">
           <div class="volume-manage-left-title">{{ leftVolume.title }}</div>
           <div class="volume-box">
-            <img v-if="leftVolume.cover" :src="'http://localhost:9810/acgnrecord/image/' + leftVolume.cover" />
-            <img v-else :src="'http://localhost:9810/acgnrecord/defaultImage/noImage.jpg'" />
+            <img v-if="leftVolume.cover" :src="'http://192.168.43.82:9810/acgnrecord/image/' + leftVolume.cover" />
+            <img v-else :src="'http://192.168.43.82:9810/acgnrecord/defaultImage/noImage.jpg'" />
             <div class="volume-manage-left-content">{{ leftVolume.content }}</div>
           </div>
         </div>
@@ -56,7 +56,7 @@
           </div>
           <el-upload
             class="upload-pic"
-            action="http://localhost:9810/acgnrecord/picUpload"
+            action="http://192.168.43.82:9810/acgnrecord/picUpload"
             :limit="1"
             :show-file-list="false"
             :auto-upload="true"

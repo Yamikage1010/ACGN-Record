@@ -32,18 +32,18 @@
           <template slot-scope="scope">
             <img
               v-if="scope.row.acgnFileType === 'image'"
-              :src="'http://localhost:9810/acgnrecord/masterImage/' + scope.row.acgnFileName"
+              :src="'http://192.168.43.82:9810/acgnrecord/masterImage/' + scope.row.acgnFileName"
             />
             <audio
               v-if="scope.row.acgnFileType === 'music'"
-              :src="'http://localhost:9810/acgnrecord/masterMusic/' + scope.row.acgnFileName"
+              :src="'http://192.168.43.82:9810/acgnrecord/masterMusic/' + scope.row.acgnFileName"
               controls
             >
               您的浏览器不支持该音乐播放组件。
             </audio>
             <video
               v-if="scope.row.acgnFileType === 'video'"
-              :src="'http://localhost:9810/acgnrecord/masterVideo/' + scope.row.acgnFileName"
+              :src="'http://192.168.43.82:9810/acgnrecord/masterVideo/' + scope.row.acgnFileName"
               controls
               controlslist="nodownload noremoteplayback"
               disablePictureInPicture
@@ -106,7 +106,7 @@ export default {
       pageTotal: 10,
       imageArray: [],
       loadData: {
-        apiSrc: 'http://localhost:9810/acgnrecord/image/',
+        apiSrc: 'http://192.168.43.82:9810/acgnrecord/image/',
         loaded: 0
       }
     }

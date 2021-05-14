@@ -5,9 +5,9 @@
       <div class="pause-icon" v-if="musicPlay"></div>
       <div class="play-icon" v-else></div>
     </div>
-    <img v-if="musicData.image" :src="'http://localhost:9810/acgnrecord/image/' + musicData.image" />
-    <img v-else :src="'http://localhost:9810/acgnrecord/defaultImage/noImage.jpg'" />
-    <audio ref="audioDom" :src="'http://localhost:9810/acgnrecord/music/' + musicData.music">
+    <img v-if="musicData.image" :src="'http://192.168.43.82:9810/acgnrecord/image/' + musicData.image" />
+    <img v-else :src="'http://192.168.43.82:9810/acgnrecord/defaultImage/noImage.jpg'" />
+    <audio ref="audioDom" :src="'http://192.168.43.82:9810/acgnrecord/music/' + musicData.music">
       您的浏览器不支持该音乐播放组件。
     </audio>
   </div>

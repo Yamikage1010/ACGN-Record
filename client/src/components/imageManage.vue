@@ -43,7 +43,7 @@
         <div class="image-box">
           <el-upload
             class="upload-pic"
-            action="http://localhost:9810/acgnrecord/picUpload"
+            action="http://192.168.43.82:9810/acgnrecord/picUpload"
             :show-file-list="false"
             :auto-upload="true"
             :list-type="'picture'"
@@ -54,14 +54,14 @@
             drag
             multiple
           >
-            <img src="http://localhost:9810/acgnrecord/defaultImage/sora.jpg" />
+            <img src="http://192.168.43.82:9810/acgnrecord/defaultImage/sora.jpg" />
           </el-upload>
         </div>
       </div>
       <div slot="footer">
         <el-upload
           class="upload-pic"
-          action="http://localhost:9810/acgnrecord/picUpload"
+          action="http://192.168.43.82:9810/acgnrecord/picUpload"
           multiple
           :show-file-list="false"
           :auto-upload="true"
@@ -106,7 +106,7 @@ export default {
           return {
             name: item,
             status: 'noNowUpData',
-            url: 'http://localhost:9810/acgnrecord/image/' + item
+            url: 'http://192.168.43.82:9810/acgnrecord/image/' + item
           }
         })
         this.leftImage = this.imageManageList[0].url
@@ -168,7 +168,7 @@ export default {
       successFile.name = response.data.extname
       successFile.loaded = 100
       successFile.status = 'success'
-      // successFile.url = 'http://localhost:9810/acgnrecord/image/' + successFile.name
+      // successFile.url = 'http://192.168.43.82:9810/acgnrecord/image/' + successFile.name
       // this.imageManageList.find((item) => item.fileName === file.name).url = 'success'
     },
     uploadProgress(event, file, fileList) {

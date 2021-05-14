@@ -13,7 +13,7 @@
     <video
       ref="videoDom"
       :style="{ transform: videoPlay ? '' : 'perspective(800px) rotateY(20deg)' }"
-      :src="'http://localhost:9810/acgnrecord/video/' + videoData.video"
+      :src="'http://192.168.43.82:9810/acgnrecord/video/' + videoData.video"
       controls
       controlslist="nodownload noremoteplayback"
       disablePictureInPicture

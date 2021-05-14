@@ -42,7 +42,7 @@
         >
           <el-carousel-item v-for="(item, index) in acgnConfig.backgroundImages" :key="index">
             <img
-              :src="'http://localhost:9810/acgnrecord/GMImage/' + item"
+              :src="'http://192.168.43.82:9810/acgnrecord/GMImage/' + item"
               style="max-width: 200px; max-height: 200px"
             />
           </el-carousel-item>
@@ -50,7 +50,7 @@
         <img
           style="max-width: 200px; max-height: 200px"
           v-else-if="acgnConfig.backgroundImages.length === 1"
-          :src="'http://localhost:9810/acgnrecord/GMImage/' + acgnConfig.backgroundImages[0]"
+          :src="'http://192.168.43.82:9810/acgnrecord/GMImage/' + acgnConfig.backgroundImages[0]"
         />
         <acgn-button @click="openConfigManage('image')">图片管理</acgn-button>
       </div>

@@ -2,7 +2,7 @@
   <div class="acgn-register">
     <div class="acgn-register-form" ref="acgnRegister">
       <div class="acgn-logo">
-        <img src="http://localhost:9810/acgnrecord/defaultImage/ACGNRecord-logo.png" />
+        <img src="http://192.168.43.82:9810/acgnrecord/defaultImage/ACGNRecord-logo.png" />
       </div>
       <div class="login-register-from-item">
         <label>用户名：</label>

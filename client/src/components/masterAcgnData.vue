@@ -68,7 +68,7 @@
         <div class="acgnData-memory-image" v-if="acgnData.acgnMemoryImage && acgnData.acgnMemoryImage.length > 0">
           <h2>作品相册</h2>
           <div class="memory-image" v-for="(item, index) in acgnData.acgnMemoryImage" :key="index">
-            <img :src="'http://localhost:9810/acgnrecord/masterImage/' + item" />
+            <img :src="'http://192.168.43.82:9810/acgnrecord/masterImage/' + item" />
             {{ item }}
           </div>
         </div>
@@ -82,21 +82,21 @@
             {{ item.title }}
             <audio
               v-if="item.fileType === 'music'"
-              :src="'http://localhost:9810/acgnrecord/masterMusic/' + item.music"
+              :src="'http://192.168.43.82:9810/acgnrecord/masterMusic/' + item.music"
               controls
             >
               您的浏览器不支持该音乐播放组件。
             </audio>
             <video
               v-else
-              :src="'http://localhost:9810/acgnrecord/masterVideo/' + item.video"
+              :src="'http://192.168.43.82:9810/acgnrecord/masterVideo/' + item.video"
               controlslist="nodownload noremoteplayback"
               disablePictureInPicture
               controls
             >
               您的浏览器不支持该视频播放组件。
             </video>
-            <img v-if="item.image" :src="'http://localhost:9810/acgnrecord/masterImage/' + item.image" alt="" />
+            <img v-if="item.image" :src="'http://192.168.43.82:9810/acgnrecord/masterImage/' + item.image" alt="" />
           </div>
         </div>
         <div class="acgnData-characteristic-volumes" v-if="acgnData.acgnCharacteristic.volumes.length > 0">
@@ -104,7 +104,7 @@
           <div class="characteristic-volumes" v-for="(item, index) in acgnData.acgnCharacteristic.volumes" :key="index">
             <div>{{ item.title }}</div>
             <div class="volumes-content">内容：{{ item.content }}</div>
-            <img v-if="item.cover" :src="'http://localhost:9810/acgnrecord/masterImage/' + item.cover" alt="" />
+            <img v-if="item.cover" :src="'http://192.168.43.82:9810/acgnrecord/masterImage/' + item.cover" alt="" />
           </div>
         </div>
         <div class="acgnData-character" v-if="acgnCharacters.length > 0">
@@ -120,7 +120,7 @@
             <h3>人物相册</h3>
             <div class="character-image">
               <div class="image" v-for="(item2, index) in item.characterImage" :key="index">
-                <img :src="'http://localhost:9810/acgnrecord/masterImage/' + item2" />
+                <img :src="'http://192.168.43.82:9810/acgnrecord/masterImage/' + item2" />
                 {{ item2 }}
               </div>
             </div>

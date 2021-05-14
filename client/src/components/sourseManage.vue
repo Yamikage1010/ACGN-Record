@@ -56,7 +56,7 @@
           </div>
           <el-upload
             class="upload-pic"
-            action="http://localhost:9810/acgnrecord/picUpload"
+            action="http://192.168.43.82:9810/acgnrecord/picUpload"
             :show-file-list="false"
             :auto-upload="true"
             :list-type="'picture'"
@@ -71,7 +71,7 @@
           <img v-else :src="addSourseData.imageSrc" />
           <el-upload
             class="upload-demo"
-            action="http://localhost:9810/acgnrecord/musicUpload"
+            action="http://192.168.43.82:9810/acgnrecord/musicUpload"
             :headers="requesHeaders"
             :before-upload="beforeUpload"
             :on-success="uploadSuccess"
@@ -83,7 +83,7 @@
           <div v-else>{{ addSourseData.music }}</div>
           <el-upload
             class="upload-demo"
-            action="http://localhost:9810/acgnrecord/videoUpload"
+            action="http://192.168.43.82:9810/acgnrecord/videoUpload"
             :headers="requesHeaders"
             :before-upload="beforeUpload"
             :on-success="uploadSuccess"

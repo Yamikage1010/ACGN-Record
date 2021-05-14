@@ -10,7 +10,7 @@
           v-for="(item, index) in acgnReadData.acgnMemoryImage"
           :key="index"
         >
-          <img :src="'http://localhost:9810/acgnrecord/image/' + item" />
+          <img :src="'http://192.168.43.82:9810/acgnrecord/image/' + item" />
         </div>
       </div>
       <div class="slide-switch" ref="slideSwitch" @mousewheel="scrollSlideSwich">
@@ -21,11 +21,11 @@
           :key="index"
           @click="clickSlideSwichItem(index)"
         >
-          <img class="slide-switch-image" :src="'http://localhost:9810/acgnrecord/image/' + item" />
+          <img class="slide-switch-image" :src="'http://192.168.43.82:9810/acgnrecord/image/' + item" />
         </div>
       </div>
       <div class="image-blur">
-        <img :src="'http://localhost:9810/acgnrecord/image/' + acgnReadData.acgnMemoryImage[activeIndex]" />
+        <img :src="'http://192.168.43.82:9810/acgnrecord/image/' + acgnReadData.acgnMemoryImage[activeIndex]" />
       </div>
     </div>
     <div class="acgn-content-body">
@@ -98,7 +98,7 @@
                 v-for="(item, index) in character.characterImage"
                 :key="index"
               >
-                <img :src="'http://localhost:9810/acgnrecord/image/' + item" />
+                <img :src="'http://192.168.43.82:9810/acgnrecord/image/' + item" />
               </div>
             </div>
             <div
@@ -113,7 +113,7 @@
                 :key="index"
                 @click="clickSlideSwichItem(index, characterIndex)"
               >
-                <img class="slide-switch-image" :src="'http://localhost:9810/acgnrecord/image/' + item" />
+                <img class="slide-switch-image" :src="'http://192.168.43.82:9810/acgnrecord/image/' + item" />
               </div>
             </div>
           </div>

@@ -45,7 +45,7 @@
         >
           <h2>系统背景图片</h2>
           <div class="config-image" v-for="(item, index) in userData.acgnConfig.backgroundImages" :key="index">
-            <img :src="'http://localhost:9810/acgnrecord/masterImage/' + item" />
+            <img :src="'http://192.168.43.82:9810/acgnrecord/masterImage/' + item" />
             {{ item }}
           </div>
         </div>
@@ -57,7 +57,7 @@
         >
           <h2>系统音乐</h2>
           <div class="config-music" v-for="(item, index) in userData.acgnConfig.backgroundMusic" :key="index">
-            <audio :src="'http://localhost:9810/acgnrecord/music/' + item" controls>
+            <audio :src="'http://192.168.43.82:9810/acgnrecord/music/' + item" controls>
               您的浏览器不支持该音乐播放组件。
             </audio>
             {{ item }}
